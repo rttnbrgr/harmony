@@ -1,0 +1,7 @@
+{
+  "name": "Harmonize",
+  "id": "991866272578143756",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html"
+}
