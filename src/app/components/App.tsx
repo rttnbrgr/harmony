@@ -1,6 +1,5 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import './ui.css'
+import '../styles/ui.css'
 
 declare function require(path: string): any
 
@@ -24,7 +23,7 @@ class App extends React.Component {
   render() {
     return (
     <div>
-      <img src={require('./logo.svg')} />
+      <img src={require('../assets/logo.svg')} />
       <h2>Rectangle Creator</h2>
       <p>Count: <input ref={this.countRef} /></p>
       <button id="create" onClick={this.onCreate}>Create</button>
@@ -33,4 +32,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('react-page'))
+export default App
