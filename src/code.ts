@@ -1,3 +1,5 @@
+/*
+*/
 // This plugin will open a window to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
 
@@ -31,3 +33,8 @@ figma.ui.onmessage = msg => {
   // keep running, which shows the cancel button at the bottom of the screen.
   figma.closePlugin();
 };
+
+// get all colors on the page
+// get all 
+
+
