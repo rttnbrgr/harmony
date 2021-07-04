@@ -21,20 +21,14 @@ class App extends React.Component {
     parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
   }
 
-  // render() {
-  //   return (
-  //   <div>
-  //     <img src={require('./logo.svg')} />
-  //     <h2>Rectangle Creator</h2>
-  //     <p>Count: <input ref={this.countRef} /></p>
-  //     <button id="create" onClick={this.onCreate}>Create</button>
-  //     <button onClick={this.onCancel}>Cancel</button>
-  //   </div>)
-  // }
   render() {
     return (
     <div>
-      hola
+      <img src={require('./logo.svg')} />
+      <h2>Rectangle Creator</h2>
+      <p>Count: <input ref={this.countRef} /></p>
+      <button id="create" onClick={this.onCreate}>Create</button>
+      <button onClick={this.onCancel}>Cancel</button>
     </div>)
   }
 }
