@@ -34,7 +34,110 @@ figma.ui.onmessage = msg => {
   figma.closePlugin();
 };
 
+console.log('console', console)
+console.log('figma', figma)
 // get all colors on the page
-// get all 
+// print them with a hex value
+// check which ones match a layer style
 
 
+
+
+// Print a string
+function buildText(str = 'Build Text String', y = 0) {
+  console.log('buildText')
+  // const newPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+  const TEXT_NODE = figma.createText();
+  TEXT_NODE.characters = str;
+  TEXT_NODE.y = y;
+  figma.currentPage.appendChild(TEXT_NODE);
+
+  console.log('text appended')
+}
+
+const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
+
+function buildRect() {
+
+}
+
+// const rectFactory = (fill = defaultRectFill) => {
+//   const rect = figma.createRectangle();
+//   rect.x = 150;
+//   rect.fills = [fill];
+//   figma.currentPage.appendChild(rect);
+//   // nodes.push(rect);
+// }
+
+// get all layer styles
+const localPaintStyles = figma.getLocalPaintStyles();
+console.log('localPaintStyles', localPaintStyles);
+// filter by solid]
+
+async function loadDefaultFont() {
+  console.log('loadDefaultFont');
+  const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+  console.log('after font promise');
+  // fontPromise.resolve(x => {console.log('font promise', x)})
+  // buildText()
+  // buildText('hi')
+  // buildText('two')
+
+  // print them
+  localPaintStyles.map((x,i ) => {
+
+    console.log(i, x)
+    let verticalOffset = 20 * i;
+    
+    if(i === 5) {
+      buildText('Not a solid color', verticalOffset);
+      return;
+    }
+
+    let string;
+    string = x.name;
+    string += ' - ';
+    const deriveRgbValue = val => Math.round(val * 255);
+    const getRgbStringFromLocalStyle = style => {
+      // limit to single fill
+      const rgbObject = style.paints[0].color;
+      const r = `R: ${deriveRgbValue(rgbObject.r)}`;
+      const g = `G: ${deriveRgbValue(rgbObject.g)}`;
+      const b = `B: ${deriveRgbValue(rgbObject.b)}`;
+      return `[ ${r} ${g} ${b}]`
+    }
+    string += getRgbStringFromLocalStyle(x);
+    console.log(string);
+    buildText(string, verticalOffset);
+  })
+  // with hex
+  // with name
+  // frame them
+  // put them in an auto group
+
+
+}
+
+
+
+
+
+
+// create a sample doc
+
+
+
+
+loadDefaultFont();
+
+
+
+// const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
+
+// const rectFactory = (fill = defaultRectFill) => {
+//   const rect = figma.createRectangle();
+//   rect.x = 150;
+//   rect.fills = [fill];
+//   figma.currentPage.appendChild(rect);
+//   // nodes.push(rect);
+// }
