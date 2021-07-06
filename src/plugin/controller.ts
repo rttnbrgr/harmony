@@ -8,7 +8,7 @@
 // full browser environment (see documentation).
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__);
+// figma.showUI(__html__);
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
@@ -55,9 +55,48 @@ function buildText(str = 'Build Text String', y = 0) {
   console.log('text appended')
 }
 
-const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
+const defaultRectFills: Array<Paint> = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}]
 
-function buildRect() {
+function buildRect(fills = defaultRectFills, y = 0) {
+  const rect = figma.createRectangle();
+  rect.x = -20;
+  rect.y = y;
+  rect.fills = fills;
+  rect.resize(10, 10);
+  figma.currentPage.appendChild(rect);
+  // nodes.push(rect);
+}
+
+const deriveRgbValue = val => Math.round(val * 255); 
+const getRgbStringFromLocalStyle = style => {
+    // limit to single fill
+    const rgbObject = style.paints[0].color;
+    const r = `R: ${deriveRgbValue(rgbObject.r)}`;
+    const g = `G: ${deriveRgbValue(rgbObject.g)}`;
+    const b = `B: ${deriveRgbValue(rgbObject.b)}`;
+    return `[ ${r} ${g} ${b}]`
+  }
+
+function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
+
+  let paintStyleString;
+  paintStyleString = style.name;
+  paintStyleString += ' - ';
+  // const deriveRgbValue = val => Math.round(val * 255);
+  // const getRgbStringFromLocalStyle = style => {
+  //   // limit to single fill
+  //   const rgbObject = style.paints[0].color;
+  //   const r = `R: ${deriveRgbValue(rgbObject.r)}`;
+  //   const g = `G: ${deriveRgbValue(rgbObject.g)}`;
+  //   const b = `B: ${deriveRgbValue(rgbObject.b)}`;
+  //   return `[ ${r} ${g} ${b}]`
+  // }
+  paintStyleString += getRgbStringFromLocalStyle(style);
+  console.log(paintStyleString);
+
+  buildText(paintStyleString, verticalOffset);
+  const paintsClone = clone(style.paints);
+  buildRect(paintsClone, verticalOffset);
 
 }
 
@@ -73,6 +112,10 @@ function buildRect() {
 const localPaintStyles = figma.getLocalPaintStyles();
 console.log('localPaintStyles', localPaintStyles);
 // filter by solid]
+
+function clone(val) {
+  return JSON.parse(JSON.stringify(val))
+}
 
 async function loadDefaultFont() {
   console.log('loadDefaultFont');
@@ -109,6 +152,11 @@ async function loadDefaultFont() {
     string += getRgbStringFromLocalStyle(x);
     console.log(string);
     buildText(string, verticalOffset);
+    const paintsClone = clone(x.paints);
+    // buildRect([{type: 'SOLID', color: {r: 1, g: 0.5, b: 1}}], verticalOffset);
+    // buildRect(paintsClone, verticalOffset + 5);
+    buildRect(paintsClone, verticalOffset);
+    // buildRect(defaultRectFills, verticalOffset);
   })
   // with hex
   // with name
@@ -129,6 +177,78 @@ async function loadDefaultFont() {
 
 
 loadDefaultFont();
+
+
+// build a new visual
+async function buildSample() {
+  const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+  
+  // put it here
+  const sampleX = 400;
+  const sampleY = 0;
+  const spacer = 8;
+  const rectSize = spacer * 8;
+  const styleTitle = 'Color Style Name';
+  const styleSpec = 'RGB: 255, 127, 0';
+  const textX = sampleX + rectSize + spacer;
+  
+  // build the rect
+  const colorStyleRect = figma.createRectangle();
+  colorStyleRect.x = sampleX;
+  colorStyleRect.y = sampleY;
+  colorStyleRect.fills = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}];
+  colorStyleRect.resize(rectSize, rectSize);
+  colorStyleRect.cornerRadius = spacer;
+  figma.currentPage.appendChild(colorStyleRect);
+
+  //
+  const textNodes: SceneNode[] = [];  
+
+  // build text row one
+  const colorStyleTitleText = figma.createText();
+  colorStyleTitleText.characters = styleTitle;
+  colorStyleTitleText.x = textX;
+  colorStyleTitleText.y = sampleY;
+  figma.currentPage.appendChild(colorStyleTitleText);
+  
+  // build text row two
+  const colorStyleSpecText = figma.createText();
+  colorStyleSpecText.characters = styleSpec;
+  colorStyleSpecText.x = textX;
+  colorStyleSpecText.y = sampleY + 14;
+  figma.currentPage.appendChild(colorStyleSpecText);
+
+  // select text nodes and group
+  textNodes.push(colorStyleTitleText);
+  textNodes.push(colorStyleSpecText);
+  figma.currentPage.selection = textNodes;
+  console.log('selection', figma.currentPage.selection);
+  const textGroup = figma.group(figma.currentPage.selection, figma.currentPage);
+  
+  const newNodes: SceneNode[] = [textGroup, colorStyleRect];  
+  // newNodes.push(textGroup);
+  // newNodes.push(colorStyleRect);
+  figma.currentPage.selection = newNodes;
+  console.log('selection', figma.currentPage.selection);
+  console.log('figma', figma);
+
+  const sampleFrame = figma.createFrame();
+  sampleFrame.appendChild(colorStyleRect);
+  sampleFrame.appendChild(textGroup);
+  sampleFrame.layoutMode = 'HORIZONTAL';
+  sampleFrame.itemSpacing = 8;
+  sampleFrame.counterAxisAlignItems = 'CENTER';
+  sampleFrame.x = sampleX;
+  let getSampleFrameWidth = () => sampleFrame.width;
+  let sampleFrameWidth = getSampleFrameWidth();
+
+  sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
+  console.log('sampleFrame', sampleFrame)
+
+
+}
+
+buildSample();
 
 
 
