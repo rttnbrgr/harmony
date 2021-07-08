@@ -8,7 +8,7 @@
 // full browser environment (see documentation).
 
 // This shows the HTML page in "ui.html".
-// figma.showUI(__html__);
+figma.showUI(__html__);
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
@@ -55,7 +55,7 @@ function buildText(str = 'Build Text String', y = 0) {
   console.log('text appended')
 }
 
-const defaultRectFills: Array<Paint> = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}]
+const defaultRectFills: Array<Paint> = [{type: 'SOLID', color: {r: 1, g: 0, b: 0.5}}]
 
 function buildRect(fills = defaultRectFills, y = 0) {
   const rect = figma.createRectangle();
@@ -75,7 +75,7 @@ const getRgbStringFromLocalStyle = style => {
     const g = `G: ${deriveRgbValue(rgbObject.g)}`;
     const b = `B: ${deriveRgbValue(rgbObject.b)}`;
     return `[ ${r} ${g} ${b}]`
-  }
+}
 
 function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
 
@@ -178,25 +178,39 @@ async function loadDefaultFont() {
 
 loadDefaultFont();
 
+const samplePaintStyle = localPaintStyles[1];
 
 // build a new visual
-async function buildSample() {
+async function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
   const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
   
+  // get paint style things
+  console.log(paintStyle);
+  const paintStyleName = paintStyle.name;
+  const paintStyleId = paintStyle.id;
+  // safety checking
+  let isSolid = true;
+  let isSingleFill = true;
+  if(paintStyle.paints.length > 1) {
+    isSingleFill = false;
+  }
+  if(isSingleFill && paintStyle.paints[0].type !== 'SOLID') {
+    isSolid = false;
+  }
+
   // put it here
   const sampleX = 400;
   const sampleY = 0;
   const spacer = 8;
   const rectSize = spacer * 8;
-  const styleTitle = 'Color Style Name';
   const styleSpec = 'RGB: 255, 127, 0';
   const textX = sampleX + rectSize + spacer;
-  
+
   // build the rect
   const colorStyleRect = figma.createRectangle();
   colorStyleRect.x = sampleX;
   colorStyleRect.y = sampleY;
-  colorStyleRect.fills = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}];
+  colorStyleRect.fillStyleId = paintStyleId;
   colorStyleRect.resize(rectSize, rectSize);
   colorStyleRect.cornerRadius = spacer;
   figma.currentPage.appendChild(colorStyleRect);
@@ -206,7 +220,7 @@ async function buildSample() {
 
   // build text row one
   const colorStyleTitleText = figma.createText();
-  colorStyleTitleText.characters = styleTitle;
+  colorStyleTitleText.characters = paintStyleName;
   colorStyleTitleText.x = textX;
   colorStyleTitleText.y = sampleY;
   figma.currentPage.appendChild(colorStyleTitleText);
@@ -245,11 +259,21 @@ async function buildSample() {
   sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
   console.log('sampleFrame', sampleFrame)
 
+  return sampleFrame;
 
 }
 
 buildSample();
 
+let paintStyleFrames = localPaintStyles.map((x,i ) => {
+  const paintStyleFramePromise = buildSample(x);
+  paintStyleFramePromise.then(frame => {
+    frame.y = i * (64 + 16);
+    console.log('after the promise')
+  })
+  console.log('after the promise')
+  // return 'x';
+}
 
 
 // const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
