@@ -181,8 +181,8 @@ loadDefaultFont();
 const samplePaintStyle = localPaintStyles[1];
 
 // build a new visual
-async function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-  const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
+  // const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
   
   // get paint style things
   console.log(paintStyle);
@@ -263,18 +263,23 @@ async function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 
 }
 
-buildSample();
 
-let paintStyleFrames = localPaintStyles.map((x,i ) => {
-  const paintStyleFramePromise = buildSample(x);
-  paintStyleFramePromise.then(frame => {
-    frame.y = i * (64 + 16);
-    console.log('after the promise')
-  })
-  console.log('after the promise')
-  // return 'x';
+async function loadingFontsWrapper() {
+  const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+  buildSample();
+  
+  // let paintStyleFrames = localPaintStyles.map((x,i ) => {
+  //   const paintStyleFramePromise = buildSample(x);
+  //   paintStyleFramePromise.then(frame => {
+  //     frame.y = i * (64 + 16);
+  //     console.log('after the then')
+  //   })
+  //   console.log('after the promise')
+  //   // return 'x';
+  // }
 }
 
+loadingFontsWrapper()
 
 // const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
 
