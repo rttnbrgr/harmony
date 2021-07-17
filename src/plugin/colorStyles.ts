@@ -84,4 +84,16 @@ function buildSample(paintStyle: PaintStyle) {
   return sampleFrame;
 }
 
-export { buildSample };
+function buildPaintStyleMasterFrame() {
+  const paintStylesMasterFrame = figma.createFrame();
+  paintStylesMasterFrame.layoutMode = "VERTICAL";
+  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
+  paintStylesMasterFrame.itemSpacing = 16;
+  paintStylesMasterFrame.paddingTop = 32;
+  paintStylesMasterFrame.paddingRight = 32;
+  paintStylesMasterFrame.paddingBottom = 32;
+  paintStylesMasterFrame.paddingLeft = 32;
+  return paintStylesMasterFrame;
+}
+
+export { buildSample, buildPaintStyleMasterFrame };

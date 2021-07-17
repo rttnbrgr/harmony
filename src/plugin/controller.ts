@@ -1,4 +1,4 @@
-import { buildSample } from "./colorStyles";
+import { buildSample, buildPaintStyleMasterFrame } from "./colorStyles";
 
 /*
  */
@@ -155,14 +155,7 @@ async function loadingFontsWrapper() {
   buildSample(samplePaintStyle);
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = figma.createFrame();
-  paintStylesMasterFrame.layoutMode = "VERTICAL";
-  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
-  paintStylesMasterFrame.itemSpacing = 16;
-  paintStylesMasterFrame.paddingTop = 32;
-  paintStylesMasterFrame.paddingRight = 32;
-  paintStylesMasterFrame.paddingBottom = 32;
-  paintStylesMasterFrame.paddingLeft = 32;
+  const paintStylesMasterFrame = buildPaintStyleMasterFrame();
 
   let paintStyleFrames = localPaintStyles.map((x, i) => {
     const paintStyleFrame = buildSample(x);
