@@ -265,18 +265,36 @@ function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 
 
 async function loadingFontsWrapper() {
-  const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
   buildSample();
   
-  // let paintStyleFrames = localPaintStyles.map((x,i ) => {
-  //   const paintStyleFramePromise = buildSample(x);
-  //   paintStyleFramePromise.then(frame => {
-  //     frame.y = i * (64 + 16);
-  //     console.log('after the then')
-  //   })
-  //   console.log('after the promise')
-  //   // return 'x';
-  // }
+  // SETUP MASTER ARTBOARD
+  const paintStylesMasterFrame = figma.createFrame();
+  paintStylesMasterFrame.layoutMode = 'VERTICAL';
+  paintStylesMasterFrame.counterAxisSizingMode = 'AUTO';
+  paintStylesMasterFrame.itemSpacing = 16;
+  paintStylesMasterFrame.paddingTop = 32;
+  paintStylesMasterFrame.paddingRight = 32;
+  paintStylesMasterFrame.paddingBottom = 32;
+  paintStylesMasterFrame.paddingLeft = 32;
+
+
+  let paintStyleFrames = localPaintStyles.map((x,i ) => {
+    const paintStyleFrame = buildSample(x);
+    paintStyleFrame.y = i * (64 + 16);
+    paintStylesMasterFrame.appendChild(paintStyleFrame);
+    return paintStyleFrame
+    // const paintStyleFramePromise = buildSample(x);
+    // paintStyleFramePromise.then(frame => {
+    //   frame.y = i * (64 + 16);
+    //   console.log('after the then')
+    // })
+    // console.log('after the promise')
+    // return 'x';
+  })
+  console.log('paintStyleFrames', paintStyleFrames)
+  /*
+  */
 }
 
 loadingFontsWrapper()
