@@ -1,5 +1,5 @@
 /*
-*/
+ */
 // This plugin will open a window to prompt the user to enter a number, and
 // it will then create that many rectangles on the screen.
 
@@ -16,12 +16,12 @@ figma.showUI(__html__);
 figma.ui.onmessage = msg => {
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
-  if (msg.type === 'create-rectangles') {
+  if (msg.type === "create-rectangles") {
     const nodes: SceneNode[] = [];
     for (let i = 0; i < msg.count; i++) {
       const rect = figma.createRectangle();
       rect.x = i * 150;
-      rect.fills = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}];
+      rect.fills = [{ type: "SOLID", color: { r: 1, g: 0.5, b: 0 } }];
       figma.currentPage.appendChild(rect);
       nodes.push(rect);
     }
@@ -34,28 +34,27 @@ figma.ui.onmessage = msg => {
   figma.closePlugin();
 };
 
-console.log('console', console)
-console.log('figma', figma)
+console.log("console", console);
+console.log("figma", figma);
 // get all colors on the page
 // print them with a hex value
 // check which ones match a layer style
 
-
-
-
 // Print a string
-function buildText(str = 'Build Text String', y = 0) {
-  console.log('buildText')
+function buildText(str = "Build Text String", y = 0) {
+  console.log("buildText");
   // const newPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
   const TEXT_NODE = figma.createText();
   TEXT_NODE.characters = str;
   TEXT_NODE.y = y;
   figma.currentPage.appendChild(TEXT_NODE);
 
-  console.log('text appended')
+  console.log("text appended");
 }
 
-const defaultRectFills: Array<Paint> = [{type: 'SOLID', color: {r: 1, g: 0, b: 0.5}}]
+const defaultRectFills: Array<Paint> = [
+  { type: "SOLID", color: { r: 1, g: 0, b: 0.5 } }
+];
 
 function buildRect(fills = defaultRectFills, y = 0) {
   const rect = figma.createRectangle();
@@ -67,21 +66,20 @@ function buildRect(fills = defaultRectFills, y = 0) {
   // nodes.push(rect);
 }
 
-const deriveRgbValue = val => Math.round(val * 255); 
+const deriveRgbValue = val => Math.round(val * 255);
 const getRgbStringFromLocalStyle = style => {
-    // limit to single fill
-    const rgbObject = style.paints[0].color;
-    const r = `R: ${deriveRgbValue(rgbObject.r)}`;
-    const g = `G: ${deriveRgbValue(rgbObject.g)}`;
-    const b = `B: ${deriveRgbValue(rgbObject.b)}`;
-    return `[ ${r} ${g} ${b}]`
-}
+  // limit to single fill
+  const rgbObject = style.paints[0].color;
+  const r = `R: ${deriveRgbValue(rgbObject.r)}`;
+  const g = `G: ${deriveRgbValue(rgbObject.g)}`;
+  const b = `B: ${deriveRgbValue(rgbObject.b)}`;
+  return `[ ${r} ${g} ${b}]`;
+};
 
 function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
-
   let paintStyleString;
   paintStyleString = style.name;
-  paintStyleString += ' - ';
+  paintStyleString += " - ";
   // const deriveRgbValue = val => Math.round(val * 255);
   // const getRgbStringFromLocalStyle = style => {
   //   // limit to single fill
@@ -97,7 +95,6 @@ function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
   buildText(paintStyleString, verticalOffset);
   const paintsClone = clone(style.paints);
   buildRect(paintsClone, verticalOffset);
-
 }
 
 // const rectFactory = (fill = defaultRectFill) => {
@@ -110,36 +107,38 @@ function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
 
 // get all layer styles
 const localPaintStyles = figma.getLocalPaintStyles();
-console.log('localPaintStyles', localPaintStyles);
+console.log("localPaintStyles", localPaintStyles);
 // filter by solid]
 
 function clone(val) {
-  return JSON.parse(JSON.stringify(val))
+  return JSON.parse(JSON.stringify(val));
 }
 
 async function loadDefaultFont() {
-  console.log('loadDefaultFont');
-  const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-  console.log('after font promise');
+  console.log("loadDefaultFont");
+  const fontPromise = await figma.loadFontAsync({
+    family: "Roboto",
+    style: "Regular"
+  });
+  console.log("after font promise");
   // fontPromise.resolve(x => {console.log('font promise', x)})
   // buildText()
   // buildText('hi')
   // buildText('two')
 
   // print them
-  localPaintStyles.map((x,i ) => {
-
-    console.log(i, x)
+  localPaintStyles.map((x, i) => {
+    console.log(i, x);
     let verticalOffset = 20 * i;
-    
-    if(i === 5) {
-      buildText('Not a solid color', verticalOffset);
+
+    if (i === 5) {
+      buildText("Not a solid color", verticalOffset);
       return;
     }
 
     let string;
     string = x.name;
-    string += ' - ';
+    string += " - ";
     const deriveRgbValue = val => Math.round(val * 255);
     const getRgbStringFromLocalStyle = style => {
       // limit to single fill
@@ -147,8 +146,8 @@ async function loadDefaultFont() {
       const r = `R: ${deriveRgbValue(rgbObject.r)}`;
       const g = `G: ${deriveRgbValue(rgbObject.g)}`;
       const b = `B: ${deriveRgbValue(rgbObject.b)}`;
-      return `[ ${r} ${g} ${b}]`
-    }
+      return `[ ${r} ${g} ${b}]`;
+    };
     string += getRgbStringFromLocalStyle(x);
     console.log(string);
     buildText(string, verticalOffset);
@@ -157,33 +156,24 @@ async function loadDefaultFont() {
     // buildRect(paintsClone, verticalOffset + 5);
     buildRect(paintsClone, verticalOffset);
     // buildRect(defaultRectFills, verticalOffset);
-  })
+  });
   // with hex
   // with name
   // frame them
   // put them in an auto group
-
-
 }
 
-
-
-
-
-
 // create a sample doc
-
-
-
 
 loadDefaultFont();
 
 const samplePaintStyle = localPaintStyles[1];
 
+const defaultPaintStyleConfig = {};
+
 // build a new visual
 function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-  // const fontPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-  
+  // console.group('🗞 buildSample')
   // get paint style things
   console.log(paintStyle);
   const paintStyleName = paintStyle.name;
@@ -191,10 +181,10 @@ function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
   // safety checking
   let isSolid = true;
   let isSingleFill = true;
-  if(paintStyle.paints.length > 1) {
+  if (paintStyle.paints.length > 1) {
     isSingleFill = false;
   }
-  if(isSingleFill && paintStyle.paints[0].type !== 'SOLID') {
+  if (isSingleFill && paintStyle.paints[0].type !== "SOLID") {
     isSolid = false;
   }
 
@@ -203,7 +193,7 @@ function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
   const sampleY = 0;
   const spacer = 8;
   const rectSize = spacer * 8;
-  const styleSpec = 'RGB: 255, 127, 0';
+  const styleSpec = "RGB: 255, 127, 0";
   const textX = sampleX + rectSize + spacer;
 
   // build the rect
@@ -216,7 +206,7 @@ function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
   figma.currentPage.appendChild(colorStyleRect);
 
   //
-  const textNodes: SceneNode[] = [];  
+  const textNodes: SceneNode[] = [];
 
   // build text row one
   const colorStyleTitleText = figma.createText();
@@ -224,7 +214,7 @@ function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
   colorStyleTitleText.x = textX;
   colorStyleTitleText.y = sampleY;
   figma.currentPage.appendChild(colorStyleTitleText);
-  
+
   // build text row two
   const colorStyleSpecText = figma.createText();
   colorStyleSpecText.characters = styleSpec;
@@ -236,54 +226,52 @@ function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
   textNodes.push(colorStyleTitleText);
   textNodes.push(colorStyleSpecText);
   figma.currentPage.selection = textNodes;
-  console.log('selection', figma.currentPage.selection);
+  console.log("selection", figma.currentPage.selection);
   const textGroup = figma.group(figma.currentPage.selection, figma.currentPage);
-  
-  const newNodes: SceneNode[] = [textGroup, colorStyleRect];  
+
+  const newNodes: SceneNode[] = [textGroup, colorStyleRect];
   // newNodes.push(textGroup);
   // newNodes.push(colorStyleRect);
   figma.currentPage.selection = newNodes;
-  console.log('selection', figma.currentPage.selection);
-  console.log('figma', figma);
+  console.log("selection", figma.currentPage.selection);
+  console.log("figma", figma);
 
   const sampleFrame = figma.createFrame();
   sampleFrame.appendChild(colorStyleRect);
   sampleFrame.appendChild(textGroup);
-  sampleFrame.layoutMode = 'HORIZONTAL';
+  sampleFrame.layoutMode = "HORIZONTAL";
   sampleFrame.itemSpacing = 8;
-  sampleFrame.counterAxisAlignItems = 'CENTER';
+  sampleFrame.counterAxisAlignItems = "CENTER";
   sampleFrame.x = sampleX;
   let getSampleFrameWidth = () => sampleFrame.width;
   let sampleFrameWidth = getSampleFrameWidth();
 
   sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  console.log('sampleFrame', sampleFrame)
+  console.log("sampleFrame", sampleFrame);
+  // console.groupEnd()
 
   return sampleFrame;
-
 }
-
 
 async function loadingFontsWrapper() {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
   buildSample();
-  
+
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = figma.createFrame();
-  paintStylesMasterFrame.layoutMode = 'VERTICAL';
-  paintStylesMasterFrame.counterAxisSizingMode = 'AUTO';
+  paintStylesMasterFrame.layoutMode = "VERTICAL";
+  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
   paintStylesMasterFrame.itemSpacing = 16;
   paintStylesMasterFrame.paddingTop = 32;
   paintStylesMasterFrame.paddingRight = 32;
   paintStylesMasterFrame.paddingBottom = 32;
   paintStylesMasterFrame.paddingLeft = 32;
 
-
-  let paintStyleFrames = localPaintStyles.map((x,i ) => {
+  let paintStyleFrames = localPaintStyles.map((x, i) => {
     const paintStyleFrame = buildSample(x);
     paintStyleFrame.y = i * (64 + 16);
     paintStylesMasterFrame.appendChild(paintStyleFrame);
-    return paintStyleFrame
+    return paintStyleFrame;
     // const paintStyleFramePromise = buildSample(x);
     // paintStyleFramePromise.then(frame => {
     //   frame.y = i * (64 + 16);
@@ -291,13 +279,13 @@ async function loadingFontsWrapper() {
     // })
     // console.log('after the promise')
     // return 'x';
-  })
-  console.log('paintStyleFrames', paintStyleFrames)
+  });
+  console.log("paintStyleFrames", paintStyleFrames);
   /*
-  */
+   */
 }
 
-loadingFontsWrapper()
+loadingFontsWrapper();
 
 // const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
 
