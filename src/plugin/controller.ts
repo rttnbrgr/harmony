@@ -82,15 +82,6 @@ function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
   let paintStyleString;
   paintStyleString = style.name;
   paintStyleString += " - ";
-  // const deriveRgbValue = val => Math.round(val * 255);
-  // const getRgbStringFromLocalStyle = style => {
-  //   // limit to single fill
-  //   const rgbObject = style.paints[0].color;
-  //   const r = `R: ${deriveRgbValue(rgbObject.r)}`;
-  //   const g = `G: ${deriveRgbValue(rgbObject.g)}`;
-  //   const b = `B: ${deriveRgbValue(rgbObject.b)}`;
-  //   return `[ ${r} ${g} ${b}]`
-  // }
   paintStyleString += getRgbStringFromLocalStyle(style);
   console.log(paintStyleString);
 
@@ -98,14 +89,6 @@ function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
   const paintsClone = clone(style.paints);
   buildRect(paintsClone, verticalOffset);
 }
-
-// const rectFactory = (fill = defaultRectFill) => {
-//   const rect = figma.createRectangle();
-//   rect.x = 150;
-//   rect.fills = [fill];
-//   figma.currentPage.appendChild(rect);
-//   // nodes.push(rect);
-// }
 
 // get all layer styles
 const localPaintStyles = figma.getLocalPaintStyles();
@@ -123,10 +106,6 @@ async function loadDefaultFont() {
     style: "Regular"
   });
   console.log("after font promise");
-  // fontPromise.resolve(x => {console.log('font promise', x)})
-  // buildText()
-  // buildText('hi')
-  // buildText('two')
 
   // print them
   localPaintStyles.map((x, i) => {
@@ -154,10 +133,7 @@ async function loadDefaultFont() {
     console.log(string);
     buildText(string, verticalOffset);
     const paintsClone = clone(x.paints);
-    // buildRect([{type: 'SOLID', color: {r: 1, g: 0.5, b: 1}}], verticalOffset);
-    // buildRect(paintsClone, verticalOffset + 5);
     buildRect(paintsClone, verticalOffset);
-    // buildRect(defaultRectFills, verticalOffset);
   });
   // with hex
   // with name
@@ -193,27 +169,8 @@ async function loadingFontsWrapper() {
     paintStyleFrame.y = i * (64 + 16);
     paintStylesMasterFrame.appendChild(paintStyleFrame);
     return paintStyleFrame;
-    // const paintStyleFramePromise = buildSample(x);
-    // paintStyleFramePromise.then(frame => {
-    //   frame.y = i * (64 + 16);
-    //   console.log('after the then')
-    // })
-    // console.log('after the promise')
-    // return 'x';
   });
   console.log("paintStyleFrames", paintStyleFrames);
-  /*
-   */
 }
 
 loadingFontsWrapper();
-
-// const defaultRectFill: Paint = {type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}
-
-// const rectFactory = (fill = defaultRectFill) => {
-//   const rect = figma.createRectangle();
-//   rect.x = 150;
-//   rect.fills = [fill];
-//   figma.currentPage.appendChild(rect);
-//   // nodes.push(rect);
-// }
