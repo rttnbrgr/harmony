@@ -1,3 +1,5 @@
+import { buildSample } from "./colorStyles";
+
 /*
  */
 // This plugin will open a window to prompt the user to enter a number, and
@@ -168,94 +170,13 @@ async function loadDefaultFont() {
 loadDefaultFont();
 
 const samplePaintStyle = localPaintStyles[1];
+console.log("🚨 samplePaintStyle", samplePaintStyle);
 
 const defaultPaintStyleConfig = {};
 
-// build a new visual
-function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-  // console.group('🗞 buildSample')
-  // get paint style things
-  console.log(paintStyle);
-  const paintStyleName = paintStyle.name;
-  const paintStyleId = paintStyle.id;
-  // safety checking
-  let isSolid = true;
-  let isSingleFill = true;
-  if (paintStyle.paints.length > 1) {
-    isSingleFill = false;
-  }
-  if (isSingleFill && paintStyle.paints[0].type !== "SOLID") {
-    isSolid = false;
-  }
-
-  // put it here
-  const sampleX = 400;
-  const sampleY = 0;
-  const spacer = 8;
-  const rectSize = spacer * 8;
-  const styleSpec = "RGB: 255, 127, 0";
-  const textX = sampleX + rectSize + spacer;
-
-  // build the rect
-  const colorStyleRect = figma.createRectangle();
-  colorStyleRect.x = sampleX;
-  colorStyleRect.y = sampleY;
-  colorStyleRect.fillStyleId = paintStyleId;
-  colorStyleRect.resize(rectSize, rectSize);
-  colorStyleRect.cornerRadius = spacer;
-  figma.currentPage.appendChild(colorStyleRect);
-
-  //
-  const textNodes: SceneNode[] = [];
-
-  // build text row one
-  const colorStyleTitleText = figma.createText();
-  colorStyleTitleText.characters = paintStyleName;
-  colorStyleTitleText.x = textX;
-  colorStyleTitleText.y = sampleY;
-  figma.currentPage.appendChild(colorStyleTitleText);
-
-  // build text row two
-  const colorStyleSpecText = figma.createText();
-  colorStyleSpecText.characters = styleSpec;
-  colorStyleSpecText.x = textX;
-  colorStyleSpecText.y = sampleY + 14;
-  figma.currentPage.appendChild(colorStyleSpecText);
-
-  // select text nodes and group
-  textNodes.push(colorStyleTitleText);
-  textNodes.push(colorStyleSpecText);
-  figma.currentPage.selection = textNodes;
-  console.log("selection", figma.currentPage.selection);
-  const textGroup = figma.group(figma.currentPage.selection, figma.currentPage);
-
-  const newNodes: SceneNode[] = [textGroup, colorStyleRect];
-  // newNodes.push(textGroup);
-  // newNodes.push(colorStyleRect);
-  figma.currentPage.selection = newNodes;
-  console.log("selection", figma.currentPage.selection);
-  console.log("figma", figma);
-
-  const sampleFrame = figma.createFrame();
-  sampleFrame.appendChild(colorStyleRect);
-  sampleFrame.appendChild(textGroup);
-  sampleFrame.layoutMode = "HORIZONTAL";
-  sampleFrame.itemSpacing = 8;
-  sampleFrame.counterAxisAlignItems = "CENTER";
-  sampleFrame.x = sampleX;
-  let getSampleFrameWidth = () => sampleFrame.width;
-  let sampleFrameWidth = getSampleFrameWidth();
-
-  sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  console.log("sampleFrame", sampleFrame);
-  // console.groupEnd()
-
-  return sampleFrame;
-}
-
 async function loadingFontsWrapper() {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-  buildSample();
+  buildSample(samplePaintStyle);
 
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = figma.createFrame();
