@@ -1,4 +1,8 @@
-import { buildSample, buildPaintStyleMasterFrame } from "./colorStyles";
+import {
+  buildSample,
+  buildPaintStyleMasterFrame,
+  buildPaintStyleFrames
+} from "./colorStyles";
 
 /*
  */
@@ -157,13 +161,11 @@ async function loadingFontsWrapper() {
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = buildPaintStyleMasterFrame();
 
-  let paintStyleFrames = localPaintStyles.map((x, i) => {
-    const paintStyleFrame = buildSample(x);
-    paintStyleFrame.y = i * (64 + 16);
-    paintStylesMasterFrame.appendChild(paintStyleFrame);
-    return paintStyleFrame;
-  });
-  console.log("paintStyleFrames", paintStyleFrames);
+  // Build the style frames and append them to the master artboard
+  let paintStyleFrames = buildPaintStyleFrames(
+    localPaintStyles,
+    paintStylesMasterFrame
+  );
 }
 
 loadingFontsWrapper();

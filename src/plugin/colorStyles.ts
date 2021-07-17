@@ -96,4 +96,19 @@ function buildPaintStyleMasterFrame() {
   return paintStylesMasterFrame;
 }
 
-export { buildSample, buildPaintStyleMasterFrame };
+function buildPaintStyleFrames(
+  stylesArray: Array<PaintStyle>,
+  masterFrame: FrameNode
+) {
+  let paintStyleFrames = stylesArray.map((x, i) => {
+    const paintStyleFrame = buildSample(x);
+    paintStyleFrame.y = i * (64 + 16);
+    masterFrame.appendChild(paintStyleFrame);
+    return paintStyleFrame;
+  });
+  console.log("paintStyleFrames", paintStyleFrames);
+
+  return paintStyleFrames;
+}
+
+export { buildSample, buildPaintStyleMasterFrame, buildPaintStyleFrames };
