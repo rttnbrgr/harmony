@@ -1,4 +1,7 @@
 import {
+  deriveRgbValue,
+  getRgbStringFromLocalStyle,
+  buildPaintStyleSpecString,
   buildSample,
   buildPaintStyleMasterFrame,
   buildPaintStyleFrames
@@ -72,16 +75,6 @@ function buildRect(fills = defaultRectFills, y = 0) {
   // nodes.push(rect);
 }
 
-const deriveRgbValue = val => Math.round(val * 255);
-const getRgbStringFromLocalStyle = style => {
-  // limit to single fill
-  const rgbObject = style.paints[0].color;
-  const r = `R: ${deriveRgbValue(rgbObject.r)}`;
-  const g = `G: ${deriveRgbValue(rgbObject.g)}`;
-  const b = `B: ${deriveRgbValue(rgbObject.b)}`;
-  return `[ ${r} ${g} ${b}]`;
-};
-
 function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
   let paintStyleString;
   paintStyleString = style.name;
@@ -104,12 +97,7 @@ function clone(val) {
 }
 
 async function loadDefaultFont() {
-  console.log("loadDefaultFont");
-  const fontPromise = await figma.loadFontAsync({
-    family: "Roboto",
-    style: "Regular"
-  });
-  console.log("after font promise");
+  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
   // print them
   localPaintStyles.map((x, i) => {
@@ -121,20 +109,7 @@ async function loadDefaultFont() {
       return;
     }
 
-    let string;
-    string = x.name;
-    string += " - ";
-    const deriveRgbValue = val => Math.round(val * 255);
-    const getRgbStringFromLocalStyle = style => {
-      // limit to single fill
-      const rgbObject = style.paints[0].color;
-      const r = `R: ${deriveRgbValue(rgbObject.r)}`;
-      const g = `G: ${deriveRgbValue(rgbObject.g)}`;
-      const b = `B: ${deriveRgbValue(rgbObject.b)}`;
-      return `[ ${r} ${g} ${b}]`;
-    };
-    string += getRgbStringFromLocalStyle(x);
-    console.log(string);
+    let string = buildPaintStyleSpecString(x);
     buildText(string, verticalOffset);
     const paintsClone = clone(x.paints);
     buildRect(paintsClone, verticalOffset);

@@ -1,3 +1,26 @@
+// Take value between 0 - 1 and get an rgb
+const deriveRgbValue = val => Math.round(val * 255);
+
+// get a string from a given paint color
+const getRgbStringFromLocalStyle = style => {
+  // limit to single fill
+  const rgbObject = style.paints[0].color;
+  const r = `R: ${deriveRgbValue(rgbObject.r)}`;
+  const g = `G: ${deriveRgbValue(rgbObject.g)}`;
+  const b = `B: ${deriveRgbValue(rgbObject.b)}`;
+  return `[ ${r} ${g} ${b} ]`;
+};
+
+// take a style, return a specString
+function buildPaintStyleSpecString(style: PaintStyle) {
+  let specString;
+  specString = style.name;
+  specString += " - ";
+  specString += getRgbStringFromLocalStyle(style);
+  console.log(specString);
+  return specString;
+}
+
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 function buildSample(paintStyle: PaintStyle) {
@@ -111,4 +134,11 @@ function buildPaintStyleFrames(
   return paintStyleFrames;
 }
 
-export { buildSample, buildPaintStyleMasterFrame, buildPaintStyleFrames };
+export {
+  deriveRgbValue,
+  getRgbStringFromLocalStyle,
+  buildPaintStyleSpecString,
+  buildSample,
+  buildPaintStyleMasterFrame,
+  buildPaintStyleFrames
+};
