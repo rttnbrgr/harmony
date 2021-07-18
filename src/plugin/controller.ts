@@ -1,12 +1,4 @@
-import {
-  deriveRgbValue,
-  getRgbStringFromLocalStyle,
-  buildPaintStyleSpecString,
-  buildSample,
-  buildPaintStyleMasterFrame,
-  buildPaintStyleFrames,
-  generateLocalPaintStylesDoc
-} from "./colorStyles";
+import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { testerFunc } from "./test";
 
 /*
