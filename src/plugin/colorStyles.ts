@@ -164,6 +164,11 @@ async function generateLocalPaintStylesDoc() {
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = buildPaintStyleMasterFrame();
 
+  // Add header
+  const paintStylesHeader = figma.createText();
+  paintStylesHeader.characters = "Paint Styles";
+  paintStylesMasterFrame.appendChild(paintStylesHeader);
+
   // Build the style frames and append them to the master artboard
   let paintStyleFrames = buildPaintStyleFrames(
     localPaintStyles,
