@@ -7,6 +7,7 @@ import {
   buildPaintStyleFrames,
   generateLocalPaintStylesDoc
 } from "./colorStyles";
+import { testerFunc } from "./test";
 
 /*
  */
@@ -44,6 +45,10 @@ figma.ui.onmessage = msg => {
     generateLocalPaintStylesDoc();
   }
 
+  if (msg.type === "TESTER") {
+    testerFunc();
+  }
+
   // Make sure to close the plugin when you're done. Otherwise the plugin will
   // keep running, which shows the cancel button at the bottom of the screen.
   figma.closePlugin();
@@ -54,81 +59,3 @@ console.log("figma", figma);
 // get all colors on the page
 // print them with a hex value
 // check which ones match a layer style
-
-// Print a string
-function buildText(str = "Build Text String", y = 0) {
-  console.log("buildText");
-  // const newPromise = await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-  const TEXT_NODE = figma.createText();
-  TEXT_NODE.characters = str;
-  TEXT_NODE.y = y;
-  figma.currentPage.appendChild(TEXT_NODE);
-
-  console.log("text appended");
-}
-
-const defaultRectFills: Array<Paint> = [
-  { type: "SOLID", color: { r: 1, g: 0, b: 0.5 } }
-];
-
-function buildRect(fills = defaultRectFills, y = 0) {
-  const rect = figma.createRectangle();
-  rect.x = -20;
-  rect.y = y;
-  rect.fills = fills;
-  rect.resize(10, 10);
-  figma.currentPage.appendChild(rect);
-  // nodes.push(rect);
-}
-
-function buildPaintStyleVisual(style: PaintStyle, verticalOffset: number) {
-  let paintStyleString;
-  paintStyleString = style.name;
-  paintStyleString += " - ";
-  paintStyleString += getRgbStringFromLocalStyle(style);
-  console.log(paintStyleString);
-
-  buildText(paintStyleString, verticalOffset);
-  const paintsClone = clone(style.paints);
-  buildRect(paintsClone, verticalOffset);
-}
-
-// get all layer styles
-const localPaintStyles = figma.getLocalPaintStyles();
-console.log("localPaintStyles", localPaintStyles);
-// filter by solid]
-
-function clone(val) {
-  return JSON.parse(JSON.stringify(val));
-}
-
-async function loadDefaultFont() {
-  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-
-  // print them
-  localPaintStyles.map((x, i) => {
-    console.log(i, x);
-    let verticalOffset = 20 * i;
-
-    if (i === 5) {
-      buildText("Not a solid color", verticalOffset);
-      return;
-    }
-
-    let string = buildPaintStyleSpecString(x);
-    buildText(string, verticalOffset);
-    const paintsClone = clone(x.paints);
-    buildRect(paintsClone, verticalOffset);
-  });
-  // with hex
-  // with name
-  // frame them
-  // put them in an auto group
-}
-
-// create a sample doc
-
-loadDefaultFont();
-
-const samplePaintStyle = localPaintStyles[1];
-console.log("🚨 samplePaintStyle", samplePaintStyle);
