@@ -38,6 +38,16 @@ figma.ui.onmessage = msg => {
     figma.viewport.scrollAndZoomIntoView(nodes);
   }
 
+  if (msg.type === "CREATE_COLOR_STYLES") {
+    console.log("create color styles");
+    async function loadingFontsWrapper() {
+      await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+      console.clear();
+      console.log("after await");
+    }
+    loadingFontsWrapper();
+  }
+
   // Make sure to close the plugin when you're done. Otherwise the plugin will
   // keep running, which shows the cancel button at the bottom of the screen.
   figma.closePlugin();

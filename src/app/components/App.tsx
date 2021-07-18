@@ -23,6 +23,13 @@ class App extends React.Component {
     parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
   };
 
+  onCreateColorStyles = () => {
+    parent.postMessage(
+      { pluginMessage: { type: "CREATE_COLOR_STYLES", foo: "count" } },
+      "*"
+    );
+  };
+
   render() {
     return (
       <div>
@@ -34,6 +41,7 @@ class App extends React.Component {
         <button id="create" onClick={this.onCreate}>
           Create
         </button>
+        <button onClick={this.onCreateColorStyles}>Layer Styles</button>
         <button onClick={this.onCancel}>Cancel</button>
       </div>
     );
