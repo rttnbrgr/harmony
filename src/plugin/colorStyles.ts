@@ -5,10 +5,10 @@ const deriveRgbValue = val => Math.round(val * 255);
 const getRgbStringFromLocalStyle = style => {
   // limit to single fill
   const rgbObject = style.paints[0].color;
-  const r = `R: ${deriveRgbValue(rgbObject.r)}`;
-  const g = `G: ${deriveRgbValue(rgbObject.g)}`;
-  const b = `B: ${deriveRgbValue(rgbObject.b)}`;
-  return `[ ${r} ${g} ${b} ]`;
+  const r = deriveRgbValue(rgbObject.r);
+  const g = deriveRgbValue(rgbObject.g);
+  const b = deriveRgbValue(rgbObject.b);
+  return `RGB: ${r}, ${g}, ${b}`;
 };
 
 // take a style, return a specString
@@ -42,22 +42,31 @@ function addText(string: string = "Your new text", options: textOptions) {
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 function buildSample(paintStyle: PaintStyle) {
-  console.log("🗞 buildSample");
-  // get paint style things
-
   if (!paintStyle) {
     return;
   }
   const paintStyleName = paintStyle.name;
   const paintStyleId = paintStyle.id;
+  let paintStyleSpec = "";
+
+  console.log("🎨 ", paintStyleName);
+  console.log(paintStyle);
+
   // safety checking
   let isSolid = true;
   let isSingleFill = true;
   if (paintStyle.paints.length > 1) {
     isSingleFill = false;
+    paintStyleSpec = "Multiple Fills";
   }
   if (isSingleFill && paintStyle.paints[0].type !== "SOLID") {
     isSolid = false;
+    paintStyleSpec = "Fill is not solid";
+  }
+  if (isSingleFill && isSolid) {
+    const specStringTest = getRgbStringFromLocalStyle(paintStyle);
+    console.log("specStringTest", specStringTest);
+    paintStyleSpec = specStringTest;
   }
 
   // put it here
@@ -67,9 +76,6 @@ function buildSample(paintStyle: PaintStyle) {
   const rectSize = spacer * 8;
   const styleSpec = "RGB: 255, 127, 0";
   const textX = sampleX + rectSize + spacer;
-
-  console.log("🎨 ", paintStyleName);
-  console.log(paintStyle);
 
   // build the rect
   const colorStyleRect = figma.createRectangle();
@@ -86,7 +92,7 @@ function buildSample(paintStyle: PaintStyle) {
     y: sampleY
   });
   // Build spec
-  const colorStyleSpecText = addText(styleSpec, {
+  const colorStyleSpecText = addText(paintStyleSpec, {
     x: textX,
     y: sampleY + 14
   });
@@ -117,7 +123,7 @@ function buildSample(paintStyle: PaintStyle) {
   let sampleFrameWidth = getSampleFrameWidth();
 
   sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  console.log("sampleFrame", sampleFrame);
+  // console.log("sampleFrame", sampleFrame);
 
   return sampleFrame;
 }
