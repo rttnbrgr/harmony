@@ -46,8 +46,10 @@ figma.ui.onmessage = msg => {
   figma.closePlugin();
 };
 
-console.log("console", console);
-console.log("figma", figma);
+// Global logs
+// console.log("console", console);
+// console.log("figma", figma);
+
 // get all colors on the page
 // print them with a hex value
 // check which ones match a layer style
