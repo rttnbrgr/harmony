@@ -134,11 +134,28 @@ function buildPaintStyleFrames(
   return paintStyleFrames;
 }
 
+async function generateLocalPaintStylesDoc() {
+  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+
+  // Get paint styles
+  const localPaintStyles = figma.getLocalPaintStyles();
+
+  // SETUP MASTER ARTBOARD
+  const paintStylesMasterFrame = buildPaintStyleMasterFrame();
+
+  // Build the style frames and append them to the master artboard
+  let paintStyleFrames = buildPaintStyleFrames(
+    localPaintStyles,
+    paintStylesMasterFrame
+  );
+}
+
 export {
   deriveRgbValue,
   getRgbStringFromLocalStyle,
   buildPaintStyleSpecString,
   buildSample,
   buildPaintStyleMasterFrame,
-  buildPaintStyleFrames
+  buildPaintStyleFrames,
+  generateLocalPaintStylesDoc
 };
