@@ -33,7 +33,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <img src={require("../assets/logo.svg")} />
+        <img src={require("../assets/logo.svg").default} />
         <h2>Rectangle Creator</h2>
         <p>
           Count: <input ref={this.countRef} />
