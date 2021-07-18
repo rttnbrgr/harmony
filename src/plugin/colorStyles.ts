@@ -21,12 +21,30 @@ function buildPaintStyleSpecString(style: PaintStyle) {
   return specString;
 }
 
+type textOptions = {
+  x: number;
+  y: number;
+};
+
+function addText(string: string = "Your new text", options: textOptions) {
+  const newText = figma.createText();
+  newText.characters = string;
+  if (options.x) {
+    newText.x = options.x;
+  }
+  if (options.y) {
+    newText.y = options.y;
+  }
+  figma.currentPage.appendChild(newText);
+  return newText;
+}
+
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 function buildSample(paintStyle: PaintStyle) {
-  // console.group('🗞 buildSample')
+  console.log("🗞 buildSample");
   // get paint style things
-  console.log(paintStyle);
+
   if (!paintStyle) {
     return;
   }
@@ -50,6 +68,9 @@ function buildSample(paintStyle: PaintStyle) {
   const styleSpec = "RGB: 255, 127, 0";
   const textX = sampleX + rectSize + spacer;
 
+  console.log("🎨 ", paintStyleName);
+  console.log(paintStyle);
+
   // build the rect
   const colorStyleRect = figma.createRectangle();
   colorStyleRect.x = sampleX;
@@ -59,37 +80,32 @@ function buildSample(paintStyle: PaintStyle) {
   colorStyleRect.cornerRadius = spacer;
   figma.currentPage.appendChild(colorStyleRect);
 
-  //
-  const textNodes: SceneNode[] = [];
+  // Build title
+  const colorStyleTitleText = addText(paintStyleName, {
+    x: textX,
+    y: sampleY
+  });
+  // Build spec
+  const colorStyleSpecText = addText(styleSpec, {
+    x: textX,
+    y: sampleY + 14
+  });
 
-  // build text row one
-  const colorStyleTitleText = figma.createText();
-  colorStyleTitleText.characters = paintStyleName;
-  colorStyleTitleText.x = textX;
-  colorStyleTitleText.y = sampleY;
-  figma.currentPage.appendChild(colorStyleTitleText);
+  // Group text nodes
+  const textGroup = figma.group(
+    [colorStyleTitleText, colorStyleSpecText],
+    figma.currentPage
+  );
 
-  // build text row two
-  const colorStyleSpecText = figma.createText();
-  colorStyleSpecText.characters = styleSpec;
-  colorStyleSpecText.x = textX;
-  colorStyleSpecText.y = sampleY + 14;
-  figma.currentPage.appendChild(colorStyleSpecText);
-
-  // select text nodes and group
-  textNodes.push(colorStyleTitleText);
-  textNodes.push(colorStyleSpecText);
-  figma.currentPage.selection = textNodes;
-  console.log("selection", figma.currentPage.selection);
-  const textGroup = figma.group(figma.currentPage.selection, figma.currentPage);
-
-  const newNodes: SceneNode[] = [textGroup, colorStyleRect];
+  // Selection testing
+  // const newNodes: SceneNode[] = [textGroup, colorStyleRect];
   // newNodes.push(textGroup);
   // newNodes.push(colorStyleRect);
-  figma.currentPage.selection = newNodes;
-  console.log("selection", figma.currentPage.selection);
-  console.log("figma", figma);
+  // figma.currentPage.selection = newNodes;
+  // console.log("selection", figma.currentPage.selection);
+  // console.log("figma", figma);
 
+  // Create the frame, append text + rect, position it
   const sampleFrame = figma.createFrame();
   sampleFrame.appendChild(colorStyleRect);
   sampleFrame.appendChild(textGroup);
@@ -102,7 +118,6 @@ function buildSample(paintStyle: PaintStyle) {
 
   sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
   console.log("sampleFrame", sampleFrame);
-  // console.groupEnd()
 
   return sampleFrame;
 }
