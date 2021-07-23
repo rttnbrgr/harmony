@@ -1,6 +1,11 @@
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = val => Math.round(val * 255);
 
+//
+function isInt(n) {
+  return n % 1 === 0;
+}
+
 // get a string from a given paint color
 const getRgbStringFromLocalStyle = style => {
   // limit to single fill
@@ -8,8 +13,26 @@ const getRgbStringFromLocalStyle = style => {
   const r = deriveRgbValue(rgbObject.r);
   const g = deriveRgbValue(rgbObject.g);
   const b = deriveRgbValue(rgbObject.b);
-  return `RGB: ${r}, ${g}, ${b}`;
+  return `RGB: [${r}, ${g}, ${b}]`;
 };
+
+function getSpecStringFromColorStop(colorStop: ColorStop) {
+  let rgbaString = "";
+  const r = deriveRgbValue(colorStop.color.r);
+  const g = deriveRgbValue(colorStop.color.g);
+  const b = deriveRgbValue(colorStop.color.b);
+  // get alpha
+  const a = colorStop.color.a;
+  // get stop
+  const position = isInt(colorStop.position)
+    ? colorStop.position
+    : colorStop.position.toFixed(2);
+  // rgbaString = `RGBA [${r}, ${g}, ${b}, ${a}] @ ${position}`;
+  rgbaString = `[${r}, ${g}, ${b}, ${a}] @ ${position}`;
+  return rgbaString;
+}
+
+const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
 
 // take a style, return a specString
 function buildPaintStyleSpecString(style: PaintStyle) {
@@ -52,6 +75,10 @@ function buildSample(paintStyle: PaintStyle) {
   console.log("🎨 ", paintStyleName);
   console.log(paintStyle);
 
+  /*
+   * Logic to build spec string
+   */
+
   // safety checking
   let isSolid = true;
   let isSingleFill = true;
@@ -59,10 +86,32 @@ function buildSample(paintStyle: PaintStyle) {
     isSingleFill = false;
     paintStyleSpec = "Multiple Fills";
   }
-  if (isSingleFill && paintStyle.paints[0].type !== "SOLID") {
+
+  let firstPaint = paintStyle.paints[0];
+
+  if (isSingleFill && firstPaint.type !== "SOLID") {
     isSolid = false;
-    paintStyleSpec = "Fill is not solid";
+
+    // For image filles?
+    if (firstPaint.type === "IMAGE") {
+      paintStyleSpec = `Image fill`;
+    }
+
+    // For Gradient fills
+    // "GRADIENT_LINEAR" | "GRADIENT_RADIAL" | "GRADIENT_ANGULAR" | "GRADIENT_DIAMOND"
+    if (firstPaint.type !== "IMAGE") {
+      // let thisPaintStyle = paintStyle.paints[0];
+      console.log("firstPaint", firstPaint);
+      // thisPaintStyle.gradientStops.reduce()
+      const gradiantStopsString = firstPaint.gradientStops
+        .map(getSpecStringFromColorStop)
+        .reduce(gradiantReducer);
+      console.log("gradiantStopsString", gradiantStopsString);
+
+      paintStyleSpec = `RGBA: ${gradiantStopsString}`;
+    }
   }
+
   if (isSingleFill && isSolid) {
     const specStringTest = getRgbStringFromLocalStyle(paintStyle);
     console.log("specStringTest", specStringTest);
@@ -74,7 +123,6 @@ function buildSample(paintStyle: PaintStyle) {
   const sampleY = 0;
   const spacer = 8;
   const rectSize = spacer * 8;
-  const styleSpec = "RGB: 255, 127, 0";
   const textX = sampleX + rectSize + spacer;
 
   // build the rect
@@ -185,3 +233,10 @@ export {
   buildPaintStyleFrames,
   generateLocalPaintStylesDoc
 };
+
+// Multi fill
+// opacity on solid paint fill
+// Additional metadata (gradiant type)
+// different color modes
+// Better visual
+// more info on image fill
