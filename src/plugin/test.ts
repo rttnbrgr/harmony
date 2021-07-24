@@ -28,7 +28,7 @@ function buildRect(fills = defaultRectFills, y = 0) {
 
 // get all layer styles
 const localPaintStyles = figma.getLocalPaintStyles();
-console.log("localPaintStyles", localPaintStyles);
+// console.log("localPaintStyles", localPaintStyles);
 // filter by solid]
 
 function clone(val) {
