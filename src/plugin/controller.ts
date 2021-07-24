@@ -42,6 +42,11 @@ figma.ui.onmessage = (msg) => {
     generateLocalPaintStylesDoc();
   }
 
+  if (msg.type === "CREATE_EFFECT_STYLES") {
+    console.log("create effect styles");
+    generateLocalEffectStylesDoc();
+  }
+
   if (msg.type === "TESTER") {
     testerFunc();
   }
