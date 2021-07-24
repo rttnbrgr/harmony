@@ -71,36 +71,6 @@ figma.ui.onmessage = (msg) => {
 // generateLocalEffectStylesDoc();
 generateLocalTextStylesDoc();
 
-function getSpecStringFromRgba(color: RGBA) {
-  let rgbaString = "";
-  const r = deriveRgbValue(color.r);
-  const g = deriveRgbValue(color.g);
-  const b = deriveRgbValue(color.b);
-  const a = isInt(color.a) ? color.a : color.a.toFixed(2);
-  rgbaString = `[${r}, ${g}, ${b}, ${a}]`;
-  return rgbaString;
-}
-
-function convertUnderscoresToSpace(str) {
-  return str.replace(/_/g, " ");
-}
-
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
-
-function convertEffectTypeToSpecString(str) {
-  let specString = str;
-  console.log("convertEffectTypeToSpecString", specString);
-  specString = convertUnderscoresToSpace(specString);
-  console.log(specString);
-  specString = toTitleCase(specString);
-  console.log(specString);
-  return specString;
-}
-
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 function buildSample(textStyle: TextStyle) {
@@ -141,54 +111,6 @@ function buildSample(textStyle: TextStyle) {
   textStyleSpec += " / ";
   textStyleSpec += textStyleLineHeight;
 
-  // safety checking
-  // let isSolid = true;
-  // let isSingle = true;
-
-  // // ignore multi-effect for now
-  // if (textStyle.effects.length > 1) {
-  //   isSingle = false;
-  //   textStyleSpec = "Multiple Fills";
-  //   console.log("multi effect");
-  // }
-
-  // let firstEffect = textStyle.effects[0];
-
-  // if (isSingle) {
-  //   // Effect type
-  //   let effectType = firstEffect.type;
-  //   let effectTypeString = convertEffectTypeToSpecString(effectType);
-  //   textStyleSpec += effectTypeString;
-  //   textStyleSpec += ": ";
-
-  //   // Shadow or Blur?
-  //   if (effectType === "DROP_SHADOW" || effectType === "INNER_SHADOW") {
-  //     // Effect color
-  //     let effectColor = getSpecStringFromRgba(firstEffect.color);
-  //     textStyleSpec += effectColor;
-  //     textStyleSpec += " | ";
-  //     // Offset
-  //     let effectOffsetX = firstEffect.offset.x;
-  //     let effectOffsetY = firstEffect.offset.y;
-  //     textStyleSpec += "Offset: ";
-  //     textStyleSpec += effectOffsetX;
-  //     textStyleSpec += ", ";
-  //     textStyleSpec += effectOffsetY;
-  //     textStyleSpec += " | ";
-  //     // Spread
-  //     let effectSpread = firstEffect.spread;
-  //     textStyleSpec += "Spread: ";
-  //     textStyleSpec += effectSpread;
-  //     textStyleSpec += " | ";
-  //   } else {
-  //     console.log("blur effect");
-  //   }
-  //   // Blur Radius
-  //   let effectRadius = firstEffect.radius;
-  //   textStyleSpec += "Blur: ";
-  //   textStyleSpec += effectRadius;
-  // }
-
   // put it here
   const sampleX = 400;
   const sampleY = 0;
@@ -196,55 +118,25 @@ function buildSample(textStyle: TextStyle) {
   const rectSize = spacer * 8;
   const textX = sampleX + rectSize + spacer;
 
-  // const whiteFill: Array<SolidPaint> = [
-  //   {
-  //     type: "SOLID",
-  //     color: {
-  //       r: 1,
-  //       g: 1,
-  //       b: 1
-  //     }
-  //   }
-  // ];
-
-  // // build the rect
-  // const colorStyleRect = figma.createRectangle();
-  // colorStyleRect.x = sampleX;
-  // colorStyleRect.y = sampleY;
-  // colorStyleRect.fills = whiteFill;
-  // colorStyleRect.effectStyleId = textStyleId;
-  // colorStyleRect.resize(rectSize, rectSize);
-  // colorStyleRect.cornerRadius = spacer;
-  // figma.currentPage.appendChild(colorStyleRect);
-
   // Build title
-  const colorStyleTitleText = addText(textStyleName, {
+  const textStyleTitleText = addText(textStyleName, {
     x: textX,
     y: sampleY
   });
-  colorStyleTitleText.textStyleId = textStyleId;
+  textStyleTitleText.textStyleId = textStyleId;
 
   // Build spec
-  const colorStyleSpecText = addText(textStyleSpec, {
+  const textStyleSpecText = addText(textStyleSpec, {
     x: textX,
     y: sampleY + 14
   });
 
-  // Group text nodes
-  const textGroup = figma.group(
-    [colorStyleTitleText, colorStyleSpecText],
-    figma.currentPage
-  );
-
   // Create the frame, append text + rect, position it
   const sampleFrame = figma.createFrame();
-  // sampleFrame.appendChild(colorStyleRect);
-  // sampleFrame.appendChild(textGroup);
-  sampleFrame.appendChild(colorStyleTitleText);
-  sampleFrame.appendChild(colorStyleSpecText);
+  sampleFrame.appendChild(textStyleTitleText);
+  sampleFrame.appendChild(textStyleSpecText);
   sampleFrame.layoutMode = "VERTICAL";
   sampleFrame.itemSpacing = 8;
-  // sampleFrame.primaryAxisAlignItems = "MIN";
   sampleFrame.counterAxisSizingMode = "AUTO";
   sampleFrame.counterAxisAlignItems = "MIN";
   sampleFrame.x = sampleX;
@@ -278,7 +170,6 @@ function buildTextStyleFrames(
     masterFrame.appendChild(textStyleFrame);
     return textStyleFrame;
   });
-  // console.log("effectStyleFrames", effectStyleFrames);
 
   return textStyleFrames;
 }
