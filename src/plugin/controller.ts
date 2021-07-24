@@ -48,6 +48,11 @@ figma.ui.onmessage = msg => {
     generateLocalEffectStylesDoc();
   }
 
+  if (msg.type === "CREATE_TEXT_STYLES") {
+    console.log("create text styles");
+    generateLocalEffectStylesDoc();
+  }
+
   if (msg.type === "TESTER") {
     testerFunc();
   }
