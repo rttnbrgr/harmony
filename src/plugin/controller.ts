@@ -63,8 +63,4 @@ figma.ui.onmessage = (msg) => {
 
 // Run these automatically when plugin starts
 // generateLocalPaintStylesDoc();
-generateLocalEffectStylesDoc();
-
-// get all colors on the page
-// print them with a hex value
-// check which ones match a layer style
+// generateLocalEffectStylesDoc();
