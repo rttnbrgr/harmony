@@ -22,6 +22,13 @@ class App extends React.Component {
     );
   };
 
+  onCreateTextStyles = () => {
+    parent.postMessage(
+      { pluginMessage: { type: "CREATE_TEXT_STYLES", foo: "count" } },
+      "*"
+    );
+  };
+
   render() {
     return (
       <div>
@@ -32,6 +39,9 @@ class App extends React.Component {
         </button>
         <button onClick={this.onCreateEffectStyles} className="primary">
           Effect Styles
+        </button>
+        <button onClick={this.onCreateTextStyles} className="primary">
+          Text Styles
         </button>
         <button onClick={this.onCancel}>Cancel</button>
       </div>

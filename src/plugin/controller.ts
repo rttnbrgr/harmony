@@ -5,6 +5,7 @@ import {
   isInt
 } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
+import { generateLocalTextStylesDoc } from "./textStyles";
 import { testerFunc } from "./test";
 
 /*
@@ -48,6 +49,11 @@ figma.ui.onmessage = msg => {
     generateLocalEffectStylesDoc();
   }
 
+  if (msg.type === "CREATE_TEXT_STYLES") {
+    console.log("create text styles");
+    generateLocalTextStylesDoc();
+  }
+
   if (msg.type === "TESTER") {
     testerFunc();
   }
@@ -64,3 +70,4 @@ figma.ui.onmessage = msg => {
 // Run these automatically when plugin starts
 // generateLocalPaintStylesDoc();
 // generateLocalEffectStylesDoc();
+// generateLocalTextStylesDoc();
