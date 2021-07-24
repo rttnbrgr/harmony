@@ -1,4 +1,10 @@
-import { generateLocalPaintStylesDoc } from "./colorStyles";
+import {
+  generateLocalPaintStylesDoc,
+  addText,
+  deriveRgbValue,
+  isInt
+} from "./colorStyles";
+import { generateLocalEffectStylesDoc } from "./effectStyles";
 import { testerFunc } from "./test";
 
 /*
@@ -37,6 +43,11 @@ figma.ui.onmessage = msg => {
     generateLocalPaintStylesDoc();
   }
 
+  if (msg.type === "CREATE_EFFECT_STYLES") {
+    console.log("create effect styles");
+    generateLocalEffectStylesDoc();
+  }
+
   if (msg.type === "TESTER") {
     testerFunc();
   }
@@ -50,6 +61,6 @@ figma.ui.onmessage = msg => {
 // console.log("console", console);
 // console.log("figma", figma);
 
-// get all colors on the page
-// print them with a hex value
-// check which ones match a layer style
+// Run these automatically when plugin starts
+// generateLocalPaintStylesDoc();
+// generateLocalEffectStylesDoc();
