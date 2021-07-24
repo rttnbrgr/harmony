@@ -10,10 +10,12 @@ function getSpecStringFromRgba(color: RGBA) {
   return rgbaString;
 }
 
+// https://stackoverflow.com/questions/11810569/how-to-replace-underscores-with-spaces
 function convertUnderscoresToSpace(str) {
   return str.replace(/_/g, " ");
 }
 
+// https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
