@@ -2,6 +2,12 @@
   "compilerOptions": {
     "target": "es6",
     "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-    "jsx": "react"
+    "jsx": "react",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src",
+    "paths": {
+      "test-utils": ["./utils/test-utils"]
+    }
   }
 }

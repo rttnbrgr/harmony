@@ -1,13 +1,13 @@
 // Take value between 0 - 1 and get an rgb
-const deriveRgbValue = val => Math.round(val * 255);
+const deriveRgbValue = (val: number) => Math.round(val * 255);
 
 //
-function isInt(n) {
+export function isInt(n: number) {
   return n % 1 === 0;
 }
 
 // get a string from a given paint color
-const getRgbStringFromLocalStyle = style => {
+const getRgbStringFromLocalStyle = (style) => {
   // limit to single fill
   const rgbObject = style.paints[0].color;
   const r = deriveRgbValue(rgbObject.r);
@@ -16,7 +16,10 @@ const getRgbStringFromLocalStyle = style => {
   return `RGB: [${r}, ${g}, ${b}]`;
 };
 
-function getSpecStringFromColorStop(colorStop: ColorStop) {
+export function getSpecStringFromColorStop(colorStop: ColorStop): string {
+  if (!colorStop) {
+    throw new Error("Missing colorStop value");
+  }
   let rgbaString = "";
   const r = deriveRgbValue(colorStop.color.r);
   const g = deriveRgbValue(colorStop.color.g);
@@ -24,9 +27,7 @@ function getSpecStringFromColorStop(colorStop: ColorStop) {
   // get alpha
   const a = colorStop.color.a;
   // get stop
-  const position = isInt(colorStop.position)
-    ? colorStop.position
-    : colorStop.position.toFixed(2);
+  const position = isInt(colorStop.position) ? colorStop.position : colorStop.position.toFixed(2);
   // rgbaString = `RGBA [${r}, ${g}, ${b}, ${a}] @ ${position}`;
   rgbaString = `[${r}, ${g}, ${b}, ${a}] @ ${position}`;
   return rgbaString;
@@ -35,7 +36,7 @@ function getSpecStringFromColorStop(colorStop: ColorStop) {
 const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
 
 // take a style, return a specString
-function buildPaintStyleSpecString(style: PaintStyle) {
+function buildPaintStyleSpecString(style: PaintStyle): string {
   let specString;
   specString = style.name;
   specString += " - ";
@@ -49,7 +50,7 @@ type textOptions = {
   y: number;
 };
 
-function addText(string: string = "Your new text", options: textOptions) {
+function addText(string: string = "Your new text", options: textOptions): TextNode {
   const newText = figma.createText();
   newText.characters = string;
   if (options.x) {
@@ -137,19 +138,16 @@ function buildSample(paintStyle: PaintStyle) {
   // Build title
   const colorStyleTitleText = addText(paintStyleName, {
     x: textX,
-    y: sampleY
+    y: sampleY,
   });
   // Build spec
   const colorStyleSpecText = addText(paintStyleSpec, {
     x: textX,
-    y: sampleY + 14
+    y: sampleY + 14,
   });
 
   // Group text nodes
-  const textGroup = figma.group(
-    [colorStyleTitleText, colorStyleSpecText],
-    figma.currentPage
-  );
+  const textGroup = figma.group([colorStyleTitleText, colorStyleSpecText], figma.currentPage);
 
   // Selection testing
   // const newNodes: SceneNode[] = [textGroup, colorStyleRect];
@@ -188,10 +186,7 @@ function buildPaintStyleMasterFrame() {
   return paintStylesMasterFrame;
 }
 
-function buildPaintStyleFrames(
-  stylesArray: Array<PaintStyle>,
-  masterFrame: FrameNode
-) {
+function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: FrameNode) {
   let paintStyleFrames = stylesArray.map((x, i) => {
     const paintStyleFrame = buildSample(x);
     paintStyleFrame.y = i * (64 + 16);
@@ -218,10 +213,7 @@ async function generateLocalPaintStylesDoc() {
   paintStylesMasterFrame.appendChild(paintStylesHeader);
 
   // Build the style frames and append them to the master artboard
-  let paintStyleFrames = buildPaintStyleFrames(
-    localPaintStyles,
-    paintStylesMasterFrame
-  );
+  let paintStyleFrames = buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
 }
 
 export {
@@ -231,7 +223,7 @@ export {
   buildSample,
   buildPaintStyleMasterFrame,
   buildPaintStyleFrames,
-  generateLocalPaintStylesDoc
+  generateLocalPaintStylesDoc,
 };
 
 // Multi fill
