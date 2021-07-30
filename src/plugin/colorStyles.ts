@@ -229,6 +229,9 @@ async function generateLocalPaintStylesDoc() {
   paintStylesHeader.characters = "Paint Styles";
   paintStylesMasterFrame.appendChild(paintStylesHeader);
 
+  // center and zoom to the frame
+  figma.viewport.scrollAndZoomIntoView([figma.getNodeById(frameId)]);
+
   // Build the style frames and append them to the master artboard
   let paintStyleFrames = buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
 }
