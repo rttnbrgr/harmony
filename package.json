@@ -13,6 +13,8 @@
     "@figma/plugin-typings": "^1.25.0",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
+    "@types/styled-components": "^5.1.11",
+    "babel-plugin-styled-components": "^1.13.2",
     "css-loader": "^5.0.1",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^3.2.0",
@@ -26,6 +28,7 @@
   },
   "dependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.3.0"
   }
 }
