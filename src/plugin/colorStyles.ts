@@ -174,8 +174,13 @@ function buildSample(paintStyle: PaintStyle) {
   return sampleFrame;
 }
 
-function buildPaintStyleMasterFrame() {
-  const paintStylesMasterFrame = figma.createFrame();
+function buildPaintStyleMasterFrame(frameId: string) {
+  const paintStylesMasterFrame = figma.getNodeById(frameId) as FrameNode;
+
+  // remove previous children
+  paintStylesMasterFrame.children.map((child) => child.remove());
+
+  // new styles
   paintStylesMasterFrame.layoutMode = "VERTICAL";
   paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
   paintStylesMasterFrame.itemSpacing = 16;
@@ -198,14 +203,26 @@ function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: Fram
   return paintStyleFrames;
 }
 
+function getFrameId() {
+  const frameId = figma.root.getPluginData("frameId");
+  if (!frameId) {
+    const frame = figma.createFrame();
+    figma.root.setPluginData("frameId", frame.id);
+  }
+  return frameId;
+}
+
 async function generateLocalPaintStylesDoc() {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+
+  // create a frame to fill/reuse
+  const frameId = getFrameId();
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = buildPaintStyleMasterFrame();
+  const paintStylesMasterFrame = buildPaintStyleMasterFrame(frameId);
 
   // Add header
   const paintStylesHeader = figma.createText();
