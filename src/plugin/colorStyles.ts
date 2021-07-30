@@ -104,9 +104,7 @@ function buildSample(paintStyle: PaintStyle) {
       // let thisPaintStyle = paintStyle.paints[0];
       console.log("firstPaint", firstPaint);
       // thisPaintStyle.gradientStops.reduce()
-      const gradiantStopsString = firstPaint.gradientStops
-        .map(getSpecStringFromColorStop)
-        .reduce(gradiantReducer);
+      const gradiantStopsString = firstPaint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
       console.log("gradiantStopsString", gradiantStopsString);
 
       paintStyleSpec = `RGBA: ${gradiantStopsString}`;
