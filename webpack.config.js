@@ -10,7 +10,7 @@ module.exports = (env, argv) => ({
 
   entry: {
     ui: "./src/app/index.tsx", // The entry point for your UI code
-    code: "./src/plugin/controller.ts" // The entry point for your plugin code
+    code: "./src/plugin/controller.ts", // The entry point for your plugin code
   },
 
   module: {
@@ -22,8 +22,8 @@ module.exports = (env, argv) => ({
       { test: /\.css$/, use: ["style-loader", { loader: "css-loader" }] },
 
       // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
-      { test: /\.(png|jpg|gif|webp|svg)$/, loader: "url-loader" }
-    ]
+      { test: /\.(png|jpg|gif|webp|svg)$/, loader: "url-loader" },
+    ],
   },
 
   // Webpack tries these extensions for you if you omit the extension like "import './file'"
@@ -31,7 +31,7 @@ module.exports = (env, argv) => ({
 
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "dist") // Compile into a folder called "dist"
+    path: path.resolve(__dirname, "dist"), // Compile into a folder called "dist"
   },
 
   // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
@@ -40,8 +40,8 @@ module.exports = (env, argv) => ({
       template: "./src/app/index.html",
       filename: "ui.html",
       inlineSource: ".(js)$",
-      chunks: ["ui"]
+      chunks: ["ui"],
     }),
-    new HtmlWebpackInlineSourcePlugin()
-  ]
+    new HtmlWebpackInlineSourcePlugin(),
+  ],
 });

@@ -12,9 +12,7 @@ function buildText(str = "Build Text String", y = 0) {
   console.log("text appended");
 }
 
-const defaultRectFills: Array<Paint> = [
-  { type: "SOLID", color: { r: 1, g: 0, b: 0.5 } }
-];
+const defaultRectFills: Array<Paint> = [{ type: "SOLID", color: { r: 1, g: 0, b: 0.5 } }];
 
 function buildRect(fills = defaultRectFills, y = 0) {
   const rect = figma.createRectangle();

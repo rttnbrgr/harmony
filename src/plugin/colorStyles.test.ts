@@ -25,9 +25,9 @@ describe("isInt", () => {
 
 describe("getSpecStringFromColorStop", () => {
   test("should return rbga string", () => {
-    expect(
-      getSpecStringFromColorStop({ position: 2, color: { r: 0.012, g: 0.56, b: 0.798, a: 1 } })
-    ).toEqual("[3, 143, 203, 1] @ 2");
+    expect(getSpecStringFromColorStop({ position: 2, color: { r: 0.012, g: 0.56, b: 0.798, a: 1 } })).toEqual(
+      "[3, 143, 203, 1] @ 2"
+    );
   });
   test("should throw error", () => {
     expect(() => {

@@ -9,10 +9,7 @@ class App extends React.Component {
   };
 
   onCreateColorStyles = () => {
-    parent.postMessage(
-      { pluginMessage: { type: "CREATE_COLOR_STYLES", foo: "count" } },
-      "*"
-    );
+    parent.postMessage({ pluginMessage: { type: "CREATE_COLOR_STYLES", foo: "count" } }, "*");
   };
 
   render() {
