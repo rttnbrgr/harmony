@@ -69,7 +69,7 @@ function buildSample(effectStyle: EffectStyle) {
     effectStyleSpec += ": ";
 
     // Shadow or Blur?
-    if (effectType === "DROP_SHADOW" || effectType === "INNER_SHADOW") {
+    if ("color" in firstEffect && (effectType === "DROP_SHADOW" || effectType === "INNER_SHADOW")) {
       // Effect color
       let effectColor = getSpecStringFromRgba(firstEffect.color);
       effectStyleSpec += effectColor;
@@ -109,9 +109,9 @@ function buildSample(effectStyle: EffectStyle) {
       color: {
         r: 1,
         g: 1,
-        b: 1
-      }
-    }
+        b: 1,
+      },
+    },
   ];
 
   // build the rect
@@ -127,19 +127,16 @@ function buildSample(effectStyle: EffectStyle) {
   // Build title
   const colorStyleTitleText = addText(effectStyleName, {
     x: textX,
-    y: sampleY
+    y: sampleY,
   });
   // Build spec
   const colorStyleSpecText = addText(effectStyleSpec, {
     x: textX,
-    y: sampleY + 14
+    y: sampleY + 14,
   });
 
   // Group text nodes
-  const textGroup = figma.group(
-    [colorStyleTitleText, colorStyleSpecText],
-    figma.currentPage
-  );
+  const textGroup = figma.group([colorStyleTitleText, colorStyleSpecText], figma.currentPage);
 
   // Create the frame, append text + rect, position it
   const sampleFrame = figma.createFrame();
@@ -170,10 +167,7 @@ function buildEffectStyleMasterFrame() {
   return paintStylesMasterFrame;
 }
 
-function buildEffectStyleFrames(
-  stylesArray: Array<EffectStyle>,
-  masterFrame: FrameNode
-) {
+function buildEffectStyleFrames(stylesArray: Array<EffectStyle>, masterFrame: FrameNode) {
   console.log("inside buildEffectStyleFrames");
   let effectStyleFrames = stylesArray.map((x, i) => {
     const effectStyleFrame = buildSample(x);
@@ -208,10 +202,7 @@ async function generateLocalEffectStylesDoc() {
   console.log("before buildEffectStyleFrames");
 
   // Build the style frames and append them to the master artboard
-  let effectStyleFrames = buildEffectStyleFrames(
-    localEffectStyles,
-    effectStylesMasterFrame
-  );
+  let effectStyleFrames = buildEffectStyleFrames(localEffectStyles, effectStylesMasterFrame);
 }
 
 export { generateLocalEffectStylesDoc };

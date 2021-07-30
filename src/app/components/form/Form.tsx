@@ -1,16 +1,17 @@
-import React, { useCallback, useReducer } from "react";
+import * as React from "react";
+import { useCallback, useReducer } from "react";
 import { FORM_FIELD_METADATA } from "./constants";
-import { Actions } from "./types";
+import { Actions, ReducerState } from "./types";
 import { StyledForm } from "./styledComponents";
 import { Button } from "../button/Button";
 
-const initialState: { [key in Actions]: boolean } = {
+const initialState: ReducerState = {
   CREATE_COLOR_STYLES: true,
   CREATE_EFFECT_STYLES: true,
   CREATE_TEXT_STYLES: true,
 };
 
-function reducer(state, action) {
+function reducer(state: ReducerState, action: { type: Actions }) {
   return { ...state, [`${action.type}`]: !state[action.type] };
 }
 
@@ -19,7 +20,6 @@ export function Form() {
 
   const handleSubmit = useCallback(
     (event) => {
-      console.log("event", event);
       event.preventDefault();
       const types = Object.keys(state).filter((key) => state[key]);
       parent.postMessage({ pluginMessage: { type: types, foo: "count" } }, "*");
@@ -40,7 +40,7 @@ export function Form() {
             name={id}
             id={id}
             checked={state[id]}
-            onChange={(event) => dispatch({ type: id })}></input>
+            onChange={() => dispatch({ type: id })}></input>
           <label htmlFor={id}>{label}</label>
         </div>
       ))}
