@@ -19,6 +19,7 @@
         "@types/react": "^17.0.13",
         "@types/react-dom": "^17.0.8",
         "babel-jest": "^27.0.6",
+        "babel-plugin-styled-components": "^1.13.2",
         "css-loader": "^5.0.1",
         "eslint-plugin-progress": "github:taskworld/eslint-plugin-progress",
         "eslint-plugin-react-hooks": "^4.2.0",

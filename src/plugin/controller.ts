@@ -1,5 +1,7 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
-import { testerFunc } from "./tester";
+import { generateLocalEffectStylesDoc } from "./effectStyles";
+import { testerFunc } from "./test";
+import { generateLocalTextStylesDoc } from "./textStyles";
 
 /*
  */
@@ -12,11 +14,16 @@ import { testerFunc } from "./tester";
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
+figma.ui.resize(400, 300);
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
 figma.ui.onmessage = (msg) => {
+  if (msg.type.includes("CANCEL")) {
+    figma.closePlugin();
+    return;
+  }
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
   if (msg.type === "create-rectangles") {
@@ -32,13 +39,32 @@ figma.ui.onmessage = (msg) => {
     figma.viewport.scrollAndZoomIntoView(nodes);
   }
 
-  if (msg.type === "CREATE_COLOR_STYLES") {
-    console.log("create color styles");
-    generateLocalPaintStylesDoc();
-  }
+  for (let index = 0; index < msg.type.length; index++) {
+    const element = msg.type[index];
 
-  if (msg.type === "TESTER") {
-    testerFunc();
+    switch (element) {
+      case "CREATE_COLOR_STYLES":
+        console.log("create color styles");
+        generateLocalPaintStylesDoc();
+        break;
+
+      case "CREATE_EFFECT_STYLES":
+        console.log("create effect styles");
+        generateLocalEffectStylesDoc();
+        break;
+
+      case "CREATE_TEXT_STYLES":
+        console.log("create text styles");
+        generateLocalTextStylesDoc();
+        break;
+
+      case "TESTER":
+        testerFunc();
+        break;
+
+      default:
+        break;
+    }
   }
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will
@@ -50,6 +76,7 @@ figma.ui.onmessage = (msg) => {
 // console.log("console", console);
 // console.log("figma", figma);
 
-// get all colors on the page
-// print them with a hex value
-// check which ones match a layer style
+// Run these automatically when plugin starts
+// generateLocalPaintStylesDoc();
+// generateLocalEffectStylesDoc();
+// generateLocalTextStylesDoc();

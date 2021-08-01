@@ -242,6 +242,8 @@ export {
   buildPaintStyleMasterFrame,
   buildPaintStyleFrames,
   generateLocalPaintStylesDoc,
+  addText,
+  isInt
 };
 
 // Multi fill
