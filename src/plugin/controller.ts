@@ -1,5 +1,6 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
+import { applyMainFrameStyles, getStoredFrame } from "./helpers";
 import { testerFunc } from "./tester";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
@@ -39,23 +40,26 @@ figma.ui.onmessage = (msg) => {
     figma.viewport.scrollAndZoomIntoView(nodes);
   }
 
+  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
+  applyMainFrameStyles(mainFrame);
+
   for (let index = 0; index < msg.type.length; index++) {
     const element = msg.type[index];
 
     switch (element) {
       case "CREATE_COLOR_STYLES":
         console.log("create color styles");
-        generateLocalPaintStylesDoc();
+        generateLocalPaintStylesDoc(mainFrame);
         break;
 
       case "CREATE_EFFECT_STYLES":
         console.log("create effect styles");
-        generateLocalEffectStylesDoc();
+        generateLocalEffectStylesDoc(mainFrame);
         break;
 
       case "CREATE_TEXT_STYLES":
         console.log("create text styles");
-        generateLocalTextStylesDoc();
+        generateLocalTextStylesDoc(mainFrame);
         break;
 
       case "TESTER":

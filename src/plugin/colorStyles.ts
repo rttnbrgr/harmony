@@ -1,3 +1,5 @@
+import { getStoredFrame } from "./helpers";
+
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
 
@@ -172,9 +174,7 @@ function buildSample(paintStyle: PaintStyle) {
   return sampleFrame;
 }
 
-function buildPaintStyleMasterFrame(frameId: string) {
-  const paintStylesMasterFrame = figma.getNodeById(frameId) as FrameNode;
-
+function buildPaintStyleMasterFrame(paintStylesMasterFrame: FrameNode) {
   // remove previous children
   paintStylesMasterFrame.children.map((child) => child.remove());
 
@@ -200,28 +200,17 @@ function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: Fram
   return paintStyleFrames;
 }
 
-function getFrameId() {
-  const frameId = figma.root.getPluginData("frameId");
-  const frame = figma.getNodeById(frameId);
-  if (!frameId || !frame) {
-    const frame = figma.createFrame();
-    figma.root.setPluginData("frameId", frame.id);
-    return frame.id;
-  }
-  return frameId;
-}
-
-async function generateLocalPaintStylesDoc() {
+async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
   // create a frame to fill/reuse
-  const frameId = getFrameId();
+  const frame = getStoredFrame("ColorStylesFrame") as FrameNode;
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = buildPaintStyleMasterFrame(frameId);
+  const paintStylesMasterFrame = buildPaintStyleMasterFrame(frame);
 
   // Add header
   const paintStylesHeader = figma.createText();
@@ -229,10 +218,11 @@ async function generateLocalPaintStylesDoc() {
   paintStylesMasterFrame.appendChild(paintStylesHeader);
 
   // center and zoom to the frame
-  figma.viewport.scrollAndZoomIntoView([figma.getNodeById(frameId)]);
+  figma.viewport.scrollAndZoomIntoView([figma.getNodeById(mainFrame.id)]);
 
   // Build the style frames and append them to the master artboard
   let paintStyleFrames = buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
+  mainFrame.appendChild(paintStylesMasterFrame);
 }
 
 export {

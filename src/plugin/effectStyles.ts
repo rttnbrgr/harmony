@@ -1,4 +1,5 @@
 import { addText, deriveRgbValue, isInt } from "./colorStyles";
+import { getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
@@ -155,8 +156,7 @@ function buildSample(effectStyle: EffectStyle) {
   return sampleFrame;
 }
 
-function buildEffectStyleMasterFrame() {
-  const paintStylesMasterFrame = figma.createFrame();
+function buildEffectStyleMasterFrame(paintStylesMasterFrame: FrameNode) {
   paintStylesMasterFrame.layoutMode = "VERTICAL";
   paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
   paintStylesMasterFrame.itemSpacing = 16;
@@ -181,15 +181,18 @@ function buildEffectStyleFrames(stylesArray: Array<EffectStyle>, masterFrame: Fr
   return effectStyleFrames;
 }
 
-async function generateLocalEffectStylesDoc() {
+async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
+
+  // create a frame to fill/reuse
+  const frame = getStoredFrame("EffectStylesFrame") as FrameNode;
 
   // Get effect styles
   const localEffectStyles = figma.getLocalEffectStyles();
   console.log("localEffectStyles", localEffectStyles);
 
   // SETUP MASTER ARTBOARD
-  const effectStylesMasterFrame = buildEffectStyleMasterFrame();
+  const effectStylesMasterFrame = buildEffectStyleMasterFrame(frame);
 
   // Add header
   const effectStylesHeader = figma.createText();
@@ -203,6 +206,7 @@ async function generateLocalEffectStylesDoc() {
 
   // Build the style frames and append them to the master artboard
   let effectStyleFrames = buildEffectStyleFrames(localEffectStyles, effectStylesMasterFrame);
+  mainFrame.appendChild(effectStylesMasterFrame);
 }
 
 export { generateLocalEffectStylesDoc };
