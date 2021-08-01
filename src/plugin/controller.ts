@@ -1,12 +1,7 @@
-import {
-  generateLocalPaintStylesDoc,
-  addText,
-  deriveRgbValue,
-  isInt
-} from "./colorStyles";
+import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { generateLocalTextStylesDoc } from "./textStyles";
 import { testerFunc } from "./test";
+import { generateLocalTextStylesDoc } from "./textStyles";
 
 /*
  */
@@ -19,11 +14,16 @@ import { testerFunc } from "./test";
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
+figma.ui.resize(400, 300);
 
 // Calls to "parent.postMessage" from within the HTML page will trigger this
 // callback. The callback will be passed the "pluginMessage" property of the
 // posted message.
-figma.ui.onmessage = msg => {
+figma.ui.onmessage = (msg) => {
+  if (msg.type.includes("CANCEL")) {
+    figma.closePlugin();
+    return;
+  }
   // One way of distinguishing between different types of messages sent from
   // your HTML page is to use an object with a "type" property like this.
   if (msg.type === "create-rectangles") {
@@ -39,23 +39,32 @@ figma.ui.onmessage = msg => {
     figma.viewport.scrollAndZoomIntoView(nodes);
   }
 
-  if (msg.type === "CREATE_COLOR_STYLES") {
-    console.log("create color styles");
-    generateLocalPaintStylesDoc();
-  }
+  for (let index = 0; index < msg.type.length; index++) {
+    const element = msg.type[index];
 
-  if (msg.type === "CREATE_EFFECT_STYLES") {
-    console.log("create effect styles");
-    generateLocalEffectStylesDoc();
-  }
+    switch (element) {
+      case "CREATE_COLOR_STYLES":
+        console.log("create color styles");
+        generateLocalPaintStylesDoc();
+        break;
 
-  if (msg.type === "CREATE_TEXT_STYLES") {
-    console.log("create text styles");
-    generateLocalTextStylesDoc();
-  }
+      case "CREATE_EFFECT_STYLES":
+        console.log("create effect styles");
+        generateLocalEffectStylesDoc();
+        break;
 
-  if (msg.type === "TESTER") {
-    testerFunc();
+      case "CREATE_TEXT_STYLES":
+        console.log("create text styles");
+        generateLocalTextStylesDoc();
+        break;
+
+      case "TESTER":
+        testerFunc();
+        break;
+
+      default:
+        break;
+    }
   }
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will
