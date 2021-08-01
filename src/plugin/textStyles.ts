@@ -1,5 +1,5 @@
 import { addText } from "./colorStyles";
-import { addHeaderToFrame, applyStyleFrameStyles, getStoredFrame } from "./helpers";
+import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
@@ -77,17 +77,6 @@ function buildSample(textStyle: TextStyle) {
   return sampleFrame;
 }
 
-function buildTextStyleFrames(stylesArray: Array<TextStyle>, masterFrame: FrameNode) {
-  console.log("inside buildEffectStyleFrames");
-  let textStyleFrames = stylesArray.map((x, i) => {
-    const textStyleFrame = buildSample(x);
-    masterFrame.appendChild(textStyleFrame);
-    return textStyleFrame;
-  });
-
-  return textStyleFrames;
-}
-
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
@@ -102,7 +91,8 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   addHeaderToFrame("Text Styles", textStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
+  buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildSample);
+  //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
 
   // Add style frame to main frame
   mainFrame.appendChild(textStylesMasterFrame);

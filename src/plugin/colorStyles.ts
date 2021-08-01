@@ -1,4 +1,4 @@
-import { addHeaderToFrame, applyStyleFrameStyles, getStoredFrame } from "./helpers";
+import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
@@ -174,17 +174,6 @@ function buildSample(paintStyle: PaintStyle) {
   return sampleFrame;
 }
 
-function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: FrameNode) {
-  let paintStyleFrames = stylesArray.map((x, i) => {
-    const paintStyleFrame = buildSample(x);
-    paintStyleFrame.y = i * (64 + 16);
-    masterFrame.appendChild(paintStyleFrame);
-    return paintStyleFrame;
-  });
-
-  return paintStyleFrames;
-}
-
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
@@ -198,7 +187,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   addHeaderToFrame("Effect Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
+  buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
 
   // Add style frame to main frame
   mainFrame.appendChild(paintStylesMasterFrame);
@@ -209,7 +198,6 @@ export {
   getRgbStringFromLocalStyle,
   buildPaintStyleSpecString,
   buildSample,
-  buildPaintStyleFrames,
   generateLocalPaintStylesDoc,
   addText,
 };

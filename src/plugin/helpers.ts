@@ -56,3 +56,23 @@ export function addHeaderToFrame(headerText: string, frame: FrameNode) {
   textStylesHeader.characters = headerText;
   frame.appendChild(textStylesHeader);
 }
+
+export function buildStyleFrames<StyleType>(
+  stylesArray: Array<StyleType>,
+  frame: FrameNode,
+  buildSample: (styleType: StyleType) => FrameNode,
+  offsets: { x: number; y: number } = { x: null, y: null }
+) {
+  stylesArray.forEach((styleType, i) => {
+    const styleFrameItem = buildSample(styleType);
+    if (offsets.x) {
+      styleFrameItem.x = i * offsets.x;
+    }
+    if (offsets.y) {
+      styleFrameItem.y = i * offsets.y;
+    }
+
+    // add to StyleFrame
+    frame.appendChild(styleFrameItem);
+  });
+}
