@@ -1,4 +1,4 @@
-import { getStoredFrame } from "./helpers";
+import { addHeaderToFrame, applyStyleFrameStyles, getStoredFrame } from "./helpers";
 
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
@@ -174,21 +174,6 @@ function buildSample(paintStyle: PaintStyle) {
   return sampleFrame;
 }
 
-function buildPaintStyleMasterFrame(paintStylesMasterFrame: FrameNode) {
-  // remove previous children
-  paintStylesMasterFrame.children.map((child) => child.remove());
-
-  // new styles
-  paintStylesMasterFrame.layoutMode = "VERTICAL";
-  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
-  paintStylesMasterFrame.itemSpacing = 16;
-  paintStylesMasterFrame.paddingTop = 32;
-  paintStylesMasterFrame.paddingRight = 32;
-  paintStylesMasterFrame.paddingBottom = 32;
-  paintStylesMasterFrame.paddingLeft = 32;
-  return paintStylesMasterFrame;
-}
-
 function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: FrameNode) {
   let paintStyleFrames = stylesArray.map((x, i) => {
     const paintStyleFrame = buildSample(x);
@@ -203,25 +188,19 @@ function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: Fram
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  // create a frame to fill/reuse
-  const frame = getStoredFrame("ColorStylesFrame") as FrameNode;
-
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = buildPaintStyleMasterFrame(frame);
+  const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
 
   // Add header
-  const paintStylesHeader = figma.createText();
-  paintStylesHeader.characters = "Paint Styles";
-  paintStylesMasterFrame.appendChild(paintStylesHeader);
-
-  // center and zoom to the frame
-  figma.viewport.scrollAndZoomIntoView([figma.getNodeById(mainFrame.id)]);
+  addHeaderToFrame("Effect Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  let paintStyleFrames = buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
+  buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
+
+  // Add style frame to main frame
   mainFrame.appendChild(paintStylesMasterFrame);
 }
 
@@ -230,7 +209,6 @@ export {
   getRgbStringFromLocalStyle,
   buildPaintStyleSpecString,
   buildSample,
-  buildPaintStyleMasterFrame,
   buildPaintStyleFrames,
   generateLocalPaintStylesDoc,
   addText,

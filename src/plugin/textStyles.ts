@@ -1,5 +1,5 @@
 import { addText } from "./colorStyles";
-import { getStoredFrame } from "./helpers";
+import { addHeaderToFrame, applyStyleFrameStyles, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
@@ -77,17 +77,6 @@ function buildSample(textStyle: TextStyle) {
   return sampleFrame;
 }
 
-function buildTextStyleMasterFrame(paintStylesMasterFrame: FrameNode) {
-  paintStylesMasterFrame.layoutMode = "VERTICAL";
-  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
-  paintStylesMasterFrame.itemSpacing = 16;
-  paintStylesMasterFrame.paddingTop = 32;
-  paintStylesMasterFrame.paddingRight = 32;
-  paintStylesMasterFrame.paddingBottom = 32;
-  paintStylesMasterFrame.paddingLeft = 32;
-  return paintStylesMasterFrame;
-}
-
 function buildTextStyleFrames(stylesArray: Array<TextStyle>, masterFrame: FrameNode) {
   console.log("inside buildEffectStyleFrames");
   let textStyleFrames = stylesArray.map((x, i) => {
@@ -102,23 +91,20 @@ function buildTextStyleFrames(stylesArray: Array<TextStyle>, masterFrame: FrameN
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  // create a frame to fill/reuse
-  const frame = getStoredFrame("TextStylesFrame") as FrameNode;
-
   // Get effect styles
   const localTextStyles = figma.getLocalTextStyles();
   console.log("localEffectStyles", localTextStyles);
 
   // SETUP MASTER ARTBOARD
-  const textStylesMasterFrame = buildTextStyleMasterFrame(frame);
+  const textStylesMasterFrame = applyStyleFrameStyles("TextStylesFrame");
 
   // Add header
-  const textStylesHeader = figma.createText();
-  textStylesHeader.characters = "Text Styles";
-  textStylesMasterFrame.appendChild(textStylesHeader);
+  addHeaderToFrame("Text Styles", textStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  let effectStyleFrames = buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
+  buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
+
+  // Add style frame to main frame
   mainFrame.appendChild(textStylesMasterFrame);
 }
 

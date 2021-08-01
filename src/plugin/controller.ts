@@ -1,6 +1,6 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { applyMainFrameStyles, getStoredFrame } from "./helpers";
+import { applyMainFrameStyles, getStoredFrame, positionMainFrame } from "./helpers";
 import { testerFunc } from "./tester";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
@@ -70,6 +70,8 @@ figma.ui.onmessage = (msg) => {
         break;
     }
   }
+
+  positionMainFrame(mainFrame);
 
   // Make sure to close the plugin when you're done. Otherwise the plugin will
   // keep running, which shows the cancel button at the bottom of the screen.
