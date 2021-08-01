@@ -196,16 +196,17 @@ function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: Fram
     masterFrame.appendChild(paintStyleFrame);
     return paintStyleFrame;
   });
-  console.log("paintStyleFrames", paintStyleFrames);
 
   return paintStyleFrames;
 }
 
 function getFrameId() {
   const frameId = figma.root.getPluginData("frameId");
-  if (!frameId) {
+  const frame = figma.getNodeById(frameId);
+  if (!frameId || !frame) {
     const frame = figma.createFrame();
     figma.root.setPluginData("frameId", frame.id);
+    return frame.id;
   }
   return frameId;
 }
@@ -243,7 +244,6 @@ export {
   buildPaintStyleFrames,
   generateLocalPaintStylesDoc,
   addText,
-  isInt
 };
 
 // Multi fill

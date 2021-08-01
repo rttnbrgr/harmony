@@ -1,6 +1,6 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { testerFunc } from "./test";
+import { testerFunc } from "./tester";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
 /*
