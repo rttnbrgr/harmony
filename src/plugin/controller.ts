@@ -93,8 +93,3 @@ if (figma.command === "BUILD_ALL_STYLES") {
 // Global logs
 // console.log("console", console);
 // console.log("figma", figma);
-
-// Run these automatically when plugin starts
-// generateLocalPaintStylesDoc();
-// generateLocalEffectStylesDoc();
-// generateLocalTextStylesDoc();
