@@ -7,6 +7,10 @@ import { generateLocalTextStylesDoc } from "./textStyles";
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (see documentation).
 
+// Setup the frame first
+const mainFrame = getStoredFrame("MainFrame") as FrameNode;
+applyMainFrameStyles(mainFrame);
+
 if (figma.command === "CONFIG") {
   console.log("CONFIG");
 
@@ -22,9 +26,6 @@ if (figma.command === "CONFIG") {
       figma.closePlugin();
       return;
     }
-
-    const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-    applyMainFrameStyles(mainFrame);
 
     for (let index = 0; index < msg.type.length; index++) {
       const element = msg.type[index];
@@ -60,8 +61,6 @@ if (figma.command === "CONFIG") {
 
 if (figma.command === "BUILD_PAINT_STYLES") {
   console.log("create color styles");
-  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-  applyMainFrameStyles(mainFrame);
   generateLocalPaintStylesDoc(mainFrame);
   /*
    * Commands should close the plugin
@@ -73,26 +72,18 @@ if (figma.command === "BUILD_PAINT_STYLES") {
 
 if (figma.command === "BUILD_TEXT_STYLES") {
   console.log("create text styles");
-  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-  applyMainFrameStyles(mainFrame);
   generateLocalTextStylesDoc(mainFrame);
   // figma.closePlugin();
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
   console.log("create effect styles");
-  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-  applyMainFrameStyles(mainFrame);
   generateLocalEffectStylesDoc(mainFrame);
   // figma.closePlugin();
 }
 
 if (figma.command === "BUILD_ALL_STYLES") {
   console.log("create ALL styles");
-
-  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-  applyMainFrameStyles(mainFrame);
-
   generateLocalTextStylesDoc(mainFrame);
   generateLocalPaintStylesDoc(mainFrame);
   generateLocalEffectStylesDoc(mainFrame);
