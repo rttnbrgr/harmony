@@ -68,18 +68,19 @@ if (figma.command === "BUILD_PAINT_STYLES") {
    *
    * figma.closePlugin();
    **/
+  figma.closePlugin();
 }
 
 if (figma.command === "BUILD_TEXT_STYLES") {
   console.log("create text styles");
   generateLocalTextStylesDoc(mainFrame);
-  // figma.closePlugin();
+  figma.closePlugin();
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
   console.log("create effect styles");
   generateLocalEffectStylesDoc(mainFrame);
-  // figma.closePlugin();
+  figma.closePlugin();
 }
 
 if (figma.command === "BUILD_ALL_STYLES") {
@@ -87,7 +88,7 @@ if (figma.command === "BUILD_ALL_STYLES") {
   generateLocalTextStylesDoc(mainFrame);
   generateLocalPaintStylesDoc(mainFrame);
   generateLocalEffectStylesDoc(mainFrame);
-  // figma.closePlugin();
+  figma.closePlugin();
 }
 
 // Global logs
