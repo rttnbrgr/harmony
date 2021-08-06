@@ -197,7 +197,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
 
   // Add header
-  addHeaderToFrame("Effect Styles", paintStylesMasterFrame);
+  addHeaderToFrame("Color Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
   buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
