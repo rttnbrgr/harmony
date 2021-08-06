@@ -47,6 +47,11 @@ function buildPaintStyleSpecString(style: PaintStyle): string {
   return specString;
 }
 
+// Get opacity spec string
+function getOpacitySpecStringFromSolidPaint(paint: SolidPaint) {
+  return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
+}
+
 type textOptions = {
   x: number;
   y: number;
@@ -112,9 +117,17 @@ function buildSample(paintStyle: PaintStyle) {
       paintStyleSpec = `RGBA: ${gradiantStopsString}`;
     }
   }
+  if (isSingleFill && isSolid && "color" in firstPaint) {
+    // get color portion of spec
+    let specStringTest = getRgbStringFromLocalStyle(paintStyle);
+    // get opacity portion of spec
+    let opacitySpecString = getOpacitySpecStringFromSolidPaint(firstPaint);
+    // Stitch teh spec string together
+    if (opacitySpecString) {
+      specStringTest += " @ ";
+      specStringTest += opacitySpecString;
+    }
 
-  if (isSingleFill && isSolid) {
-    const specStringTest = getRgbStringFromLocalStyle(paintStyle);
     console.log("specStringTest", specStringTest);
     paintStyleSpec = specStringTest;
   }
