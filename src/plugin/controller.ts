@@ -58,6 +58,47 @@ if (figma.command === "CONFIG") {
   };
 }
 
+if (figma.command === "BUILD_PAINT_STYLES") {
+  console.log("create color styles");
+  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
+  applyMainFrameStyles(mainFrame);
+  generateLocalPaintStylesDoc(mainFrame);
+  /*
+   * Commands should close the plugin
+   * Leaving this commented out for debug purposes
+   *
+   * figma.closePlugin();
+   **/
+}
+
+if (figma.command === "BUILD_TEXT_STYLES") {
+  console.log("create text styles");
+  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
+  applyMainFrameStyles(mainFrame);
+  generateLocalTextStylesDoc(mainFrame);
+  // figma.closePlugin();
+}
+
+if (figma.command === "BUILD_EFFECT_STYLES") {
+  console.log("create effect styles");
+  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
+  applyMainFrameStyles(mainFrame);
+  generateLocalEffectStylesDoc(mainFrame);
+  // figma.closePlugin();
+}
+
+if (figma.command === "BUILD_ALL_STYLES") {
+  console.log("create ALL styles");
+
+  const mainFrame = getStoredFrame("MainFrame") as FrameNode;
+  applyMainFrameStyles(mainFrame);
+
+  generateLocalTextStylesDoc(mainFrame);
+  generateLocalPaintStylesDoc(mainFrame);
+  generateLocalEffectStylesDoc(mainFrame);
+  // figma.closePlugin();
+}
+
 // Global logs
 // console.log("console", console);
 // console.log("figma", figma);
