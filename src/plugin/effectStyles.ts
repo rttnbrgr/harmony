@@ -1,4 +1,5 @@
 import { addText, deriveRgbValue, isInt } from "./colorStyles";
+import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
@@ -155,33 +156,7 @@ function buildSample(effectStyle: EffectStyle) {
   return sampleFrame;
 }
 
-function buildEffectStyleMasterFrame() {
-  const paintStylesMasterFrame = figma.createFrame();
-  paintStylesMasterFrame.layoutMode = "VERTICAL";
-  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
-  paintStylesMasterFrame.itemSpacing = 16;
-  paintStylesMasterFrame.paddingTop = 32;
-  paintStylesMasterFrame.paddingRight = 32;
-  paintStylesMasterFrame.paddingBottom = 32;
-  paintStylesMasterFrame.paddingLeft = 32;
-  return paintStylesMasterFrame;
-}
-
-function buildEffectStyleFrames(stylesArray: Array<EffectStyle>, masterFrame: FrameNode) {
-  console.log("inside buildEffectStyleFrames");
-  let effectStyleFrames = stylesArray.map((x, i) => {
-    const effectStyleFrame = buildSample(x);
-    effectStyleFrame.y = i * (64 + 16);
-    masterFrame.appendChild(effectStyleFrame);
-    return effectStyleFrame;
-    // console.log("effectStyle ", i, ": ", x);
-  });
-  // console.log("effectStyleFrames", effectStyleFrames);
-
-  return effectStyleFrames;
-}
-
-async function generateLocalEffectStylesDoc() {
+async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
   // Get effect styles
@@ -189,20 +164,18 @@ async function generateLocalEffectStylesDoc() {
   console.log("localEffectStyles", localEffectStyles);
 
   // SETUP MASTER ARTBOARD
-  const effectStylesMasterFrame = buildEffectStyleMasterFrame();
+  const effectStylesMasterFrame = applyStyleFrameStyles("EffectStylesFrame");
 
   // Add header
-  const effectStylesHeader = figma.createText();
-  effectStylesHeader.characters = "Effect Styles";
-  effectStylesMasterFrame.appendChild(effectStylesHeader);
-
-  /*
-   */
+  addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
 
   console.log("before buildEffectStyleFrames");
 
   // Build the style frames and append them to the master artboard
-  let effectStyleFrames = buildEffectStyleFrames(localEffectStyles, effectStylesMasterFrame);
+  buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+
+  // Add style frame to main frame
+  mainFrame.appendChild(effectStylesMasterFrame);
 }
 
 export { generateLocalEffectStylesDoc };

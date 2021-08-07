@@ -1,3 +1,5 @@
+import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
+
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
 
@@ -43,6 +45,11 @@ function buildPaintStyleSpecString(style: PaintStyle): string {
   specString += getRgbStringFromLocalStyle(style);
   console.log(specString);
   return specString;
+}
+
+// Get opacity spec string
+function getOpacitySpecStringFromSolidPaint(paint: SolidPaint) {
+  return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
 }
 
 type textOptions = {
@@ -110,9 +117,17 @@ function buildSample(paintStyle: PaintStyle) {
       paintStyleSpec = `RGBA: ${gradiantStopsString}`;
     }
   }
+  if (isSingleFill && isSolid && "color" in firstPaint) {
+    // get color portion of spec
+    let specStringTest = getRgbStringFromLocalStyle(paintStyle);
+    // get opacity portion of spec
+    let opacitySpecString = getOpacitySpecStringFromSolidPaint(firstPaint);
+    // Stitch teh spec string together
+    if (opacitySpecString) {
+      specStringTest += " @ ";
+      specStringTest += opacitySpecString;
+    }
 
-  if (isSingleFill && isSolid) {
-    const specStringTest = getRgbStringFromLocalStyle(paintStyle);
     console.log("specStringTest", specStringTest);
     paintStyleSpec = specStringTest;
   }
@@ -172,66 +187,23 @@ function buildSample(paintStyle: PaintStyle) {
   return sampleFrame;
 }
 
-function buildPaintStyleMasterFrame(frameId: string) {
-  const paintStylesMasterFrame = figma.getNodeById(frameId) as FrameNode;
-
-  // remove previous children
-  paintStylesMasterFrame.children.map((child) => child.remove());
-
-  // new styles
-  paintStylesMasterFrame.layoutMode = "VERTICAL";
-  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
-  paintStylesMasterFrame.itemSpacing = 16;
-  paintStylesMasterFrame.paddingTop = 32;
-  paintStylesMasterFrame.paddingRight = 32;
-  paintStylesMasterFrame.paddingBottom = 32;
-  paintStylesMasterFrame.paddingLeft = 32;
-  return paintStylesMasterFrame;
-}
-
-function buildPaintStyleFrames(stylesArray: Array<PaintStyle>, masterFrame: FrameNode) {
-  let paintStyleFrames = stylesArray.map((x, i) => {
-    const paintStyleFrame = buildSample(x);
-    paintStyleFrame.y = i * (64 + 16);
-    masterFrame.appendChild(paintStyleFrame);
-    return paintStyleFrame;
-  });
-  console.log("paintStyleFrames", paintStyleFrames);
-
-  return paintStyleFrames;
-}
-
-function getFrameId() {
-  const frameId = figma.root.getPluginData("frameId");
-  if (!frameId) {
-    const frame = figma.createFrame();
-    figma.root.setPluginData("frameId", frame.id);
-  }
-  return frameId;
-}
-
-async function generateLocalPaintStylesDoc() {
+async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-
-  // create a frame to fill/reuse
-  const frameId = getFrameId();
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = buildPaintStyleMasterFrame(frameId);
+  const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
 
   // Add header
-  const paintStylesHeader = figma.createText();
-  paintStylesHeader.characters = "Paint Styles";
-  paintStylesMasterFrame.appendChild(paintStylesHeader);
-
-  // center and zoom to the frame
-  figma.viewport.scrollAndZoomIntoView([figma.getNodeById(frameId)]);
+  addHeaderToFrame("Color Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  let paintStyleFrames = buildPaintStyleFrames(localPaintStyles, paintStylesMasterFrame);
+  buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+
+  // Add style frame to main frame
+  mainFrame.appendChild(paintStylesMasterFrame);
 }
 
 export {
@@ -239,11 +211,8 @@ export {
   getRgbStringFromLocalStyle,
   buildPaintStyleSpecString,
   buildSample,
-  buildPaintStyleMasterFrame,
-  buildPaintStyleFrames,
   generateLocalPaintStylesDoc,
   addText,
-  isInt
 };
 
 // Multi fill

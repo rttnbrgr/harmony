@@ -1,4 +1,5 @@
 import { addText } from "./colorStyles";
+import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
@@ -27,8 +28,7 @@ function buildSample(textStyle: TextStyle) {
     return specString;
   }
 
-  let { family: textStyleFontFamily, style: textStyleFontWeight } =
-    textStyle.fontName;
+  let { family: textStyleFontFamily, style: textStyleFontWeight } = textStyle.fontName;
   let textStyleFontSize = textStyle.fontSize;
   let textStyleLineHeight = getRangeLineHeightSpecString(textStyle.lineHeight);
 
@@ -50,14 +50,14 @@ function buildSample(textStyle: TextStyle) {
   // Build title
   const textStyleTitleText = addText(textStyleName, {
     x: textX,
-    y: sampleY
+    y: sampleY,
   });
   textStyleTitleText.textStyleId = textStyleId;
 
   // Build spec
   const textStyleSpecText = addText(textStyleSpec, {
     x: textX,
-    y: sampleY + 14
+    y: sampleY + 14,
   });
 
   // Create the frame, append text + rect, position it
@@ -77,33 +77,7 @@ function buildSample(textStyle: TextStyle) {
   return sampleFrame;
 }
 
-function buildTextStyleMasterFrame() {
-  const paintStylesMasterFrame = figma.createFrame();
-  paintStylesMasterFrame.layoutMode = "VERTICAL";
-  paintStylesMasterFrame.counterAxisSizingMode = "AUTO";
-  paintStylesMasterFrame.itemSpacing = 16;
-  paintStylesMasterFrame.paddingTop = 32;
-  paintStylesMasterFrame.paddingRight = 32;
-  paintStylesMasterFrame.paddingBottom = 32;
-  paintStylesMasterFrame.paddingLeft = 32;
-  return paintStylesMasterFrame;
-}
-
-function buildTextStyleFrames(
-  stylesArray: Array<TextStyle>,
-  masterFrame: FrameNode
-) {
-  console.log("inside buildEffectStyleFrames");
-  let textStyleFrames = stylesArray.map((x, i) => {
-    const textStyleFrame = buildSample(x);
-    masterFrame.appendChild(textStyleFrame);
-    return textStyleFrame;
-  });
-
-  return textStyleFrames;
-}
-
-async function generateLocalTextStylesDoc() {
+async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
   // Get effect styles
@@ -111,18 +85,17 @@ async function generateLocalTextStylesDoc() {
   console.log("localEffectStyles", localTextStyles);
 
   // SETUP MASTER ARTBOARD
-  const textStylesMasterFrame = buildTextStyleMasterFrame();
+  const textStylesMasterFrame = applyStyleFrameStyles("TextStylesFrame");
 
   // Add header
-  const textStylesHeader = figma.createText();
-  textStylesHeader.characters = "Text Styles";
-  textStylesMasterFrame.appendChild(textStylesHeader);
+  addHeaderToFrame("Text Styles", textStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  let effectStyleFrames = buildTextStyleFrames(
-    localTextStyles,
-    textStylesMasterFrame
-  );
+  buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildSample);
+  //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
+
+  // Add style frame to main frame
+  mainFrame.appendChild(textStylesMasterFrame);
 }
 
 export { generateLocalTextStylesDoc };
