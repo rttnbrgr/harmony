@@ -39,15 +39,41 @@ export function applyStyleFrameStyles(frameName: FrameName) {
   return frame;
 }
 
+// This shouldnt run if the frame exists
 export function positionMainFrame(mainFrame: FrameNode) {
+  const horizontalOffset = 100;
+  const verticalOffset = 0;
+
   let x = 0;
-  // TODO JT find the current/selected page
-  (figma.getNodeById(figma.root.children[0].id) as PageNode).children
+  let y = 0;
+
+  const currentPage: PageNode = figma.currentPage;
+
+  // Traverse nodes to find edges
+  currentPage.children
     // make sure we don't count the mainFrame
-    .filter((child) => child?.id !== mainFrame.id)
+    .filter((child) => {
+      console.log("child", child);
+      return child?.id !== mainFrame.id;
+    })
     // find the farthest right node + its width
-    .forEach((child) => (x = Math.max(x, child.x + child.width)));
-  mainFrame.x = x + 100;
+    // Find the top most point
+    .forEach((child) => {
+      console.log("child2", child);
+      console.log("x, child, width", x, child.x, child.width);
+      console.log("y, child, height", y, child.y, child.height);
+      x = Math.max(x, child.x + child.width);
+      y = Math.min(y, child.y);
+    });
+
+  console.log("x, y", x, y);
+  console.log("figma.root.children", figma.root.children);
+
+  // Set mainframe position
+  mainFrame.x = x + horizontalOffset;
+  mainFrame.y = y + verticalOffset;
+
+  // Zoom + Scroll
   figma.viewport.scrollAndZoomIntoView([mainFrame]);
 }
 
