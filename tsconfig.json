@@ -5,7 +5,7 @@
     "jsx": "react",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
+    "baseUrl": "packages/docs/src",
     "paths": {
       "test-utils": ["./utils/test-utils"]
     }
