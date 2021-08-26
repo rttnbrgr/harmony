@@ -46,8 +46,8 @@ export function positionMainFrame(mainFrame: FrameNode) {
   const horizontalOffset = 100;
   const verticalOffset = 0;
 
-  let x = 0;
-  let y = 0;
+  let x = null;
+  let y = null;
 
   const currentPage: PageNode = figma.currentPage;
 
@@ -64,8 +64,10 @@ export function positionMainFrame(mainFrame: FrameNode) {
       console.log("child2", child);
       console.log("x, child, width", x, child.x, child.width);
       console.log("y, child, height", y, child.y, child.height);
-      x = Math.max(x, child.x + child.width);
-      y = Math.min(y, child.y);
+      const potentialX = child.x + child.width;
+      const potentialY = child.y;
+      x = x ? Math.max(x, potentialX) : potentialX;
+      y = y ? Math.min(y, potentialY) : potentialY;
     });
 
   console.log("x, y", x, y);
