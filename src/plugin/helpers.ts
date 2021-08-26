@@ -7,6 +7,7 @@ export function getStoredFrame(frameName: FrameName) {
   if (!frameId || !frame) {
     const frame = figma.createFrame();
     figma.root.setPluginData(frameName, frame.id);
+    positionMainFrame(frame);
     return frame;
   }
 
@@ -40,6 +41,7 @@ export function applyStyleFrameStyles(frameName: FrameName) {
 }
 
 // This shouldnt run if the frame exists
+// Position the frame to the farthest right and top point
 export function positionMainFrame(mainFrame: FrameNode) {
   const horizontalOffset = 100;
   const verticalOffset = 0;
