@@ -68,18 +68,21 @@ if (figma.command === "BUILD_PAINT_STYLES") {
    *
    * figma.closePlugin();
    **/
+  figma.viewport.scrollAndZoomIntoView([mainFrame]);
   figma.closePlugin();
 }
 
 if (figma.command === "BUILD_TEXT_STYLES") {
   console.log("create text styles");
   generateLocalTextStylesDoc(mainFrame);
+  figma.viewport.scrollAndZoomIntoView([mainFrame]);
   figma.closePlugin();
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
   console.log("create effect styles");
   generateLocalEffectStylesDoc(mainFrame);
+  figma.viewport.scrollAndZoomIntoView([mainFrame]);
   figma.closePlugin();
 }
 
@@ -88,6 +91,7 @@ if (figma.command === "BUILD_ALL_STYLES") {
   generateLocalTextStylesDoc(mainFrame);
   generateLocalPaintStylesDoc(mainFrame);
   generateLocalEffectStylesDoc(mainFrame);
+  figma.viewport.scrollAndZoomIntoView([mainFrame]);
   figma.closePlugin();
 }
 

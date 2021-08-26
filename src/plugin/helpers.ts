@@ -74,9 +74,6 @@ export function positionMainFrame(mainFrame: FrameNode) {
   // Set mainframe position
   mainFrame.x = x + horizontalOffset;
   mainFrame.y = y + verticalOffset;
-
-  // Zoom + Scroll
-  figma.viewport.scrollAndZoomIntoView([mainFrame]);
 }
 
 export function addHeaderToFrame(headerText: string, frame: FrameNode) {
