@@ -1,6 +1,6 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { applyMainFrameStyles, getStoredFrame, positionMainFrame } from "./helpers";
+import { getStoredFrame, positionMainFrame, MAIN_FRAME_KEY } from "./helpers";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
 // This file holds the main code for the plugins. It has access to the *document*.
@@ -8,8 +8,7 @@ import { generateLocalTextStylesDoc } from "./textStyles";
 // full browser environment (see documentation).
 
 // Setup the frame first
-const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-applyMainFrameStyles(mainFrame);
+const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
 
 if (figma.command === "CONFIG") {
   console.log("CONFIG");

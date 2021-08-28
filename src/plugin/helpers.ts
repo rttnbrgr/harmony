@@ -1,20 +1,37 @@
 import { FrameName } from "./types";
 
+export const MAIN_FRAME_KEY = "MainFrame";
+
 export function getStoredFrame(frameName: FrameName) {
+  console.log("getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 
   if (!frameId || !frame) {
-    const frame = figma.createFrame();
-    figma.root.setPluginData(frameName, frame.id);
-    positionMainFrame(frame);
-    return frame;
+    console.log("no frame", frameId, frame);
+    const newFrame = figma.createFrame();
+    figma.root.setPluginData(frameName, newFrame.id);
+
+    /**
+     * For the Main frame:
+     * Considered moving this to its own function
+     * but it shares all of the logic
+     * just adds an additional position + style bootstrap
+     */
+    if (frameName === MAIN_FRAME_KEY) {
+      positionMainFrame(newFrame);
+      applyMainFrameStyles(newFrame);
+    }
+
+    return newFrame;
   }
 
   return frame;
 }
 
 export function applyMainFrameStyles(mainFrame: FrameNode) {
+  console.log("applyMainFrameStyles");
+  console.log("mainFrame", mainFrame);
   mainFrame.layoutMode = "HORIZONTAL";
   mainFrame.counterAxisSizingMode = "AUTO";
   mainFrame.itemSpacing = 16;
