@@ -95,8 +95,8 @@ if (figma.command === "BUILD_EFFECT_STYLES") {
 
 if (figma.command === "BUILD_ALL_STYLES") {
   console.log("create ALL styles");
-  const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   const textStylePromise = generateLocalTextStylesDoc(mainFrame);
+  const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
   Promise.all([paintStylePromise, textStylePromise, effectStylePromise]).then((v) => {
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
