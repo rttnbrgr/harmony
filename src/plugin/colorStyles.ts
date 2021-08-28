@@ -202,8 +202,22 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // Build the style frames and append them to the master artboard
   buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
 
+  // Check if textStyles frame exists
+  // This feels brittle
+  const textStylesFrameExists = mainFrame.findChildren((x) => {
+    console.log("child", x);
+    console.log("child name", x.name);
+    return x.name === "Text Styles";
+  }).length;
+  console.log("textStylesFrameExists", textStylesFrameExists);
+
+  // Based on this, set insert position
+  const insertPosition = textStylesFrameExists ? 1 : 0;
+  console.log("insertPosition", insertPosition);
+
   // Add style frame to main frame
-  mainFrame.appendChild(paintStylesMasterFrame);
+  // Either at the beginning or after the text styles
+  mainFrame.insertChild(insertPosition, paintStylesMasterFrame);
 }
 
 export {
