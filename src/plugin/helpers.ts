@@ -55,23 +55,15 @@ export function positionMainFrame(mainFrame: FrameNode) {
   currentPage.children
     // make sure we don't count the mainFrame
     .filter((child) => {
-      console.log("child", child);
       return child?.id !== mainFrame.id;
     })
-    // find the farthest right node + its width
-    // Find the top most point
+    // Find the farthest right node + its width && Find the top most point
     .forEach((child) => {
-      console.log("child2", child);
-      console.log("x, child, width", x, child.x, child.width);
-      console.log("y, child, height", y, child.y, child.height);
       const potentialX = child.x + child.width;
       const potentialY = child.y;
       x = x ? Math.max(x, potentialX) : potentialX;
       y = y ? Math.min(y, potentialY) : potentialY;
     });
-
-  console.log("x, y", x, y);
-  console.log("figma.root.children", figma.root.children);
 
   // Set mainframe position
   mainFrame.x = x + horizontalOffset;
