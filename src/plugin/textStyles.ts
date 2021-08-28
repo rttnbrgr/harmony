@@ -95,7 +95,8 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
 
   // Add style frame to main frame
-  mainFrame.appendChild(textStylesMasterFrame);
+  // Always the first child
+  mainFrame.insertChild(0, textStylesMasterFrame);
 }
 
 export { generateLocalTextStylesDoc };
