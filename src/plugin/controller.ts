@@ -61,40 +61,47 @@ if (figma.command === "CONFIG") {
 
 if (figma.command === "BUILD_PAINT_STYLES") {
   console.log("create color styles");
-  generateLocalPaintStylesDoc(mainFrame);
+  const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   /*
    * Commands should close the plugin
    * Leaving this commented out for debug purposes
    *
    * figma.closePlugin();
    **/
-  figma.viewport.scrollAndZoomIntoView([mainFrame]);
-  figma.closePlugin();
+  Promise.all([paintStylePromise]).then((v) => {
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
 
 if (figma.command === "BUILD_TEXT_STYLES") {
   console.log("create text styles");
-  generateLocalTextStylesDoc(mainFrame);
-  figma.viewport.scrollAndZoomIntoView([mainFrame]);
-  figma.closePlugin();
+  const textStylePromise = generateLocalTextStylesDoc(mainFrame);
+  Promise.all([textStylePromise]).then((v) => {
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
   console.log("create effect styles");
-  generateLocalEffectStylesDoc(mainFrame);
-  figma.viewport.scrollAndZoomIntoView([mainFrame]);
-  figma.closePlugin();
+  const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
+  Promise.all([effectStylePromise]).then((v) => {
+    console.log("promise.all", v);
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
 
 if (figma.command === "BUILD_ALL_STYLES") {
   console.log("create ALL styles");
-  generateLocalTextStylesDoc(mainFrame);
-  generateLocalPaintStylesDoc(mainFrame);
-  generateLocalEffectStylesDoc(mainFrame);
+  const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
+  const textStylePromise = generateLocalTextStylesDoc(mainFrame);
+  const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
+  Promise.all([paintStylePromise, textStylePromise, effectStylePromise]).then((v) => {
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
   figma.viewport.scrollAndZoomIntoView([mainFrame]);
   figma.closePlugin();
 }
-
-// Global logs
-// console.log("console", console);
-// console.log("figma", figma);
