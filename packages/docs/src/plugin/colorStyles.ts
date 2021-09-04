@@ -1,5 +1,5 @@
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
-import { buildComponentStyleSwatch } from "./new";
+import { buildComponentStyleSwatch, DOC_BLOCK_ROOT, DOC_BLOCK_SWATCH } from "./new";
 
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
@@ -193,9 +193,36 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
+  console.log("localPaintStyles", localPaintStyles);
 
   // Testing New
   buildComponentStyleSwatch();
+
+  // let testId = figma.root.getPluginData("DocBlockComponent");
+  let testId = figma.root.getPluginData(DOC_BLOCK_ROOT);
+  console.log("testId", testId);
+  if (testId) {
+    console.log("inside if");
+    const DocBlock = figma.getNodeById(testId) as ComponentNode;
+    console.log("DocBlock", DocBlock);
+    const fooId = DocBlock.getPluginData(DOC_BLOCK_SWATCH);
+    console.log("fooId", fooId);
+
+    let newDocBlock = DocBlock.createInstance();
+    newDocBlock.y = 100;
+    console.log("newDocBlock", newDocBlock);
+    // get the swatch
+    let newDocBlockSwatch = newDocBlock.findChild((node) => {
+      console.log("child", node);
+      console.log("child.id", node.id);
+      console.log("match?", node.id.endsWith(fooId));
+      return node.id.endsWith(fooId);
+    }) as RectangleNode;
+
+    // set it to the first local paint style
+    // colorStyleRect.fillStyleId = paintStyleId;
+    newDocBlockSwatch.fillStyleId = localPaintStyles[0].id;
+  }
 
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");

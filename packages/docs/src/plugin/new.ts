@@ -16,33 +16,35 @@ function addText(string: string = "Your new text", options: textOptions): TextNo
   return newText;
 }
 
+export const DOC_BLOCK_ROOT: string = "DocBlockComponent";
+export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";
+export const DOC_BLOCK_TITLE: string = "DocBlockTitle";
+export const DOC_BLOCK_SPEC: string = "DocBlockSpec";
+
 export function buildComponentStyleSwatch() {
   console.log("👋 buildComponentStyleSwatch", figma.viewport);
   // figma.viewport.center
 
   /**
-   * Build the symbol
+   * Config values
    */
-
-  // build a rect
-  // put it here
-  // const sampleX = 400;
-  // const sampleY = 0;
   const sampleX = figma.viewport.center.x;
   const sampleY = figma.viewport.center.y;
   const spacer = 8;
   const rectSize = spacer * 8;
   const textX = sampleX + rectSize + spacer;
 
-  // build the rect
+  /**
+   * Build the pieces
+   */
+
+  // Build the swatch
   // && put it in the cnter of the page
   const colorStyleRect = figma.createRectangle();
-  // colorStyleRect.x = sampleX;
-  // colorStyleRect.y = sampleY;
-  // colorStyleRect.fillStyleId = paintStyleId;
   colorStyleRect.resize(rectSize, rectSize);
   colorStyleRect.cornerRadius = spacer;
   // figma.currentPage.appendChild(colorStyleRect);
+  console.log("colorStyleRect", colorStyleRect);
 
   // Build title
   const TitleText = figma.createText();
@@ -57,12 +59,26 @@ export function buildComponentStyleSwatch() {
   // create teh text group
   const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
 
-  // Create the frame, append text + rect, position it
+  /**
+   * Build the component itself
+   */
+
+  // Create it
   const sampleComponent = figma.createComponent();
+
+  // Give it a name
+  sampleComponent.name = "Doc Block";
+  // Save it
+  figma.root.setPluginData(DOC_BLOCK_ROOT, sampleComponent.id);
 
   // Add component children
   sampleComponent.appendChild(colorStyleRect);
   sampleComponent.appendChild(textGroup);
+
+  // Save teh children refs
+  sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
+  sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
+  sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
 
   // Component Config Opinions
   sampleComponent.layoutMode = "HORIZONTAL";
