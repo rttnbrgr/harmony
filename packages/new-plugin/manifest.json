@@ -1,0 +1,7 @@
+{
+    "name": "@harmony/new-plugin",
+    "id": "991866272578143759",
+    "api": "1.0.0",
+    "main": "dist/code.js",
+    "ui": "dist/ui.html"
+}
