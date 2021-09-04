@@ -1,4 +1,5 @@
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
+import { buildComponentStyleSwatch } from "./new";
 
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
@@ -192,6 +193,9 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
+
+  // Testing New
+  buildComponentStyleSwatch();
 
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
