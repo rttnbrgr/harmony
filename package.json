@@ -1,59 +1,16 @@
 {
-    "name": "Harmonize",
+    "name": "Harmony",
     "version": "0.0.1",
     "description": "Your Figma plugin",
     "main": "code.js",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
     "scripts": {
-        "build": "webpack --mode=production",
-        "dev": "webpack --mode=development --watch",
-        "test": "jest",
-        "test:watch": "jest --watch",
-        "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\""
-    },
-    "author": "",
-    "license": "",
-    "devDependencies": {
-        "@figma/plugin-typings": "^1.25.0",
-        "@testing-library/react": "^12.0.0",
-        "@types/jest": "^26.0.24",
-        "@types/react": "^17.0.13",
-        "@types/react-dom": "^17.0.8",
-        "babel-jest": "^27.0.6",
-        "babel-plugin-styled-components": "^1.13.2",
-        "css-loader": "^5.0.1",
-        "eslint-plugin-progress": "github:taskworld/eslint-plugin-progress",
-        "eslint-plugin-react-hooks": "^4.2.0",
-        "html-webpack-inline-source-plugin": "^0.0.10",
-        "html-webpack-plugin": "^3.2.0",
-        "husky": "^7.0.1",
-        "jest": "^27.0.6",
-        "lint-staged": "^11.1.1",
-        "prettier-eslint": "^13.0.0",
-        "prettier-eslint-cli": "^5.0.1",
-        "react-dev-utils": "^11.0.4",
-        "style-loader": "^2.0.0",
-        "ts-jest": "^27.0.4",
-        "ts-loader": "^8.0.11",
-        "ts-node": "^10.1.0",
-        "typescript": "^4.1.2",
-        "url-loader": "^4.1.1",
-        "webpack": "^4.41.4",
-        "webpack-cli": "^3.3.6"
-    },
-    "dependencies": {
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "styled-components": "^5.3.0"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.(ts|tsx|json|js|scss)": [
-            "prettier-eslint --write $PWD/'**/*.{ts,tsx,js,json,scss,!snap}'",
-            "git add"
-        ]
+        "dev:docs": "yarn workspace @harmony/docs dev",
+        "build:docs": "yarn workspace @harmony/docs build",
+        "dev:np": "yarn workspace @harmony/new-plugin dev",
+        "build:np": "yarn workspace @harmony/new-plugin build"
     }
 }
