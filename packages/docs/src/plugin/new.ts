@@ -1,10 +1,11 @@
 import { getSpecString } from "./getSpec";
+import { addTextNew } from "./utils";
 
-function addTextNew(string: string = "Your new text"): TextNode {
-  const newText = figma.createText();
-  newText.characters = string;
-  return newText;
-}
+// function addTextNew(string: string = "Your new text"): TextNode {
+//   const newText = figma.createText();
+//   newText.characters = string;
+//   return newText;
+// }
 
 export const DOC_BLOCK_ROOT: string = "DocBlockComponent";
 export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";

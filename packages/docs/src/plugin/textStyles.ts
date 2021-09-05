@@ -1,4 +1,4 @@
-import { addText } from "./colorStyles";
+import { addText, addTextNew } from "./utils";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
@@ -48,17 +48,15 @@ function buildSample(textStyle: TextStyle) {
   const textX = sampleX + rectSize + spacer;
 
   // Build title
-  const textStyleTitleText = addText(textStyleName, {
-    x: textX,
-    y: sampleY,
-  });
+  const textStyleTitleText = addTextNew(textStyleName);
+  textStyleTitleText.x = textX;
+  textStyleTitleText.y = sampleY;
   textStyleTitleText.textStyleId = textStyleId;
 
   // Build spec
-  const textStyleSpecText = addText(textStyleSpec, {
-    x: textX,
-    y: sampleY + 14,
-  });
+  const textStyleSpecText = addTextNew(textStyleSpec);
+  textStyleTitleText.x = textX;
+  textStyleTitleText.y = sampleY + 14;
 
   // Create the frame, append text + rect, position it
   const sampleFrame = figma.createFrame();

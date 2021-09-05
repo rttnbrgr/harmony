@@ -1,5 +1,4 @@
-import { deriveRgbValue, isInt } from "./utils";
-import { addText } from "./colorStyles";
+import { deriveRgbValue, isInt, addText, addTextNew } from "./utils";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {
@@ -127,15 +126,14 @@ function buildSample(effectStyle: EffectStyle) {
   figma.currentPage.appendChild(colorStyleRect);
 
   // Build title
-  const colorStyleTitleText = addText(effectStyleName, {
-    x: textX,
-    y: sampleY,
-  });
+  const colorStyleTitleText = addTextNew(effectStyleName);
+  colorStyleTitleText.x = textX;
+  colorStyleTitleText.y = sampleY;
+
   // Build spec
-  const colorStyleSpecText = addText(effectStyleSpec, {
-    x: textX,
-    y: sampleY + 14,
-  });
+  const colorStyleSpecText = addTextNew(effectStyleSpec);
+  colorStyleSpecText.x = textX;
+  colorStyleSpecText.y = sampleY + 14;
 
   // Group text nodes
   const textGroup = figma.group([colorStyleTitleText, colorStyleSpecText], figma.currentPage);

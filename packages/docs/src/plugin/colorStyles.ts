@@ -1,24 +1,6 @@
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 import { buildComponentStyleSwatch, buildStyleFramesNew, createColorStyleDocBlockInstance } from "./new";
 
-type textOptions = {
-  x: number;
-  y: number;
-};
-
-function addText(string: string = "Your new text", options: textOptions): TextNode {
-  const newText = figma.createText();
-  newText.characters = string;
-  if (options.x) {
-    newText.x = options.x;
-  }
-  if (options.y) {
-    newText.y = options.y;
-  }
-  figma.currentPage.appendChild(newText);
-  return newText;
-}
-
 function getColorStylesFrameInsertPosition(mainFrame: FrameNode) {
   // Check if textStyles frame exists
   // This feels brittle
@@ -64,7 +46,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   mainFrame.insertChild(insertPosition, paintStylesMasterFrame);
 }
 
-export { generateLocalPaintStylesDoc, addText };
+export { generateLocalPaintStylesDoc };
 
 // Multi fill
 // opacity on solid paint fill
