@@ -212,3 +212,18 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
 
   return DocBlockComponentInstance;
 }
+
+export function buildStyleFramesNew<StyleType>(
+  stylesArray: Array<StyleType>,
+  frame: FrameNode,
+  // buildSample: (styleType: StyleType) => FrameNode,
+  buildSample: (styleType: StyleType) => InstanceNode
+) {
+  console.log("buildStyleFramesNew");
+  stylesArray.forEach((styleType, i) => {
+    // Build each
+    const styleFrameItem = buildSample(styleType);
+    // Add to StyleFrame
+    frame.appendChild(styleFrameItem);
+  });
+}

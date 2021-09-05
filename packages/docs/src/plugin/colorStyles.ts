@@ -1,5 +1,11 @@
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
-import { buildComponentStyleSwatch, createColorStyleDocBlockInstance, DOC_BLOCK_ROOT, DOC_BLOCK_SWATCH } from "./new";
+import {
+  buildComponentStyleSwatch,
+  buildStyleFramesNew,
+  createColorStyleDocBlockInstance,
+  DOC_BLOCK_ROOT,
+  DOC_BLOCK_SWATCH,
+} from "./new";
 
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
@@ -243,10 +249,6 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const localPaintStyles = figma.getLocalPaintStyles();
   // console.log("localPaintStyles", localPaintStyles);
 
-  // Testing New
-  buildComponentStyleSwatch();
-  createColorStyleDocBlockInstance(localPaintStyles[2]);
-
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
 
@@ -254,7 +256,12 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   addHeaderToFrame("Color Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+  // buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+
+  // Testing New --------------------------------------------------------------------------------------------
+  buildComponentStyleSwatch();
+  createColorStyleDocBlockInstance(localPaintStyles[2]);
+  buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesMasterFrame, createColorStyleDocBlockInstance);
 
   // Get insert position
   const insertPosition = getColorStylesFrameInsertPosition(mainFrame);
