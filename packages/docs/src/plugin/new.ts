@@ -114,6 +114,29 @@ function getSpecStringFromPaint(paint: Paint) {
   }
 }
 
+function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
+  let specString = "";
+  if (style.type === "TEXT" || style.type === "EFFECT") {
+    // currently unsupported
+    specString = "Not paint style";
+    return specString;
+  }
+  // Paint styles only, here
+  // Logic to build spec string
+  let isSingleFill = style.paints.length === 1 ? true : false;
+
+  // if multifill, short circuit
+  if (!isSingleFill) {
+    specString = "Multiple Fills";
+    return specString;
+  }
+
+  // For single fills
+  let firstPaint = style.paints[0];
+  specString = getSpecStringFromPaint(firstPaint);
+  return specString;
+}
+
 function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {
   // Lookup the ID
   const DocBlockSwatch = masterComponent.getPluginData(DOC_BLOCK_SWATCH);
@@ -169,28 +192,7 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   // let paintStyleSpec = "";
   const { name: paintStyleName, id: paintStyleId, paints } = paintStyle;
   console.log("🎨 ", paintStyleName, paintStyleId);
-  let paintStyleSpec = "";
-  // console.log(paintStyle);
-
-  /*
-   * Logic to build spec string
-   */
-
-  // safety checking
-  let isSolid = true;
-  let isSingleFill = paintStyle.paints.length === 1 ? true : false;
-
-  // if multifill, short circuit
-  if (!isSingleFill) {
-    paintStyleSpec = "Multiple Fills";
-    // short circuit
-    // return paintStyleSpec;
-  }
-
-  if (isSingleFill) {
-    let firstPaint = paints[0];
-    paintStyleSpec = getSpecStringFromPaint(firstPaint);
-  }
+  let paintStyleSpec = getSpecString(paintStyle);
 
   console.log("spec:", paintStyleSpec);
   console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
@@ -217,6 +219,7 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   /**
    * Create and update instance
    */
+
   // Create instance
   const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
   DocBlockComponentInstance.y = 200;
