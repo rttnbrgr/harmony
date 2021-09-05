@@ -1,5 +1,5 @@
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
-import { buildComponentStyleSwatch, DOC_BLOCK_ROOT, DOC_BLOCK_SWATCH } from "./new";
+import { buildComponentStyleSwatch, createColorStyleDocBlockInstance, DOC_BLOCK_ROOT, DOC_BLOCK_SWATCH } from "./new";
 
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
@@ -222,6 +222,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // Testing New
   buildComponentStyleSwatch();
 
+  createColorStyleDocBlockInstance(localPaintStyles[0]);
   // let testId = figma.root.getPluginData("DocBlockComponent");
   let testId = figma.root.getPluginData(DOC_BLOCK_ROOT);
   // console.log("testId", testId);
