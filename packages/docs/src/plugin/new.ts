@@ -56,6 +56,8 @@ export function buildComponentStyleSwatch() {
   // Build title
   const TitleText = figma.createText();
   TitleText.characters = "Style Title";
+  console.log("TitleText", TitleText);
+  console.log("TitleText ID", TitleText.id);
 
   // Build spec
   const SpecText = figma.createText();
@@ -85,6 +87,8 @@ export function buildComponentStyleSwatch() {
   // Save teh children refs
   sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
   sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
+  const test = sampleComponent.getPluginData(DOC_BLOCK_TITLE);
+  console.log("test", test);
   sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
 
   // Component Config Opinions
@@ -97,6 +101,31 @@ export function buildComponentStyleSwatch() {
 
   sampleComponent.resizeWithoutConstraints(sampleFrameWidth, rectSize);
   // console.log("sampleFrame", sampleFrame);
+}
+
+/**
+ *
+ * @param paint
+ * @returns string
+ */
+function getSpecStringFromPaint(paint: Paint) {
+  let specString;
+
+  // Image Fills
+  if (paint.type === "IMAGE") {
+    specString = `Image fill`;
+    return specString;
+  }
+  // Solid Fills
+  else if (paint.type === "SOLID") {
+    specString = getSpecStringFromSolidPaint(paint as SolidPaint);
+    return specString;
+  }
+  // Gradient Fills
+  else {
+    specString = getSpecStringFromGradiantPaint(paint as GradientPaint);
+    return specString;
+  }
 }
 
 /**
@@ -139,33 +168,13 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
     // return paintStyleSpec;
   }
 
-  let firstPaint = paints[0];
-
-  // Image Fills
-  if (firstPaint.type === "IMAGE") {
-    paintStyleSpec = `Image fill`;
-    // return paintStyleSpec;
-  }
-  // Solid Fills
-  else if (firstPaint.type === "SOLID") {
-    paintStyleSpec = getSpecStringFromSolidPaint(firstPaint);
-    // return paintStyleSpec;
-  } else {
-    /**
-     * For Gradient fills
-     * ---
-     * "GRADIENT_LINEAR" | "GRADIENT_RADIAL" | "GRADIENT_ANGULAR" | "GRADIENT_DIAMOND"
-     */
-    // const gradiantStopsString = firstPaint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
-    // console.log("gradiantStopsString", gradiantStopsString);
-    // paintStyleSpec = `RGBA: ${gradiantStopsString}`;
-    paintStyleSpec = getSpecStringFromGradiantPaint(firstPaint);
-    // paintStyleSpec = `Gradient Fill`;
-    // return paintStyleSpec;
+  if (isSingleFill) {
+    let firstPaint = paints[0];
+    paintStyleSpec = getSpecStringFromPaint(firstPaint);
   }
 
-  // if (isSingleFill && firstPaint.type !== "SOLID") {
-  //   isSolid = false;
+  console.log("spec:", paintStyleSpec);
+  console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
   // // put it here
   // const sampleX = 400;
@@ -220,6 +229,4 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   // // console.log("sampleFrame", sampleFrame);
 
   // return sampleFrame;
-  console.log("spec:", paintStyleSpec);
-  console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 }
