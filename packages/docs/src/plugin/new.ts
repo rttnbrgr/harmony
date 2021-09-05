@@ -16,18 +16,25 @@ export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";
 export const DOC_BLOCK_TITLE: string = "DocBlockTitle";
 export const DOC_BLOCK_SPEC: string = "DocBlockSpec";
 
+const spacer = 8;
+
+const DocBlockConfig = {
+  x: figma.viewport.center.x,
+  y: figma.viewport.center.y,
+  layoutMode: "HORIZONTAL" as "NONE" | "HORIZONTAL" | "VERTICAL",
+  itemSpacing: spacer,
+  counterAxisAlignItems: "CENTER" as "MIN" | "MAX" | "CENTER",
+  counterAxisSizingMode: "AUTO" as "FIXED" | "AUTO",
+};
+
+const DocBlockSwatchConfig = {
+  size: spacer * 8,
+  cornerRadius: spacer,
+};
+
 export function buildComponentStyleSwatch() {
   console.log("👋 buildComponentStyleSwatch", figma.viewport);
   // figma.viewport.center
-
-  /**
-   * Config values
-   */
-  const sampleX = figma.viewport.center.x;
-  const sampleY = figma.viewport.center.y;
-  const spacer = 8;
-  const rectSize = spacer * 8;
-  const textX = sampleX + rectSize + spacer;
 
   /**
    * Build the pieces
@@ -36,8 +43,9 @@ export function buildComponentStyleSwatch() {
   // Build the swatch
   // && put it in the cnter of the page
   const colorStyleRect = figma.createRectangle();
-  colorStyleRect.resize(rectSize, rectSize);
-  colorStyleRect.cornerRadius = spacer;
+  colorStyleRect.resize(DocBlockSwatchConfig.size, DocBlockSwatchConfig.size);
+  colorStyleRect.resize(21, 55);
+  colorStyleRect.cornerRadius = DocBlockSwatchConfig.cornerRadius;
   // figma.currentPage.appendChild(colorStyleRect);
   console.log("colorStyleRect", colorStyleRect);
 
@@ -59,10 +67,11 @@ export function buildComponentStyleSwatch() {
    */
 
   // Create it
-  const sampleComponent = figma.createComponent();
+  const sampleComponent: ComponentNode = figma.createComponent();
 
   // Give it a name
   sampleComponent.name = "Doc Block";
+
   // Save it
   figma.root.setPluginData(DOC_BLOCK_ROOT, sampleComponent.id);
 
@@ -78,15 +87,12 @@ export function buildComponentStyleSwatch() {
   sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
 
   // Component Config Opinions
-  sampleComponent.layoutMode = "HORIZONTAL";
-  sampleComponent.itemSpacing = 8;
-  sampleComponent.counterAxisAlignItems = "CENTER";
-  sampleComponent.x = sampleX;
-  let getSampleFrameWidth = () => sampleComponent.width;
-  let sampleFrameWidth = getSampleFrameWidth();
-
-  sampleComponent.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  // console.log("sampleFrame", sampleFrame);
+  sampleComponent.x = DocBlockConfig.x;
+  sampleComponent.layoutMode = DocBlockConfig.layoutMode;
+  sampleComponent.itemSpacing = DocBlockConfig.itemSpacing;
+  sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
+  sampleComponent.counterAxisSizingMode = DocBlockConfig.counterAxisSizingMode;
+  sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
 }
 
 /**
