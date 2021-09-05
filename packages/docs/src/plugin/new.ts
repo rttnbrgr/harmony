@@ -176,6 +176,54 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   console.log("spec:", paintStyleSpec);
   console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
+  // At this point, we have our spec, name, and id
+
+  /**
+   * Get all the references from the root component instance
+   */
+
+  // Get id
+  const DocBlockId = figma.root.getPluginData(DOC_BLOCK_ROOT);
+  // Get global ref
+  const DocBlockComponentMaster = figma.getNodeById(DocBlockId) as ComponentNode;
+  // Get refs
+  const DocBlockSwatch = DocBlockComponentMaster.getPluginData(DOC_BLOCK_SWATCH);
+  const DocBlockTitle = DocBlockComponentMaster.getPluginData(DOC_BLOCK_TITLE);
+  const DocBlockSpec = DocBlockComponentMaster.getPluginData(DOC_BLOCK_SPEC);
+  console.log("DocBlockId", DocBlockId);
+  console.log("DocBlockSwatch", DocBlockSwatch);
+  console.log("DocBlockTitle", DocBlockTitle);
+  console.log("DocBlockSpec", DocBlockSpec);
+
+  /**
+   * Create and update instance
+   */
+  // Create instance
+  const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
+  DocBlockComponentInstance.y = 200;
+
+  // Get swatch
+  let swatch = DocBlockComponentInstance.findChild((node) => {
+    return node.id.endsWith(DocBlockSwatch);
+  }) as RectangleNode;
+  // Apply swatch
+  swatch.fillStyleId = paintStyleId;
+
+  // Get name
+  let title = DocBlockComponentInstance.findOne((node) => {
+    return node.id.endsWith(DocBlockTitle);
+  }) as TextNode;
+  console.log("title", title);
+  // Apply name
+  title.characters = paintStyleName;
+
+  // Get spec
+  let spec = DocBlockComponentInstance.findOne((node) => {
+    return node.id.endsWith(DocBlockSpec);
+  }) as TextNode;
+  // Apply spec
+  spec.characters = paintStyleSpec;
+
   // // put it here
   // const sampleX = 400;
   // const sampleY = 0;
@@ -229,4 +277,5 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   // // console.log("sampleFrame", sampleFrame);
 
   // return sampleFrame;
+  return DocBlockComponentInstance;
 }

@@ -104,6 +104,7 @@ function addText(string: string = "Your new text", options: textOptions): TextNo
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 function buildSample(paintStyle: PaintStyle) {
+  console.log("build sample");
   if (!paintStyle) {
     return;
   }
@@ -227,33 +228,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Testing New
   buildComponentStyleSwatch();
-
-  createColorStyleDocBlockInstance(localPaintStyles[0]);
-  // let testId = figma.root.getPluginData("DocBlockComponent");
-  let testId = figma.root.getPluginData(DOC_BLOCK_ROOT);
-  // console.log("testId", testId);
-  if (testId) {
-    // console.log("inside if");
-    const DocBlock = figma.getNodeById(testId) as ComponentNode;
-    // console.log("DocBlock", DocBlock);
-    const fooId = DocBlock.getPluginData(DOC_BLOCK_SWATCH);
-    // console.log("fooId", fooId);
-
-    let newDocBlock = DocBlock.createInstance();
-    newDocBlock.y = 100;
-    // console.log("newDocBlock", newDocBlock);
-    // get the swatch
-    let newDocBlockSwatch = newDocBlock.findChild((node) => {
-      // console.log("child", node);
-      // console.log("child.id", node.id);
-      // console.log("match?", node.id.endsWith(fooId));
-      return node.id.endsWith(fooId);
-    }) as RectangleNode;
-
-    // set it to the first local paint style
-    // colorStyleRect.fillStyleId = paintStyleId;
-    newDocBlockSwatch.fillStyleId = localPaintStyles[0].id;
-  }
+  createColorStyleDocBlockInstance(localPaintStyles[2]);
 
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
