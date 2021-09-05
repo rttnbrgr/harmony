@@ -23,7 +23,6 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
-  // console.log("localPaintStyles", localPaintStyles);
 
   // SETUP MASTER ARTBOARD
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
@@ -49,7 +48,6 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 export { generateLocalPaintStylesDoc };
 
 // Multi fill
-// opacity on solid paint fill
 // Additional metadata (gradiant type)
 // different color modes
 // Better visual
