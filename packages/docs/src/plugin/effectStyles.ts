@@ -1,4 +1,4 @@
-import { deriveRgbValue, isInt, addText, addTextNew } from "./utils";
+import { deriveRgbValue, isInt, addTextNew } from "./utils";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {

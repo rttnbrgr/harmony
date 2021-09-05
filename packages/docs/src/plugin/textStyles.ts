@@ -1,4 +1,4 @@
-import { addText, addTextNew } from "./utils";
+import { addTextNew } from "./utils";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
