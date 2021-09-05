@@ -2,6 +2,7 @@ import {
   getOpacityStringFromSolidPaint,
   getColorStringFromSolidPaint,
   getSpecStringFromSolidPaint,
+  getSpecStringFromGradiantPaint,
 } from "./colorStyles";
 
 type textOptions = {
@@ -147,17 +148,6 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   }
   // Solid Fills
   else if (firstPaint.type === "SOLID") {
-    // // get color portion of spec
-    // let specStringTest = getRgbStringFromSolidPaint(firstPaint);
-    // // get opacity portion of spec
-    // let opacitySpecString = getOpacitySpecStringFromSolidPaint(firstPaint);
-    // // Stitch teh spec string together
-    // if (opacitySpecString) {
-    //   specStringTest += " @ ";
-    //   specStringTest += opacitySpecString;
-    // }
-    // paintStyleSpec = `Solid Fill`;
-    // paintStyleSpec = specStringTest;
     paintStyleSpec = getSpecStringFromSolidPaint(firstPaint);
     // return paintStyleSpec;
   } else {
@@ -166,25 +156,16 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
      * ---
      * "GRADIENT_LINEAR" | "GRADIENT_RADIAL" | "GRADIENT_ANGULAR" | "GRADIENT_DIAMOND"
      */
-    paintStyleSpec = `Gradient Fill`;
+    // const gradiantStopsString = firstPaint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
+    // console.log("gradiantStopsString", gradiantStopsString);
+    // paintStyleSpec = `RGBA: ${gradiantStopsString}`;
+    paintStyleSpec = getSpecStringFromGradiantPaint(firstPaint);
+    // paintStyleSpec = `Gradient Fill`;
     // return paintStyleSpec;
   }
 
   // if (isSingleFill && firstPaint.type !== "SOLID") {
   //   isSolid = false;
-
-  //   // For Gradient fills
-  //   // "GRADIENT_LINEAR" | "GRADIENT_RADIAL" | "GRADIENT_ANGULAR" | "GRADIENT_DIAMOND"
-  //   if (firstPaint.type !== "IMAGE") {
-  //     // let thisPaintStyle = paintStyle.paints[0];
-  //     console.log("firstPaint", firstPaint);
-  //     // thisPaintStyle.gradientStops.reduce()
-  //     const gradiantStopsString = firstPaint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
-  //     console.log("gradiantStopsString", gradiantStopsString);
-
-  //     paintStyleSpec = `RGBA: ${gradiantStopsString}`;
-  //   }
-  // }
 
   // // put it here
   // const sampleX = 400;
