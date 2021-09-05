@@ -114,6 +114,39 @@ function getSpecStringFromPaint(paint: Paint) {
   }
 }
 
+function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {
+  // Lookup the ID
+  const DocBlockSwatch = masterComponent.getPluginData(DOC_BLOCK_SWATCH);
+
+  // Find swatch on the instance
+  let swatch = instanceComponent.findChild((node) => node.id.endsWith(DocBlockSwatch)) as RectangleNode;
+
+  // Apply swatch
+  swatch.fillStyleId = styleId;
+}
+
+function updateInstanceTitle(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleName: string) {
+  // Lookup the ID
+  const DocBlockTitle = masterComponent.getPluginData(DOC_BLOCK_TITLE);
+
+  // Find title on the instance
+  let title = instanceComponent.findOne((node) => node.id.endsWith(DocBlockTitle)) as TextNode;
+
+  // Apply name
+  title.characters = styleName;
+}
+
+function updateInstanceSpec(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleSpec: string) {
+  // Lookup the ID
+  const DocBlockSpec = masterComponent.getPluginData(DOC_BLOCK_SPEC);
+
+  // Find spec on the instance
+  let spec = instanceComponent.findOne((node) => node.id.endsWith(DocBlockSpec)) as TextNode;
+
+  // Apply spec
+  spec.characters = styleSpec;
+}
+
 /**
  * setup a new build sample func
  */
@@ -188,27 +221,10 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
   DocBlockComponentInstance.y = 200;
 
-  // Get swatch
-  let swatch = DocBlockComponentInstance.findChild((node) => {
-    return node.id.endsWith(DocBlockSwatch);
-  }) as RectangleNode;
-  // Apply swatch
-  swatch.fillStyleId = paintStyleId;
-
-  // Get name
-  let title = DocBlockComponentInstance.findOne((node) => {
-    return node.id.endsWith(DocBlockTitle);
-  }) as TextNode;
-  console.log("title", title);
-  // Apply name
-  title.characters = paintStyleName;
-
-  // Get spec
-  let spec = DocBlockComponentInstance.findOne((node) => {
-    return node.id.endsWith(DocBlockSpec);
-  }) as TextNode;
-  // Apply spec
-  spec.characters = paintStyleSpec;
+  // Update Instance
+  updateInstanceSwatch(DocBlockComponentMaster, DocBlockComponentInstance, paintStyleId);
+  updateInstanceTitle(DocBlockComponentMaster, DocBlockComponentInstance, paintStyleName);
+  updateInstanceSpec(DocBlockComponentMaster, DocBlockComponentInstance, paintStyleSpec);
 
   return DocBlockComponentInstance;
 }
