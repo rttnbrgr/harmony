@@ -40,7 +40,7 @@ export function applyMainFrameStyles(mainFrame: FrameNode) {
   mainFrame.paddingLeft = 32;
 }
 
-export function applyStyleFrameStyles(frameName: FrameName) {
+export function boostrapStyleDocFrame(frameName: FrameName) {
   const frame = getStoredFrame(frameName) as FrameNode;
   // remove previous children
   frame.children.map((child) => child.remove());

@@ -1,4 +1,4 @@
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
+import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
 import { buildComponentStyleSwatch, buildStyleFramesNew, createColorStyleDocBlockInstance } from "./new";
 
 function getColorStylesFrameInsertPosition(mainFrame: FrameNode) {
@@ -25,7 +25,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
+  const paintStylesMasterFrame = boostrapStyleDocFrame("ColorStylesFrame");
 
   // Add header
   addHeaderToFrame("Color Styles", paintStylesMasterFrame);

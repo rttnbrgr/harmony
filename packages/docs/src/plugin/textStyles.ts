@@ -1,5 +1,5 @@
 import { addText } from "./utils";
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
+import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
@@ -82,7 +82,7 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   const localTextStyles = figma.getLocalTextStyles();
 
   // SETUP MASTER ARTBOARD
-  const textStylesMasterFrame = applyStyleFrameStyles("TextStylesFrame");
+  const textStylesMasterFrame = boostrapStyleDocFrame("TextStylesFrame");
   // Add name; for use in checking for this frames existence
   textStylesMasterFrame.name = "Text Styles";
 

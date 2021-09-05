@@ -1,5 +1,5 @@
 import { deriveRgbValue, isInt, addText } from "./utils";
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
+import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
@@ -162,7 +162,7 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   const localEffectStyles = figma.getLocalEffectStyles();
 
   // SETUP MASTER ARTBOARD
-  const effectStylesMasterFrame = applyStyleFrameStyles("EffectStylesFrame");
+  const effectStylesMasterFrame = boostrapStyleDocFrame("EffectStylesFrame");
 
   // Add header
   addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
