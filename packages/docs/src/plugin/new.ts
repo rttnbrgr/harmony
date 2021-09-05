@@ -185,15 +185,14 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
 
   /**
    * Destruct the important values from the paintStyle
+   * Also genrate the spec string
    */
 
-  // const paintStyleName = paintStyle.name;
-  // const paintStyleId = paintStyle.id;
-  // let paintStyleSpec = "";
   const { name: paintStyleName, id: paintStyleId, paints } = paintStyle;
-  console.log("🎨 ", paintStyleName, paintStyleId);
   let paintStyleSpec = getSpecString(paintStyle);
 
+  // Logs
+  console.log("🎨 ", paintStyleName, paintStyleId);
   console.log("spec:", paintStyleSpec);
   console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
@@ -203,18 +202,11 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
    * Get all the references from the root component instance
    */
 
-  // Get id
+  // Get master id
   const DocBlockId = figma.root.getPluginData(DOC_BLOCK_ROOT);
-  // Get global ref
+  // Get master node
   const DocBlockComponentMaster = figma.getNodeById(DocBlockId) as ComponentNode;
-  // Get refs
-  const DocBlockSwatch = DocBlockComponentMaster.getPluginData(DOC_BLOCK_SWATCH);
-  const DocBlockTitle = DocBlockComponentMaster.getPluginData(DOC_BLOCK_TITLE);
-  const DocBlockSpec = DocBlockComponentMaster.getPluginData(DOC_BLOCK_SPEC);
-  console.log("DocBlockId", DocBlockId);
-  console.log("DocBlockSwatch", DocBlockSwatch);
-  console.log("DocBlockTitle", DocBlockTitle);
-  console.log("DocBlockSpec", DocBlockSpec);
+  console.log("DocBlockComponentMaster", DocBlockComponentMaster);
 
   /**
    * Create and update instance
