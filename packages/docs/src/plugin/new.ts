@@ -1,9 +1,4 @@
-import {
-  getOpacityStringFromSolidPaint,
-  getColorStringFromSolidPaint,
-  getSpecStringFromSolidPaint,
-  getSpecStringFromGradiantPaint,
-} from "./colorStyles";
+import { getSpecString } from "./getSpec";
 
 function addTextNew(string: string = "Your new text"): TextNode {
   const newText = figma.createText();
@@ -95,54 +90,6 @@ export function buildComponentStyleSwatch() {
   sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
   sampleComponent.counterAxisSizingMode = DocBlockConfig.counterAxisSizingMode;
   sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
-}
-
-/**
- *
- * @param paint
- * @returns string
- */
-function getSpecStringFromPaint(paint: Paint) {
-  let specString;
-
-  // Image Fills
-  if (paint.type === "IMAGE") {
-    specString = `Image fill`;
-    return specString;
-  }
-  // Solid Fills
-  else if (paint.type === "SOLID") {
-    specString = getSpecStringFromSolidPaint(paint as SolidPaint);
-    return specString;
-  }
-  // Gradient Fills
-  else {
-    specString = getSpecStringFromGradiantPaint(paint as GradientPaint);
-    return specString;
-  }
-}
-
-function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
-  let specString = "";
-  if (style.type === "TEXT" || style.type === "EFFECT") {
-    // currently unsupported
-    specString = "Not paint style";
-    return specString;
-  }
-  // Paint styles only, here
-  // Logic to build spec string
-  let isSingleFill = style.paints.length === 1 ? true : false;
-
-  // if multifill, short circuit
-  if (!isSingleFill) {
-    specString = "Multiple Fills";
-    return specString;
-  }
-
-  // For single fills
-  let firstPaint = style.paints[0];
-  specString = getSpecStringFromPaint(firstPaint);
-  return specString;
 }
 
 function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {
