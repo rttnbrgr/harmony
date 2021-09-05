@@ -5,21 +5,9 @@ import {
   getSpecStringFromGradiantPaint,
 } from "./colorStyles";
 
-type textOptions = {
-  x: number;
-  y: number;
-};
-
-function addText(string: string = "Your new text", options: textOptions): TextNode {
+function addTextNew(string: string = "Your new text"): TextNode {
   const newText = figma.createText();
   newText.characters = string;
-  if (options.x) {
-    newText.x = options.x;
-  }
-  if (options.y) {
-    newText.y = options.y;
-  }
-  figma.currentPage.appendChild(newText);
   return newText;
 }
 
@@ -54,14 +42,12 @@ export function buildComponentStyleSwatch() {
   console.log("colorStyleRect", colorStyleRect);
 
   // Build title
-  const TitleText = figma.createText();
-  TitleText.characters = "Style Title";
+  const TitleText = addTextNew("Style Title");
   console.log("TitleText", TitleText);
   console.log("TitleText ID", TitleText.id);
 
   // Build spec
-  const SpecText = figma.createText();
-  SpecText.characters = "Style Spec";
+  const SpecText = addTextNew("Style Spec");
   // need to add autolayout
   SpecText.y = 14;
 
