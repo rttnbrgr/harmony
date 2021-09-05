@@ -5,7 +5,7 @@ export function isInt(n: number) {
   return n % 1 === 0;
 }
 
-export function addTextNew(string: string = "Your new text"): TextNode {
+export function addText(string: string = "Your new text"): TextNode {
   const newText = figma.createText();
   newText.characters = string;
   return newText;

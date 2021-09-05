@@ -1,4 +1,4 @@
-import { addTextNew } from "./utils";
+import { addText } from "./utils";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 // Takes a paint style and returns a frame documenting that style
@@ -48,13 +48,13 @@ function buildSample(textStyle: TextStyle) {
   const textX = sampleX + rectSize + spacer;
 
   // Build title
-  const textStyleTitleText = addTextNew(textStyleName);
+  const textStyleTitleText = addText(textStyleName);
   textStyleTitleText.x = textX;
   textStyleTitleText.y = sampleY;
   textStyleTitleText.textStyleId = textStyleId;
 
   // Build spec
-  const textStyleSpecText = addTextNew(textStyleSpec);
+  const textStyleSpecText = addText(textStyleSpec);
   textStyleTitleText.x = textX;
   textStyleTitleText.y = sampleY + 14;
 

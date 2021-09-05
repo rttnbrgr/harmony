@@ -1,11 +1,5 @@
 import { getSpecString } from "./getSpec";
-import { addTextNew } from "./utils";
-
-// function addTextNew(string: string = "Your new text"): TextNode {
-//   const newText = figma.createText();
-//   newText.characters = string;
-//   return newText;
-// }
+import { addText } from "./utils";
 
 export const DOC_BLOCK_ROOT: string = "DocBlockComponent";
 export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";
@@ -59,12 +53,12 @@ export function buildComponentStyleSwatch() {
   console.log("colorStyleRect", colorStyleRect);
 
   // Build title
-  const TitleText = addTextNew("Style Title");
+  const TitleText = addText("Style Title");
   console.log("TitleText", TitleText);
   console.log("TitleText ID", TitleText.id);
 
   // Build spec
-  const SpecText = addTextNew("Style Spec");
+  const SpecText = addText("Style Spec");
   // need to add autolayout
   SpecText.y = 14;
 
