@@ -37,6 +37,19 @@ export function buildComponentStyleSwatch() {
   // figma.viewport.center
 
   /**
+   * Build the component itself
+   */
+
+  // Create it
+  const sampleComponent: ComponentNode = figma.createComponent();
+
+  // Give it a name
+  sampleComponent.name = "Doc Block";
+
+  // Save it
+  figma.root.setPluginData(DOC_BLOCK_ROOT, sampleComponent.id);
+
+  /**
    * Build the pieces
    */
 
@@ -59,32 +72,21 @@ export function buildComponentStyleSwatch() {
   // need to add autolayout
   SpecText.y = 14;
 
-  // create teh text group
+  // Save the children refs
+  sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
+  sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
+  sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
+
+  // Create the text group
   const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
 
   /**
-   * Build the component itself
+   * Add the pieces to the component
    */
-
-  // Create it
-  const sampleComponent: ComponentNode = figma.createComponent();
-
-  // Give it a name
-  sampleComponent.name = "Doc Block";
-
-  // Save it
-  figma.root.setPluginData(DOC_BLOCK_ROOT, sampleComponent.id);
 
   // Add component children
   sampleComponent.appendChild(colorStyleRect);
   sampleComponent.appendChild(textGroup);
-
-  // Save teh children refs
-  sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
-  sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
-  const test = sampleComponent.getPluginData(DOC_BLOCK_TITLE);
-  console.log("test", test);
-  sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
 
   // Component Config Opinions
   sampleComponent.x = DocBlockConfig.x;
