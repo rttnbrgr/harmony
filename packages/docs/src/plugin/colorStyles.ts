@@ -81,8 +81,8 @@ function buildSample(paintStyle: PaintStyle) {
   const paintStyleId = paintStyle.id;
   let paintStyleSpec = "";
 
-  console.log("🎨 ", paintStyleName);
-  console.log(paintStyle);
+  // console.log("🎨 ", paintStyleName);
+  // console.log(paintStyle);
 
   /*
    * Logic to build spec string
@@ -110,10 +110,10 @@ function buildSample(paintStyle: PaintStyle) {
     // "GRADIENT_LINEAR" | "GRADIENT_RADIAL" | "GRADIENT_ANGULAR" | "GRADIENT_DIAMOND"
     if (firstPaint.type !== "IMAGE") {
       // let thisPaintStyle = paintStyle.paints[0];
-      console.log("firstPaint", firstPaint);
+      // console.log("firstPaint", firstPaint);
       // thisPaintStyle.gradientStops.reduce()
       const gradiantStopsString = firstPaint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
-      console.log("gradiantStopsString", gradiantStopsString);
+      // console.log("gradiantStopsString", gradiantStopsString);
 
       paintStyleSpec = `RGBA: ${gradiantStopsString}`;
     }
@@ -129,7 +129,7 @@ function buildSample(paintStyle: PaintStyle) {
       specStringTest += opacitySpecString;
     }
 
-    console.log("specStringTest", specStringTest);
+    // console.log("specStringTest", specStringTest);
     paintStyleSpec = specStringTest;
   }
 
@@ -193,29 +193,29 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Get paint styles
   const localPaintStyles = figma.getLocalPaintStyles();
-  console.log("localPaintStyles", localPaintStyles);
+  // console.log("localPaintStyles", localPaintStyles);
 
   // Testing New
   buildComponentStyleSwatch();
 
   // let testId = figma.root.getPluginData("DocBlockComponent");
   let testId = figma.root.getPluginData(DOC_BLOCK_ROOT);
-  console.log("testId", testId);
+  // console.log("testId", testId);
   if (testId) {
-    console.log("inside if");
+    // console.log("inside if");
     const DocBlock = figma.getNodeById(testId) as ComponentNode;
-    console.log("DocBlock", DocBlock);
+    // console.log("DocBlock", DocBlock);
     const fooId = DocBlock.getPluginData(DOC_BLOCK_SWATCH);
-    console.log("fooId", fooId);
+    // console.log("fooId", fooId);
 
     let newDocBlock = DocBlock.createInstance();
     newDocBlock.y = 100;
-    console.log("newDocBlock", newDocBlock);
+    // console.log("newDocBlock", newDocBlock);
     // get the swatch
     let newDocBlockSwatch = newDocBlock.findChild((node) => {
-      console.log("child", node);
-      console.log("child.id", node.id);
-      console.log("match?", node.id.endsWith(fooId));
+      // console.log("child", node);
+      // console.log("child.id", node.id);
+      // console.log("match?", node.id.endsWith(fooId));
       return node.id.endsWith(fooId);
     }) as RectangleNode;
 
@@ -236,15 +236,15 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // Check if textStyles frame exists
   // This feels brittle
   const textStylesFrameExists = mainFrame.findChildren((x) => {
-    console.log("child", x);
-    console.log("child name", x.name);
+    // console.log("child", x);
+    // console.log("child name", x.name);
     return x.name === "Text Styles";
   }).length;
-  console.log("textStylesFrameExists", textStylesFrameExists);
+  // console.log("textStylesFrameExists", textStylesFrameExists);
 
   // Based on this, set insert position
   const insertPosition = textStylesFrameExists ? 1 : 0;
-  console.log("insertPosition", insertPosition);
+  // console.log("insertPosition", insertPosition);
 
   // Add style frame to main frame
   // Either at the beginning or after the text styles
