@@ -3,7 +3,6 @@ import { FrameName } from "./types";
 export const MAIN_FRAME_KEY = "MainFrame";
 
 export function getStoredFrame(frameName: FrameName) {
-  console.log("getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 

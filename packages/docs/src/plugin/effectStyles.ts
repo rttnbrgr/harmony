@@ -161,15 +161,12 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
 
   // Get effect styles
   const localEffectStyles = figma.getLocalEffectStyles();
-  console.log("localEffectStyles", localEffectStyles);
 
   // SETUP MASTER ARTBOARD
   const effectStylesMasterFrame = applyStyleFrameStyles("EffectStylesFrame");
 
   // Add header
   addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
-
-  console.log("before buildEffectStyleFrames");
 
   // Build the style frames and append them to the master artboard
   buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildSample, { x: 64 + 16, y: null });

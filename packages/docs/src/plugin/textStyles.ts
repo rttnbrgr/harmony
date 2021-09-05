@@ -82,7 +82,6 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
 
   // Get effect styles
   const localTextStyles = figma.getLocalTextStyles();
-  console.log("localEffectStyles", localTextStyles);
 
   // SETUP MASTER ARTBOARD
   const textStylesMasterFrame = applyStyleFrameStyles("TextStylesFrame");
