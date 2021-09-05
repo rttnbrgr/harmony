@@ -48,9 +48,33 @@ function buildPaintStyleSpecString(style: PaintStyle): string {
   return specString;
 }
 
-// Get opacity spec string
-function getOpacitySpecStringFromSolidPaint(paint: SolidPaint) {
+// get color string from a solid paint
+export const getColorStringFromSolidPaint = (paint: SolidPaint) => {
+  const rgbColor = paint.color;
+  const r = deriveRgbValue(rgbColor.r);
+  const g = deriveRgbValue(rgbColor.g);
+  const b = deriveRgbValue(rgbColor.b);
+  return `RGB: [${r}, ${g}, ${b}]`;
+};
+
+// Get opacity from a solid paint
+export function getOpacityStringFromSolidPaint(paint: SolidPaint) {
+  const combinator = " @ ";
+  // return paint.opacity === 1 ? "" : `${combinator}${paint.opacity * 100}%`;
   return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
+}
+
+export function getSpecStringFromSolidPaint(paint: SolidPaint) {
+  // get color portion of spec
+  let specStringTest = getColorStringFromSolidPaint(paint);
+  // get opacity portion of spec
+  let opacitySpecString = getOpacityStringFromSolidPaint(paint);
+  // Stitch teh spec string together
+  if (opacitySpecString) {
+    specStringTest += " @ ";
+    specStringTest += opacitySpecString;
+  }
+  return specStringTest;
 }
 
 type textOptions = {
@@ -122,7 +146,7 @@ function buildSample(paintStyle: PaintStyle) {
     // get color portion of spec
     let specStringTest = getRgbStringFromLocalStyle(paintStyle);
     // get opacity portion of spec
-    let opacitySpecString = getOpacitySpecStringFromSolidPaint(firstPaint);
+    let opacitySpecString = getOpacityStringFromSolidPaint(firstPaint);
     // Stitch teh spec string together
     if (opacitySpecString) {
       specStringTest += " @ ";
