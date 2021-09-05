@@ -224,58 +224,5 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   // Apply spec
   spec.characters = paintStyleSpec;
 
-  // // put it here
-  // const sampleX = 400;
-  // const sampleY = 0;
-  // const spacer = 8;
-  // const rectSize = spacer * 8;
-  // const textX = sampleX + rectSize + spacer;
-
-  // // build the rect
-  // const colorStyleRect = figma.createRectangle();
-  // colorStyleRect.x = sampleX;
-  // colorStyleRect.y = sampleY;
-  // colorStyleRect.fillStyleId = paintStyleId;
-  // colorStyleRect.resize(rectSize, rectSize);
-  // colorStyleRect.cornerRadius = spacer;
-  // figma.currentPage.appendChild(colorStyleRect);
-
-  // // Build title
-  // const colorStyleTitleText = addText(paintStyleName, {
-  //   x: textX,
-  //   y: sampleY,
-  // });
-  // // Build spec
-  // const colorStyleSpecText = addText(paintStyleSpec, {
-  //   x: textX,
-  //   y: sampleY + 14,
-  // });
-
-  // // Group text nodes
-  // const textGroup = figma.group([colorStyleTitleText, colorStyleSpecText], figma.currentPage);
-
-  // // Selection testing
-  // // const newNodes: SceneNode[] = [textGroup, colorStyleRect];
-  // // newNodes.push(textGroup);
-  // // newNodes.push(colorStyleRect);
-  // // figma.currentPage.selection = newNodes;
-  // // console.log("selection", figma.currentPage.selection);
-  // // console.log("figma", figma);
-
-  // // Create the frame, append text + rect, position it
-  // const sampleFrame = figma.createFrame();
-  // sampleFrame.appendChild(colorStyleRect);
-  // sampleFrame.appendChild(textGroup);
-  // sampleFrame.layoutMode = "HORIZONTAL";
-  // sampleFrame.itemSpacing = 8;
-  // sampleFrame.counterAxisAlignItems = "CENTER";
-  // sampleFrame.x = sampleX;
-  // let getSampleFrameWidth = () => sampleFrame.width;
-  // let sampleFrameWidth = getSampleFrameWidth();
-
-  // sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  // // console.log("sampleFrame", sampleFrame);
-
-  // return sampleFrame;
   return DocBlockComponentInstance;
 }
