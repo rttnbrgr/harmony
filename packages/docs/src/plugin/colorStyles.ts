@@ -7,7 +7,7 @@ import {
   DOC_BLOCK_SWATCH,
 } from "./new";
 import { getOpacityStringFromSolidPaint, getSpecStringFromColorStop, gradiantReducer } from "./getSpec";
-
+import { deriveRgbValue } from "./utils";
 // Take value between 0 - 1 and get an rgb
 const deriveRgbValue = (val: number) => Math.round(val * 255);
 

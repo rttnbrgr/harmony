@@ -1,4 +1,4 @@
-import { deriveRgbValue, isInt } from "./colorStyles";
+import { deriveRgbValue, isInt } from "./utils";
 import { getSpecStringFromColorStop } from "./getSpec";
 
 describe("deriveRgbValue", () => {

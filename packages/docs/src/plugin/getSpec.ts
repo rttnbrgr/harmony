@@ -1,5 +1,4 @@
-// import { deriveRgbValue, getSpecStringFromSolidPaint, getSpecStringFromGradiantPaint } from "./colorStyles";
-import { deriveRgbValue, isInt } from "./colorStyles";
+import { deriveRgbValue, isInt } from "./utils";
 
 // get color string from a solid paint
 export const getColorStringFromSolidPaint = (paint: SolidPaint) => {
