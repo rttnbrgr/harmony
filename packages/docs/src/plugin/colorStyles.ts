@@ -52,3 +52,9 @@ export { generateLocalPaintStylesDoc };
 // different color modes
 // Better visual
 // more info on image fill
+
+//
+// build componetStyleText
+// move this stuff over to the text styles
+// refactor 'addHeaderToFrame' into bootstrap func
+// update how we check for existence of textStylesframe
