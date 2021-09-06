@@ -44,8 +44,13 @@ export function boostrapStyleDocFrame(frameName: FrameName) {
   const frame = getStoredFrame(frameName) as FrameNode;
   // remove previous children
   frame.children.map((child) => child.remove());
+  // Apply base styles
+  applyStyleDocFrameStyles(frame);
+  // Return the frame
+  return frame;
+}
 
-  // new styles
+function applyStyleDocFrameStyles(frame: FrameNode) {
   frame.layoutMode = "VERTICAL";
   frame.counterAxisSizingMode = "AUTO";
   frame.itemSpacing = 16;
