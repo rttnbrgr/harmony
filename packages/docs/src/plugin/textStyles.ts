@@ -1,5 +1,6 @@
 import { addText } from "./utils";
 import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
+import { buildComponentStyleText, buildStyleFramesNew, createTextStyleDocBlockInstance } from "./new";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
@@ -91,7 +92,11 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
 
   // Build the style frames and append them to the master artboard
   buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildSample);
-  //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
+
+  // Testing New ----------------
+  buildComponentStyleText();
+  createTextStyleDocBlockInstance(localTextStyles[1]);
+  buildStyleFramesNew<TextStyle>(localTextStyles, textStylesMasterFrame, createTextStyleDocBlockInstance);
 
   // Add style frame to main frame
   // Always the first child
