@@ -79,11 +79,46 @@ export function getSpecStringFromPaint(paint: Paint) {
   }
 }
 
+function getSpecStringFromLineHeight(lineHeightObject: LineHeight) {
+  if (lineHeightObject.unit === "AUTO") {
+    return "Auto";
+  }
+  const unitString = lineHeightObject.unit === "PERCENT" ? "%" : "px";
+  const valueString = lineHeightObject.value;
+  const specString = `${valueString}${unitString}`;
+  return specString;
+}
+
+export function getSpecStringFromTextStyle(textStyle: TextStyle) {
+  let specString = "";
+
+  // Get the pieces
+  let { family: textStyleFontFamily, style: textStyleFontWeight } = textStyle.fontName;
+  let textStyleFontSize = textStyle.fontSize;
+  let textStyleLineHeight = getSpecStringFromLineHeight(textStyle.lineHeight);
+  // Assemble
+  specString = textStyleFontFamily;
+  specString += " | ";
+  specString += textStyleFontWeight;
+  specString += " | ";
+  specString += textStyleFontSize;
+  specString += " / ";
+  specString += textStyleLineHeight;
+
+  return specString;
+}
+
 export function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
   let specString = "";
-  if (style.type === "TEXT" || style.type === "EFFECT") {
+
+  if (style.type === "TEXT") {
+    specString = getSpecStringFromTextStyle(style);
+    return specString;
+  }
+
+  if (style.type === "EFFECT") {
     // currently unsupported
-    specString = "Not paint style";
+    specString = "effect style";
     return specString;
   }
   // Paint styles only, here

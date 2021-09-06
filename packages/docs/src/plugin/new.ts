@@ -231,6 +231,63 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   return DocBlockComponentInstance;
 }
 
+// Takes a paint style and returns a frame documenting that style
+// function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
+export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
+  if (!textStyle) {
+    console.log("🚨 Not a text style");
+    return;
+  }
+  console.log("👇 createTextStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
+
+  /**
+   * Destruct the important values from the paintStyle
+   * Also genrate the spec string
+   */
+
+  const { name: textStyleName, id: textStyleId } = textStyle;
+  let textStyleSpec = getSpecString(textStyle);
+
+  // Logs
+  console.log("🎨 ", textStyleName, textStyleId);
+  console.log("spec:", textStyleSpec);
+  console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
+
+  // At this point, we have our spec, name, and id
+
+  /**
+   * Get all the references from the root component instance
+   */
+
+  // Get master id
+  const DocBlockId = figma.root.getPluginData(DOC_BLOCK_2_ROOT);
+  // Get master node
+  const DocBlockComponentMaster = figma.getNodeById(DocBlockId) as ComponentNode;
+  console.log("DocBlockComponentMaster", DocBlockComponentMaster);
+
+  /**
+   * Create and update instance
+   */
+
+  // Create instance
+  const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
+  DocBlockComponentInstance.y = 50;
+  DocBlockComponentInstance.x = 50;
+
+  // Update Instance
+  // updateInstanceTitle(DocBlockComponentMaster, DocBlockComponentInstance, textStyleName);
+  const DocBlockTitle = DocBlockComponentMaster.getPluginData(DOC_BLOCK_2_TITLE);
+  let title = DocBlockComponentInstance.findOne((node) => node.id.endsWith(DocBlockTitle)) as TextNode;
+  title.characters = textStyleName;
+  title.textStyleId = textStyleId;
+  // updateInstanceSpec(DocBlockComponentMaster, DocBlockComponentInstance, textStyleSpec);
+  const DocBlockSpec = DocBlockComponentMaster.getPluginData(DOC_BLOCK_2_SPEC);
+  let spec = DocBlockComponentInstance.findOne((node) => node.id.endsWith(DocBlockSpec)) as TextNode;
+  spec.characters = textStyleSpec;
+
+  return DocBlockComponentInstance;
+}
+
 export function buildStyleFramesNew<StyleType>(
   stylesArray: Array<StyleType>,
   frame: FrameNode,
