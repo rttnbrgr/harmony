@@ -1,6 +1,7 @@
 import { addText } from "./utils";
 import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
-import { buildComponentStyleText, buildStyleFramesNew, createTextStyleDocBlockInstance } from "./new";
+import { buildComponentStyleText, buildStyleFramesNew } from "./new";
+import { createTextStyleDocBlockInstance } from "./docBlockInstance";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {

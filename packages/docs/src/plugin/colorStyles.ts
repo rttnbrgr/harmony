@@ -1,5 +1,6 @@
 import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
-import { buildComponentStyleSwatch, buildStyleFramesNew, createColorStyleDocBlockInstance } from "./new";
+import { buildComponentStyleSwatch, buildStyleFramesNew } from "./new";
+import { createColorStyleDocBlockInstance } from "./docBlockInstance";
 
 function getColorStylesFrameInsertPosition(mainFrame: FrameNode) {
   // Check if textStyles frame exists
