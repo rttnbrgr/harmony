@@ -291,10 +291,8 @@ export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
 export function buildStyleFramesNew<StyleType>(
   stylesArray: Array<StyleType>,
   frame: FrameNode,
-  // buildSample: (styleType: StyleType) => FrameNode,
   buildSample: (styleType: StyleType) => InstanceNode
 ) {
-  console.log("buildStyleFramesNew");
   stylesArray.forEach((styleType, i) => {
     // Build each
     const styleFrameItem = buildSample(styleType);

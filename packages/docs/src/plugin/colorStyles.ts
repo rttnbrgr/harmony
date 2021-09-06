@@ -35,7 +35,6 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Testing New --------------------------------------------------------------------------------------------
   buildComponentStyleSwatch();
-  createColorStyleDocBlockInstance(localPaintStyles[2]);
   buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesFrame, createColorStyleDocBlockInstance);
 
   // Get insert position

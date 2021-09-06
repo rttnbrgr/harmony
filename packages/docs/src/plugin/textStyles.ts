@@ -13,8 +13,8 @@ function buildSample(textStyle: TextStyle) {
   const textStyleId = textStyle.id;
   let textStyleSpec = "";
 
-  console.log("🎨 ", textStyleName);
-  console.log(textStyle);
+  // console.log("🎨 ", textStyleName);
+  // console.log(textStyle);
 
   // Logic to build spec string
   textStyleSpec += "Roboto | Regular | 12 / Auto";
@@ -95,7 +95,6 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
 
   // Testing New ----------------
   buildComponentStyleText();
-  createTextStyleDocBlockInstance(localTextStyles[1]);
   buildStyleFramesNew<TextStyle>(localTextStyles, textStylesMasterFrame, createTextStyleDocBlockInstance);
 
   // Add style frame to main frame
