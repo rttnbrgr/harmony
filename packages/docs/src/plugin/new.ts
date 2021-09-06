@@ -6,6 +6,10 @@ export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";
 export const DOC_BLOCK_TITLE: string = "DocBlockTitle";
 export const DOC_BLOCK_SPEC: string = "DocBlockSpec";
 
+export const DOC_BLOCK_2_ROOT: string = "DocBlockComponent2";
+export const DOC_BLOCK_2_TITLE: string = "DocBlockTitle2";
+export const DOC_BLOCK_2_SPEC: string = "DocBlockSpec2";
+
 const spacer = 8;
 
 const DocBlockConfig = {
@@ -76,6 +80,59 @@ export function buildComponentStyleSwatch() {
 
   // Add component children
   sampleComponent.appendChild(colorStyleRect);
+  sampleComponent.appendChild(textGroup);
+
+  // Component Config Opinions
+  sampleComponent.x = DocBlockConfig.x;
+  sampleComponent.layoutMode = DocBlockConfig.layoutMode;
+  sampleComponent.itemSpacing = DocBlockConfig.itemSpacing;
+  sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
+  sampleComponent.counterAxisSizingMode = DocBlockConfig.counterAxisSizingMode;
+  sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
+}
+
+export function buildComponentStyleText() {
+  console.log("👋 buildComponentStyleText");
+
+  /**
+   * Build the component itself
+   */
+
+  // Create it
+  const sampleComponent: ComponentNode = figma.createComponent();
+
+  // Give it a name
+  sampleComponent.name = "Doc Block";
+
+  // Save it
+  figma.root.setPluginData(DOC_BLOCK_2_ROOT, sampleComponent.id);
+
+  /**
+   * Build the pieces
+   */
+
+  // Build title
+  const TitleText = addText("Style Title");
+  console.log("TitleText", TitleText);
+  console.log("TitleText ID", TitleText.id);
+
+  // Build spec
+  const SpecText = addText("Style Spec");
+  // need to add autolayout
+  SpecText.y = 14;
+
+  // Save the children refs
+  sampleComponent.setPluginData(DOC_BLOCK_2_TITLE, TitleText.id);
+  sampleComponent.setPluginData(DOC_BLOCK_2_SPEC, SpecText.id);
+
+  // Create the text group
+  const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
+
+  /**
+   * Add the pieces to the component
+   */
+
+  // Add component children
   sampleComponent.appendChild(textGroup);
 
   // Component Config Opinions
