@@ -40,16 +40,6 @@ export function applyMainFrameStyles(mainFrame: FrameNode) {
   mainFrame.paddingLeft = 32;
 }
 
-export function boostrapStyleDocFrame(frameName: FrameName) {
-  const frame = getStoredFrame(frameName) as FrameNode;
-  // remove previous children
-  frame.children.map((child) => child.remove());
-  // Apply base styles
-  applyStyleDocFrameStyles(frame);
-  // Return the frame
-  return frame;
-}
-
 function applyStyleDocFrameStyles(frame: FrameNode) {
   frame.layoutMode = "VERTICAL";
   frame.counterAxisSizingMode = "AUTO";
@@ -58,6 +48,16 @@ function applyStyleDocFrameStyles(frame: FrameNode) {
   frame.paddingRight = 32;
   frame.paddingBottom = 32;
   frame.paddingLeft = 32;
+  return frame;
+}
+
+export function boostrapStyleDocFrame(frameName: FrameName) {
+  const frame = getStoredFrame(frameName) as FrameNode;
+  // remove previous children
+  frame.children.map((child) => child.remove());
+  // Apply base styles
+  applyStyleDocFrameStyles(frame);
+  // Return the frame
   return frame;
 }
 
