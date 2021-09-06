@@ -156,3 +156,25 @@ export function buildStyleFramesNew<StyleType>(
     frame.appendChild(styleFrameItem);
   });
 }
+
+/**
+ * ToDos
+ *
+ *
+ * SomePoint:
+ * -----------
+ * refactor 'addHeaderToFrame' into bootstrap func
+ * update how we check for existence of textStylesframe
+ *
+ * Component
+ * -----------
+ * fix text group => frame autolayout
+ *
+ * Paint/Text/Effect
+ * -----------
+ * add effect version
+ * clean textStyles duplication/unneeded
+ * clean effectStyles duplication/unneeded
+ *
+ *
+ */
