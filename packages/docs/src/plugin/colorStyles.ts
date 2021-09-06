@@ -25,10 +25,10 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = boostrapStyleDocFrame("ColorStylesFrame");
+  const paintStylesFrame = boostrapStyleDocFrame("ColorStylesFrame");
 
-  // Add header
-  addHeaderToFrame("Color Styles", paintStylesMasterFrame);
+  // Add header => move to bootstrap
+  addHeaderToFrame("Color Styles", paintStylesFrame);
 
   // Build the style frames and append them to the master artboard
   // buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
@@ -36,13 +36,13 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // Testing New --------------------------------------------------------------------------------------------
   buildComponentStyleSwatch();
   createColorStyleDocBlockInstance(localPaintStyles[2]);
-  buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesMasterFrame, createColorStyleDocBlockInstance);
+  buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesFrame, createColorStyleDocBlockInstance);
 
   // Get insert position
   const insertPosition = getColorStylesFrameInsertPosition(mainFrame);
 
   // Add style frame to main frame
-  mainFrame.insertChild(insertPosition, paintStylesMasterFrame);
+  mainFrame.insertChild(insertPosition, paintStylesFrame);
 }
 
 export { generateLocalPaintStylesDoc };

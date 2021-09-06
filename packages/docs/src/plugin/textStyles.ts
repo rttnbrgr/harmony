@@ -78,7 +78,7 @@ function buildSample(textStyle: TextStyle) {
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  // Get effect styles
+  // Get styles
   const localTextStyles = figma.getLocalTextStyles();
 
   // SETUP MASTER ARTBOARD
