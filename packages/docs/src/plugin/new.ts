@@ -102,12 +102,17 @@ export function buildComponentStyleSwatch() {
   sampleComponent.appendChild(textGroup);
 
   // Component Config Opinions
-  sampleComponent.x = DocBlockConfig.x;
   sampleComponent.layoutMode = DocBlockConfig.layoutMode;
   sampleComponent.itemSpacing = DocBlockConfig.itemSpacing;
   sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
   sampleComponent.counterAxisSizingMode = DocBlockConfig.counterAxisSizingMode;
   sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
+
+  // Temp fix: Get the edge of the master frame
+  const mainFrame = getStoredNode(MAIN_FRAME_KEY) as FrameNode;
+  console.log("mainFrame", mainFrame, mainFrame.x, mainFrame.y);
+  sampleComponent.x = mainFrame.x;
+  sampleComponent.y = mainFrame.y - 100 - sampleComponent.height;
 }
 
 export function buildComponentStyleText() {

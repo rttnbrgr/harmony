@@ -2,12 +2,21 @@ import { FrameName } from "./types";
 
 export const MAIN_FRAME_KEY = "MainFrame";
 
+// export function storedFrameExists(frameName: FrameName) {
+export function storedFrameExists(frameName: string) {
+  const frameId = figma.root.getPluginData(frameName);
+  console.log("frameId", frameId);
+  const frame = figma.getNodeById(frameId);
+  console.log("frame", frame);
+  return !!frameId && !!frame;
+}
+
 export function getStoredFrame(frameName: FrameName) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 
   if (!frameId || !frame) {
-    console.log("no frame", frameId, frame);
+    console.log("no frame!!!!!!!!!!!!!!!!!!!!", frameName, frameId, frame);
     const newFrame = figma.createFrame();
     figma.root.setPluginData(frameName, newFrame.id);
 
