@@ -1,5 +1,6 @@
 import { getSpecString } from "./getSpec";
-import { addText } from "./utils";
+import { MAIN_FRAME_KEY } from "./helpers";
+import { addText, simpleClone } from "./utils";
 
 export const DOC_BLOCK_ROOT: string = "DocBlockComponent";
 export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";
@@ -26,8 +27,31 @@ const DocBlockSwatchConfig = {
   cornerRadius: spacer,
 };
 
+function setupTextGroupFrame() {
+  const textGroupFrame = figma.createFrame();
+  // Setup autolayout
+  textGroupFrame.layoutMode = "VERTICAL";
+  textGroupFrame.counterAxisSizingMode = "AUTO";
+  textGroupFrame.itemSpacing = 0;
+  // Remove default bg
+  const newFills = simpleClone(textGroupFrame.fills);
+  newFills[0].visible = false;
+  textGroupFrame.fills = newFills;
+  // Return
+  return textGroupFrame;
+}
+
 export function buildComponentStyleSwatch() {
-  console.log("👋 buildComponentStyleSwatch", figma.viewport);
+  console.log("😎 buildComponentStyleSwatch");
+  // // check if it exists
+  // const componentExists = storedFrameExists(DOC_BLOCK_ROOT);
+  // if (componentExists) {
+  //   console.log("👀👀👀👀 already exists");
+  //   // return;
+  // }
+
+  // if not, bootstrap it
+  // console.log("👋 buildComponentStyleSwatch", figma.viewport);
   // figma.viewport.center
 
   /**
@@ -48,31 +72,26 @@ export function buildComponentStyleSwatch() {
    */
 
   // Build the swatch
-  // && put it in the cnter of the page
   const colorStyleRect = figma.createRectangle();
   colorStyleRect.resize(DocBlockSwatchConfig.size, DocBlockSwatchConfig.size);
   colorStyleRect.resize(21, 55);
   colorStyleRect.cornerRadius = DocBlockSwatchConfig.cornerRadius;
-  // figma.currentPage.appendChild(colorStyleRect);
-  // console.log("colorStyleRect", colorStyleRect);
+  sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
 
   // Build title
   const TitleText = addText("Style Title");
-  // console.log("TitleText", TitleText);
-  // console.log("TitleText ID", TitleText.id);
+  sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
 
   // Build spec
   const SpecText = addText("Style Spec");
-  // need to add autolayout
-  SpecText.y = 14;
-
-  // Save the children refs
-  sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
-  sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
   sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
 
-  // Create the text group
-  const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
+  // Create the text frame group
+  const textGroup = setupTextGroupFrame();
+
+  // Add children
+  textGroup.appendChild(TitleText);
+  textGroup.appendChild(SpecText);
 
   /**
    * Add the pieces to the component

@@ -10,3 +10,7 @@ export function addText(string: string = "Your new text"): TextNode {
   newText.characters = string;
   return newText;
 }
+
+export function simpleClone(val) {
+  return JSON.parse(JSON.stringify(val));
+}
