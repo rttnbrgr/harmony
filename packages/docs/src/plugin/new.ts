@@ -91,20 +91,8 @@ function setupTextGroupFrame() {
 
 export function buildComponentStyleSwatch() {
   console.log("😎 buildComponentStyleSwatch");
-  // // check if it exists
-  // const componentExists = storedFrameExists(DOC_BLOCK_ROOT);
-  // if (componentExists) {
-  //   console.log("👀👀👀👀 already exists");
-  //   // return;
-  // }
 
-  // if not, bootstrap it
-  // console.log("👋 buildComponentStyleSwatch", figma.viewport);
-  // figma.viewport.center
-
-  /**
-   * Build the component itself
-   */
+  /** Build the component itself */
 
   // Create it
   const sampleComponent: ComponentNode = figma.createComponent();
@@ -115,14 +103,11 @@ export function buildComponentStyleSwatch() {
   // Save it
   figma.root.setPluginData(DOC_BLOCK_ROOT, sampleComponent.id);
 
-  /**
-   * Build the pieces
-   */
+  /** Build the pieces */
 
   // Build the swatch
   const colorStyleRect = figma.createRectangle();
   colorStyleRect.resize(DocBlockSwatchConfig.size, DocBlockSwatchConfig.size);
-  colorStyleRect.resize(21, 55);
   colorStyleRect.cornerRadius = DocBlockSwatchConfig.cornerRadius;
   sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
 
@@ -141,9 +126,7 @@ export function buildComponentStyleSwatch() {
   textGroup.appendChild(TitleText);
   textGroup.appendChild(SpecText);
 
-  /**
-   * Add the pieces to the component
-   */
+  /** Add the pieces to the component */
 
   // Add component children
   sampleComponent.appendChild(colorStyleRect);
