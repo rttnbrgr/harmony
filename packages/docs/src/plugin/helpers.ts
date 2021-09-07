@@ -61,12 +61,7 @@ export function boostrapStyleDocFrame(frameName: FrameName) {
   return frame;
 }
 
-// This shouldnt run if the frame exists
-// Position the frame to the farthest right and top point
-export function positionMainFrame(mainFrame: FrameNode) {
-  const horizontalOffset = 100;
-  const verticalOffset = 0;
-
+function getCurrentPageEdgeRight(excludeFrame: FrameNode = null) {
   let x = null;
   let y = null;
 
@@ -74,9 +69,9 @@ export function positionMainFrame(mainFrame: FrameNode) {
 
   // Traverse nodes to find edges
   currentPage.children
-    // make sure we don't count the mainFrame
+    // make sure we don't count this included frame
     .filter((child) => {
-      return child?.id !== mainFrame.id;
+      return excludeFrame ? child?.id !== excludeFrame.id : child;
     })
     // Find the farthest right node + its width && Find the top most point
     .forEach((child) => {
@@ -86,9 +81,25 @@ export function positionMainFrame(mainFrame: FrameNode) {
       y = y ? Math.min(y, potentialY) : potentialY;
     });
 
+  const edges = {
+    x: x,
+    y: y,
+  };
+
+  return edges;
+}
+
+// This shouldnt run if the frame exists
+// Position the frame to the farthest right and top point
+export function positionMainFrame(mainFrame: FrameNode) {
+  const horizontalOffset = 100;
+  const verticalOffset = 0;
+
+  const edges = getCurrentPageEdgeRight(mainFrame);
+
   // Set mainframe position
-  mainFrame.x = x + horizontalOffset;
-  mainFrame.y = y + verticalOffset;
+  mainFrame.x = edges.x + horizontalOffset;
+  mainFrame.y = edges.y + verticalOffset;
 }
 
 export function addHeaderToFrame(headerText: string, frame: FrameNode) {
