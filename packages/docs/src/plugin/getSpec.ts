@@ -50,7 +50,7 @@ export const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
 
 export function getSpecStringFromGradiantPaint(paint: GradientPaint) {
   const gradiantStopsString = paint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
-  console.log("gradiantStopsString", gradiantStopsString);
+  // console.log("gradiantStopsString", gradiantStopsString);
   return `RGBA: ${gradiantStopsString}`;
 }
 

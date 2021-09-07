@@ -54,12 +54,12 @@ export function buildComponentStyleSwatch() {
   colorStyleRect.resize(21, 55);
   colorStyleRect.cornerRadius = DocBlockSwatchConfig.cornerRadius;
   // figma.currentPage.appendChild(colorStyleRect);
-  console.log("colorStyleRect", colorStyleRect);
+  // console.log("colorStyleRect", colorStyleRect);
 
   // Build title
   const TitleText = addText("Style Title");
-  console.log("TitleText", TitleText);
-  console.log("TitleText ID", TitleText.id);
+  // console.log("TitleText", TitleText);
+  // console.log("TitleText ID", TitleText.id);
 
   // Build spec
   const SpecText = addText("Style Spec");

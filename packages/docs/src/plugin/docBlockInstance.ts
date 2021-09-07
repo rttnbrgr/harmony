@@ -54,7 +54,7 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
     console.log("🚨 Not a paint style");
     return;
   }
-  console.log("👇 createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
+  // console.log("👇 createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
   /**
    * Destruct the important values from the paintStyle
@@ -65,9 +65,9 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   let paintStyleSpec = getSpecString(paintStyle);
 
   // Logs
-  console.log("🎨 ", paintStyleName, paintStyleId);
-  console.log("spec:", paintStyleSpec);
-  console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
+  // console.log("🎨 ", paintStyleName, paintStyleId);
+  // console.log("spec:", paintStyleSpec);
+  // console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
   // At this point, we have our spec, name, and id
 
@@ -79,7 +79,7 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   const DocBlockId = figma.root.getPluginData(DOC_BLOCK_ROOT);
   // Get master node
   const DocBlockComponentMaster = figma.getNodeById(DocBlockId) as ComponentNode;
-  console.log("DocBlockComponentMaster", DocBlockComponentMaster);
+  // console.log("DocBlockComponentMaster", DocBlockComponentMaster);
 
   /**
    * Create and update instance
@@ -104,7 +104,7 @@ export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
     console.log("🚨 Not a text style");
     return;
   }
-  console.log("👇 createTextStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
+  // console.log("👇 createTextStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
   /**
    * Destruct the important values from the paintStyle
@@ -115,9 +115,9 @@ export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
   let textStyleSpec = getSpecString(textStyle);
 
   // Logs
-  console.log("🎨 ", textStyleName, textStyleId);
-  console.log("spec:", textStyleSpec);
-  console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
+  // console.log("🎨 ", textStyleName, textStyleId);
+  // console.log("spec:", textStyleSpec);
+  // console.log("👆 end createColorStyleDocBlockInstance ~~~~~~~~~~~~~~~~~~");
 
   // At this point, we have our spec, name, and id
 
@@ -129,7 +129,7 @@ export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
   const DocBlockId = figma.root.getPluginData(DOC_BLOCK_2_ROOT);
   // Get master node
   const DocBlockComponentMaster = figma.getNodeById(DocBlockId) as ComponentNode;
-  console.log("DocBlockComponentMaster", DocBlockComponentMaster);
+  // console.log("DocBlockComponentMaster", DocBlockComponentMaster);
 
   /**
    * Create and update instance
