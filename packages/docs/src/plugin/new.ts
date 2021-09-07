@@ -1,5 +1,5 @@
 import { getSpecString } from "./getSpec";
-import { MAIN_FRAME_KEY } from "./helpers";
+import { storedFrameExists, MAIN_FRAME_KEY } from "./helpers";
 import { addText, simpleClone } from "./utils";
 
 export const DOC_BLOCK_ROOT: string = "DocBlockComponent";
@@ -26,6 +26,54 @@ const DocBlockSwatchConfig = {
   size: spacer * 8,
   cornerRadius: spacer,
 };
+
+export function storedNodeExists(nodeName: string) {
+  const frameId = figma.root.getPluginData(nodeName);
+  console.log("frameId", frameId);
+  console.log("!!frameId", !!frameId);
+  const frame = figma.getNodeById(frameId);
+  console.log("frame", frame);
+  console.log("!!frame", !!frame);
+  return !!frameId && !!frame;
+}
+
+export function getStoredNode(nodeName: string) {
+  const frameId = figma.root.getPluginData(nodeName);
+  const frame = figma.getNodeById(frameId);
+  return frame;
+}
+
+export function getComponentStyleSwatch() {
+  let component;
+  // check if it exists
+  const componentExists = storedNodeExists(DOC_BLOCK_ROOT);
+  // if it exists
+  if (componentExists) {
+    console.log("👀👀👀👀 already exists");
+    component = getStoredNode(DOC_BLOCK_ROOT);
+    /**
+     * Bug:
+     * If comopnent exists but its been removed,
+     * the value of removed does not return correclty.
+     * This means, once the initial component is created, it will always exist and if its
+     * been deleted, we can't revive it.
+     *
+     * To work around this we will?:
+     * - Clone the existing component
+     * - Update saved ids
+     * - Relink components
+     * - Delete old component
+     *
+     */
+    let isRemoved = component.removed;
+    console.log("removed? ", isRemoved);
+    // the remove function doesnt work, so we need to try cloning and relinking this
+    // return component;
+  }
+  // boostrap it
+  // console.log("🙅‍♀️🙅‍♀️🙅‍♀️ doesnt exist. gotta create it");
+  component = buildComponentStyleSwatch();
+}
 
 function setupTextGroupFrame() {
   const textGroupFrame = figma.createFrame();

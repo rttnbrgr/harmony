@@ -1,5 +1,5 @@
 import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
-import { buildComponentStyleSwatch, buildStyleFramesNew } from "./new";
+import { buildComponentStyleSwatch, buildStyleFramesNew, getComponentStyleSwatch, storedNodeExists } from "./new";
 import { createColorStyleDocBlockInstance } from "./docBlockInstance";
 
 function getColorStylesFrameInsertPosition(mainFrame: FrameNode) {
@@ -35,7 +35,9 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
 
   // Testing New --------------------------------------------------------------------------------------------
-  buildComponentStyleSwatch();
+  // storedNodeExists("foo");
+  // buildComponentStyleSwatch();
+  getComponentStyleSwatch();
   buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesFrame, createColorStyleDocBlockInstance);
 
   // Get insert position
