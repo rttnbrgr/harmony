@@ -1,19 +1,37 @@
 import { FrameName } from "./types";
 
+export const MAIN_FRAME_KEY = "MainFrame";
+
 export function getStoredFrame(frameName: FrameName) {
+  console.log("getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 
   if (!frameId || !frame) {
-    const frame = figma.createFrame();
-    figma.root.setPluginData(frameName, frame.id);
-    return frame;
+    console.log("no frame", frameId, frame);
+    const newFrame = figma.createFrame();
+    figma.root.setPluginData(frameName, newFrame.id);
+
+    /**
+     * For the Main frame:
+     * Considered moving this to its own function
+     * but it shares all of the logic
+     * just adds an additional position + style bootstrap
+     */
+    if (frameName === MAIN_FRAME_KEY) {
+      positionMainFrame(newFrame);
+      applyMainFrameStyles(newFrame);
+    }
+
+    return newFrame;
   }
 
   return frame;
 }
 
 export function applyMainFrameStyles(mainFrame: FrameNode) {
+  console.log("applyMainFrameStyles");
+  console.log("mainFrame", mainFrame);
   mainFrame.layoutMode = "HORIZONTAL";
   mainFrame.counterAxisSizingMode = "AUTO";
   mainFrame.itemSpacing = 16;
@@ -39,16 +57,34 @@ export function applyStyleFrameStyles(frameName: FrameName) {
   return frame;
 }
 
+// This shouldnt run if the frame exists
+// Position the frame to the farthest right and top point
 export function positionMainFrame(mainFrame: FrameNode) {
-  let x = 0;
-  // TODO JT find the current/selected page
-  (figma.getNodeById(figma.root.children[0].id) as PageNode).children
+  const horizontalOffset = 100;
+  const verticalOffset = 0;
+
+  let x = null;
+  let y = null;
+
+  const currentPage: PageNode = figma.currentPage;
+
+  // Traverse nodes to find edges
+  currentPage.children
     // make sure we don't count the mainFrame
-    .filter((child) => child?.id !== mainFrame.id)
-    // find the farthest right node + its width
-    .forEach((child) => (x = Math.max(x, child.x + child.width)));
-  mainFrame.x = x + 100;
-  figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    .filter((child) => {
+      return child?.id !== mainFrame.id;
+    })
+    // Find the farthest right node + its width && Find the top most point
+    .forEach((child) => {
+      const potentialX = child.x + child.width;
+      const potentialY = child.y;
+      x = x ? Math.max(x, potentialX) : potentialX;
+      y = y ? Math.min(y, potentialY) : potentialY;
+    });
+
+  // Set mainframe position
+  mainFrame.x = x + horizontalOffset;
+  mainFrame.y = y + verticalOffset;
 }
 
 export function addHeaderToFrame(headerText: string, frame: FrameNode) {

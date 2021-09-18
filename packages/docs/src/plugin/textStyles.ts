@@ -86,6 +86,8 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
 
   // SETUP MASTER ARTBOARD
   const textStylesMasterFrame = applyStyleFrameStyles("TextStylesFrame");
+  // Add name; for use in checking for this frames existence
+  textStylesMasterFrame.name = "Text Styles";
 
   // Add header
   addHeaderToFrame("Text Styles", textStylesMasterFrame);
@@ -95,7 +97,8 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
 
   // Add style frame to main frame
-  mainFrame.appendChild(textStylesMasterFrame);
+  // Always the first child
+  mainFrame.insertChild(0, textStylesMasterFrame);
 }
 
 export { generateLocalTextStylesDoc };
