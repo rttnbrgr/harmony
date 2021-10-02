@@ -1,5 +1,5 @@
 import { deriveRgbValue, isInt, addText } from "./utils";
-import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
+import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./frameHelpers";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
@@ -158,7 +158,7 @@ function buildSample(effectStyle: EffectStyle) {
 async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  // Get effect styles
+  // Get styles
   const localEffectStyles = figma.getLocalEffectStyles();
 
   // SETUP MASTER ARTBOARD

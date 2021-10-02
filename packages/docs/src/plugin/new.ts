@@ -1,6 +1,6 @@
 import { MAIN_FRAME_KEY } from "./types";
 import { getSpecString } from "./getSpec";
-import { storedFrameExists } from "./helpers";
+import { storedFrameExists } from "./frameHelpers";
 import { addText, simpleClone } from "./utils";
 
 export const DOC_BLOCK_ROOT: string = "DocBlockComponent";

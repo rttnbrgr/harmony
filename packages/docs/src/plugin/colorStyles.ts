@@ -4,7 +4,7 @@ import {
   buildStyleFrames,
   getStoredFrame,
   storedFrameExists,
-} from "./helpers";
+} from "./frameHelpers";
 import { buildComponentStyleSwatch, buildStyleFramesNew, getComponentStyleSwatch, storedNodeExists } from "./new";
 import { createColorStyleDocBlockInstance } from "./docBlockInstance";
 
