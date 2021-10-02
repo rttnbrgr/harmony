@@ -2,21 +2,38 @@ import { FrameName } from "./types";
 
 export const MAIN_FRAME_KEY = "MainFrame";
 
-// export function storedFrameExists(frameName: FrameName) {
-export function storedFrameExists(frameName: string) {
+/**
+ * Check if a figma frame exists
+ * @constructor
+ * @param {FrameName} frameName - One of our stored frames
+ * @returns {boolean}
+ */
+export function storedFrameExists(frameName: FrameName) {
   const frameId = figma.root.getPluginData(frameName);
-  console.log("frameId", frameId);
   const frame = figma.getNodeById(frameId);
+  console.log("frameId", frameId);
   console.log("frame", frame);
   return !!frameId && !!frame;
 }
 
+/**
+ * Gets the requested frame.
+ * If the frame does not exist, it will be created and the provided name
+ * will be stored in the plugin data store.
+ *
+ * Since we are returning a frame we don't have any way to inject any bootstrap
+ * steps (things that should run only once once the frame is created). For this
+ * reason, we have some hardcoded boostrap steps here for the MAIN_FRAME
+ *
+ * @param {FrameName} frameName - One of our stored frames
+ * @returns {BaseNode} - The requested frame
+ */
 export function getStoredFrame(frameName: FrameName) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 
   if (!frameId || !frame) {
-    console.log("no frame!!!!!!!!!!!!!!!!!!!!", frameName, frameId, frame);
+    // console.log("🙅‍♂️ no frame frameName", frameId, frame);
     const newFrame = figma.createFrame();
     figma.root.setPluginData(frameName, newFrame.id);
 
@@ -37,6 +54,10 @@ export function getStoredFrame(frameName: FrameName) {
   return frame;
 }
 
+/**
+ * Setup the layout/styles for our main frame
+ * @param mainFrame Reference to the main frame
+ */
 export function applyMainFrameStyles(mainFrame: FrameNode) {
   console.log("applyMainFrameStyles");
   console.log("mainFrame", mainFrame);
@@ -61,6 +82,7 @@ function applyStyleDocFrameStyles(frame: FrameNode) {
 }
 
 export function boostrapStyleDocFrame(frameName: FrameName) {
+  // Get the frame
   const frame = getStoredFrame(frameName) as FrameNode;
   // remove previous children
   frame.children.map((child) => child.remove());
@@ -98,8 +120,10 @@ function getCurrentPageEdgeRight(excludeFrame: FrameNode = null) {
   return edges;
 }
 
-// This shouldnt run if the frame exists
-// Position the frame to the farthest right and top point
+/**
+ * Position the main frame, on the current page to the farthest right and top point
+ * @param mainFrame Reference to the main frame
+ */
 export function positionMainFrame(mainFrame: FrameNode) {
   const horizontalOffset = 100;
   const verticalOffset = 0;
@@ -111,6 +135,11 @@ export function positionMainFrame(mainFrame: FrameNode) {
   mainFrame.y = edges.y + verticalOffset;
 }
 
+/**
+ * Simple utility to prepend text to a frame.
+ * @param headerText Text to prepend to the frame
+ * @param frame Frame for text to be prepended to
+ */
 export function addHeaderToFrame(headerText: string, frame: FrameNode) {
   const textStylesHeader = figma.createText();
   textStylesHeader.characters = headerText;
