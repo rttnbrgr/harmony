@@ -49,7 +49,7 @@ export function getComponentStyleSwatch() {
   const componentExists = storedNodeExists(DOC_BLOCK_ROOT);
   // if it exists
   if (componentExists) {
-    console.log("👀👀👀👀 already exists");
+    console.log("👀👀👀👀 ComponentStyleSwatch already exists");
     component = getStoredNode(DOC_BLOCK_ROOT);
     /**
      * Bug:
@@ -69,6 +69,9 @@ export function getComponentStyleSwatch() {
     console.log("removed? ", isRemoved);
     // the remove function doesnt work, so we need to try cloning and relinking this
     // return component;
+
+    // Lets manually remove and rebuild teh component
+    console.log("let's remove teh component?");
   }
   // boostrap it
   // console.log("🙅‍♀️🙅‍♀️🙅‍♀️ doesnt exist. gotta create it");
@@ -149,9 +152,7 @@ export function buildComponentStyleSwatch() {
 export function buildComponentStyleText() {
   console.log("👋 buildComponentStyleText");
 
-  /**
-   * Build the component itself
-   */
+  /** Build the component itself */
 
   // Create it
   const sampleComponent: ComponentNode = figma.createComponent();
@@ -162,30 +163,28 @@ export function buildComponentStyleText() {
   // Save it
   figma.root.setPluginData(DOC_BLOCK_2_ROOT, sampleComponent.id);
 
-  /**
-   * Build the pieces
-   */
+  /** Build the pieces */
 
   // Build title
   const TitleText = addText("Style Title");
-  console.log("TitleText", TitleText);
-  console.log("TitleText ID", TitleText.id);
+  sampleComponent.setPluginData(DOC_BLOCK_2_TITLE, TitleText.id);
 
   // Build spec
   const SpecText = addText("Style Spec");
   // need to add autolayout
   SpecText.y = 14;
-
-  // Save the children refs
-  sampleComponent.setPluginData(DOC_BLOCK_2_TITLE, TitleText.id);
   sampleComponent.setPluginData(DOC_BLOCK_2_SPEC, SpecText.id);
 
-  // Create the text group
-  const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
+  // Create the text frame group
+  const textGroup = setupTextGroupFrame();
+  // Add children
+  textGroup.appendChild(TitleText);
+  textGroup.appendChild(SpecText);
 
-  /**
-   * Add the pieces to the component
-   */
+  // Create the text group
+  // const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
+
+  /** Add the pieces to the component */
 
   // Add component children
   sampleComponent.appendChild(textGroup);
