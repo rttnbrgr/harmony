@@ -1,5 +1,6 @@
 import { deriveRgbValue, isInt, addText } from "./utils";
-import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./frameHelpers";
+import { addHeaderToFrame, buildStyleFrames, getStoredFrame } from "./frameHelpers";
+import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";

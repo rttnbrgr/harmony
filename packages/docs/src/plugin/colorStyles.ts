@@ -1,12 +1,7 @@
-import {
-  addHeaderToFrame,
-  boostrapStyleDocFrame,
-  buildStyleFrames,
-  getStoredFrame,
-  storedFrameExists,
-} from "./frameHelpers";
+import { addHeaderToFrame, buildStyleFrames, getStoredFrame, storedFrameExists } from "./frameHelpers";
 import { buildComponentStyleSwatch, buildStyleFramesNew, getComponentStyleSwatch, storedNodeExists } from "./new";
 import { createColorStyleDocBlockInstance } from "./docBlockInstance";
+import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });

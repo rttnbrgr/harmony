@@ -1,3 +1,4 @@
+import { applyMainFrameStyles, positionMainFrame } from "./mainFrame";
 import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
 
 /**
@@ -52,45 +53,7 @@ export function getStoredFrame(frameName: FigmaDocsFrame) {
   return frame;
 }
 
-/**
- * Setup the layout/styles for our main frame
- * @param mainFrame Reference to the main frame
- */
-export function applyMainFrameStyles(mainFrame: FrameNode) {
-  console.log("applyMainFrameStyles");
-  console.log("mainFrame", mainFrame);
-  mainFrame.layoutMode = "HORIZONTAL";
-  mainFrame.counterAxisSizingMode = "AUTO";
-  mainFrame.itemSpacing = 16;
-  mainFrame.paddingTop = 32;
-  mainFrame.paddingRight = 32;
-  mainFrame.paddingBottom = 32;
-  mainFrame.paddingLeft = 32;
-}
-
-function applyStyleDocFrameStyles(frame: FrameNode) {
-  frame.layoutMode = "VERTICAL";
-  frame.counterAxisSizingMode = "AUTO";
-  frame.itemSpacing = 16;
-  frame.paddingTop = 32;
-  frame.paddingRight = 32;
-  frame.paddingBottom = 32;
-  frame.paddingLeft = 32;
-  return frame;
-}
-
-export function boostrapStyleDocFrame(frameName: FigmaDocsFrame) {
-  // Get the frame
-  const frame = getStoredFrame(frameName) as FrameNode;
-  // remove previous children
-  frame.children.map((child) => child.remove());
-  // Apply base styles
-  applyStyleDocFrameStyles(frame);
-  // Return the frame
-  return frame;
-}
-
-function getCurrentPageEdgeRight(excludeFrame: FrameNode = null) {
+export function getCurrentPageEdgeRight(excludeFrame: FrameNode = null) {
   let x = null;
   let y = null;
 
@@ -116,21 +79,6 @@ function getCurrentPageEdgeRight(excludeFrame: FrameNode = null) {
   };
 
   return edges;
-}
-
-/**
- * Position the main frame, on the current page to the farthest right and top point
- * @param mainFrame Reference to the main frame
- */
-export function positionMainFrame(mainFrame: FrameNode) {
-  const horizontalOffset = 100;
-  const verticalOffset = 0;
-
-  const edges = getCurrentPageEdgeRight(mainFrame);
-
-  // Set mainframe position
-  mainFrame.x = edges.x + horizontalOffset;
-  mainFrame.y = edges.y + verticalOffset;
 }
 
 /**
