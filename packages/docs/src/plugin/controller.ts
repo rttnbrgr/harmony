@@ -3,7 +3,6 @@ import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
 import { getStoredFrame } from "./frameHelpers";
 import { generateLocalTextStylesDoc } from "./textStyles";
-import { positionMainFrame } from "./mainFrame";
 
 // This file holds the main code for the plugins. It has access to the *document*.
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
@@ -33,17 +32,14 @@ if (figma.command === "CONFIG") {
 
       switch (element) {
         case "CREATE_COLOR_STYLES":
-          console.log("create color styles");
           generateLocalPaintStylesDoc(mainFrame);
           break;
 
         case "CREATE_EFFECT_STYLES":
-          console.log("create effect styles");
           generateLocalEffectStylesDoc(mainFrame);
           break;
 
         case "CREATE_TEXT_STYLES":
-          console.log("create text styles");
           generateLocalTextStylesDoc(mainFrame);
           break;
 
@@ -51,8 +47,6 @@ if (figma.command === "CONFIG") {
           break;
       }
     }
-
-    positionMainFrame(mainFrame);
 
     // Make sure to close the plugin when you're done. Otherwise the plugin will
     // keep running, which shows the cancel button at the bottom of the screen.
