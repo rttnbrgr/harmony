@@ -79,6 +79,25 @@ export function getSpecStringFromPaint(paint: Paint) {
   }
 }
 
+function getSpecStringFromPaintArray(paintArray: readonly Paint[]) {
+  let specString = "";
+
+  // Paint styles only, here
+  // Logic to build spec string
+  let isSingleFill = paintArray.length === 1 ? true : false;
+
+  // if multifill, short circuit
+  if (!isSingleFill) {
+    specString = "Multiple Fills";
+    return specString;
+  }
+
+  // For single fills
+  let firstPaint = paintArray[0];
+  specString = getSpecStringFromPaint(firstPaint);
+  return specString;
+}
+
 function getSpecStringFromLineHeight(lineHeightObject: LineHeight) {
   if (lineHeightObject.unit === "AUTO") {
     return "Auto";
@@ -114,25 +133,14 @@ export function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
   if (style.type === "TEXT") {
     specString = getSpecStringFromTextStyle(style);
     return specString;
-  }
-
-  if (style.type === "EFFECT") {
+  } else if (style.type === "EFFECT") {
     // currently unsupported
+    console.log("foo", style);
     specString = "effect style";
     return specString;
-  }
-  // Paint styles only, here
-  // Logic to build spec string
-  let isSingleFill = style.paints.length === 1 ? true : false;
-
-  // if multifill, short circuit
-  if (!isSingleFill) {
-    specString = "Multiple Fills";
+  } else {
+    console.log("foo", style.paints);
+    specString = getSpecStringFromPaintArray(style.paints);
     return specString;
   }
-
-  // For single fills
-  let firstPaint = style.paints[0];
-  specString = getSpecStringFromPaint(firstPaint);
-  return specString;
 }
