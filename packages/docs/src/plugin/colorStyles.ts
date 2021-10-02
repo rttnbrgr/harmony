@@ -1,5 +1,5 @@
 import { addHeaderToFrame, buildStyleFrames, getStoredFrame, storedFrameExists } from "./frameHelpers";
-import { buildComponentStyleSwatch, buildStyleFramesNew, getComponentStyleSwatch, storedNodeExists } from "./new";
+import { buildComponentStyleSwatch, buildStyleFramesNew, getComponentStyleSwatch } from "./new";
 import { createColorStyleDocBlockInstance } from "./docBlockInstance";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 
@@ -15,11 +15,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // Add header => move to bootstrap
   addHeaderToFrame("Color Styles", paintStylesFrame);
 
-  // Build the style frames and append them to the master artboard
-  // buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
-
   // Testing New --------------------------------------------------------------------------------------------
-  // storedNodeExists("foo");
   // buildComponentStyleSwatch();
   getComponentStyleSwatch();
   buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesFrame, createColorStyleDocBlockInstance);

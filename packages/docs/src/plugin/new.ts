@@ -1,16 +1,16 @@
-import { MAIN_FRAME_KEY } from "./types";
+import {
+  MAIN_FRAME_KEY,
+  DOC_BLOCK_ROOT,
+  DOC_BLOCK_SWATCH,
+  DOC_BLOCK_TITLE,
+  DOC_BLOCK_SPEC,
+  DOC_BLOCK_2_ROOT,
+  DOC_BLOCK_2_TITLE,
+  DOC_BLOCK_2_SPEC,
+} from "./types";
 import { getSpecString } from "./getSpec";
-import { storedFrameExists } from "./frameHelpers";
+import { storedFrameExists, getStoredFrame } from "./frameHelpers";
 import { addText, simpleClone } from "./utils";
-
-export const DOC_BLOCK_ROOT: string = "DocBlockComponent";
-export const DOC_BLOCK_SWATCH: string = "DocBlockSwatch";
-export const DOC_BLOCK_TITLE: string = "DocBlockTitle";
-export const DOC_BLOCK_SPEC: string = "DocBlockSpec";
-
-export const DOC_BLOCK_2_ROOT: string = "DocBlockComponent2";
-export const DOC_BLOCK_2_TITLE: string = "DocBlockTitle2";
-export const DOC_BLOCK_2_SPEC: string = "DocBlockSpec2";
 
 const spacer = 8;
 
@@ -28,30 +28,14 @@ const DocBlockSwatchConfig = {
   cornerRadius: spacer,
 };
 
-export function storedNodeExists(nodeName: string) {
-  const frameId = figma.root.getPluginData(nodeName);
-  console.log("frameId", frameId);
-  console.log("!!frameId", !!frameId);
-  const frame = figma.getNodeById(frameId);
-  console.log("frame", frame);
-  console.log("!!frame", !!frame);
-  return !!frameId && !!frame;
-}
-
-export function getStoredNode(nodeName: string) {
-  const frameId = figma.root.getPluginData(nodeName);
-  const frame = figma.getNodeById(frameId);
-  return frame;
-}
-
 export function getComponentStyleSwatch() {
   let component;
   // check if it exists
-  const componentExists = storedNodeExists(DOC_BLOCK_ROOT);
+  const componentExists = storedFrameExists(DOC_BLOCK_ROOT);
   // if it exists
   if (componentExists) {
     console.log("👀👀👀👀 ComponentStyleSwatch already exists");
-    component = getStoredNode(DOC_BLOCK_ROOT);
+    component = getStoredFrame(DOC_BLOCK_ROOT);
     /**
      * Bug:
      * If comopnent exists but its been removed,
@@ -144,7 +128,7 @@ export function buildComponentStyleSwatch() {
   sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
 
   // Temp fix: Get the edge of the master frame
-  const mainFrame = getStoredNode(MAIN_FRAME_KEY) as FrameNode;
+  const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
   console.log("mainFrame", mainFrame, mainFrame.x, mainFrame.y);
   sampleComponent.x = mainFrame.x;
   sampleComponent.y = mainFrame.y - 100 - sampleComponent.height;

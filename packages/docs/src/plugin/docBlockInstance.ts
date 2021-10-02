@@ -8,7 +8,7 @@ import {
   DOC_BLOCK_2_ROOT,
   DOC_BLOCK_2_TITLE,
   DOC_BLOCK_2_SPEC,
-} from "./new";
+} from "./types";
 
 function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {
   // Lookup the ID
