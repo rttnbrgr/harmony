@@ -1,28 +1,17 @@
-import { addHeaderToFrame, boostrapStyleDocFrame, buildStyleFrames, getStoredFrame } from "./helpers";
+import {
+  addHeaderToFrame,
+  boostrapStyleDocFrame,
+  buildStyleFrames,
+  getStoredFrame,
+  storedFrameExists,
+} from "./helpers";
 import { buildComponentStyleSwatch, buildStyleFramesNew, getComponentStyleSwatch, storedNodeExists } from "./new";
 import { createColorStyleDocBlockInstance } from "./docBlockInstance";
-
-function getColorStylesFrameInsertPosition(mainFrame: FrameNode) {
-  // Check if textStyles frame exists
-  // This feels brittle
-  // Should probably save a value on the frame and lookup that up
-  const textStylesFrameExists = mainFrame.findChildren((x) => {
-    // console.log("child", x);
-    // console.log("child name", x.name);
-    return x.name === "Text Styles";
-  }).length;
-
-  // Based on this, set insert position
-  // Either at the beginning or after the text styles
-  const insertPosition = textStylesFrameExists ? 1 : 0;
-  // console.log("insertPosition", insertPosition);
-  return insertPosition;
-}
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  // Get paint styles
+  // Get styles
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
@@ -41,7 +30,9 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesFrame, createColorStyleDocBlockInstance);
 
   // Get insert position
-  const insertPosition = getColorStylesFrameInsertPosition(mainFrame);
+  // Check if textStyles frame exists to set insert position
+  // Either at the beginning or after the text styles
+  const insertPosition = storedFrameExists("TextStylesFrame") ? 1 : 0;
 
   // Add style frame to main frame
   mainFrame.insertChild(insertPosition, paintStylesFrame);
