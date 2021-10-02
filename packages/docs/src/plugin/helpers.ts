@@ -1,14 +1,12 @@
-import { FrameName } from "./types";
-
-export const MAIN_FRAME_KEY = "MainFrame";
+import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
 
 /**
  * Check if a figma frame exists
  * @constructor
- * @param {FrameName} frameName - One of our stored frames
+ * @param {FigmaDocsFrame} frameName - One of our stored frames
  * @returns {boolean}
  */
-export function storedFrameExists(frameName: FrameName) {
+export function storedFrameExists(frameName: FigmaDocsFrame) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
   console.log("frameId", frameId);
@@ -25,10 +23,10 @@ export function storedFrameExists(frameName: FrameName) {
  * steps (things that should run only once once the frame is created). For this
  * reason, we have some hardcoded boostrap steps here for the MAIN_FRAME
  *
- * @param {FrameName} frameName - One of our stored frames
+ * @param {FigmaDocsFrame} frameName - One of our stored frames
  * @returns {BaseNode} - The requested frame
  */
-export function getStoredFrame(frameName: FrameName) {
+export function getStoredFrame(frameName: FigmaDocsFrame) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 
@@ -81,7 +79,7 @@ function applyStyleDocFrameStyles(frame: FrameNode) {
   return frame;
 }
 
-export function boostrapStyleDocFrame(frameName: FrameName) {
+export function boostrapStyleDocFrame(frameName: FigmaDocsFrame) {
   // Get the frame
   const frame = getStoredFrame(frameName) as FrameNode;
   // remove previous children
