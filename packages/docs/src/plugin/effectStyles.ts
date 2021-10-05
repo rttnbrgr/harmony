@@ -1,6 +1,7 @@
 import { deriveRgbValue, isInt, addText } from "./utils";
 import { addHeaderToFrame, buildStyleFrames, getStoredFrame } from "./frameHelpers";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
+import { getSpecString } from "./getSpec";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
@@ -24,14 +25,79 @@ function toTitleCase(str) {
   });
 }
 
-function convertEffectTypeToSpecString(str) {
-  let specString = str;
-  console.log("convertEffectTypeToSpecString", specString);
+type ShadowEffectType = "DROP_SHADOW" | "INNER_SHADOW";
+type BlurEffectType = "LAYER_BLUR" | "BACKGROUND_BLUR";
+type EffectType = ShadowEffectType | BlurEffectType;
+
+function getEffectTypeSpecStringFromEffect(effect: Effect) {
+  let effectType = effect.type;
+  let specString = effectType;
   specString = convertUnderscoresToSpace(specString);
-  console.log(specString);
   specString = toTitleCase(specString);
-  console.log(specString);
   return specString;
+}
+
+function getOffsetSpecStringFromEffect(effect: ShadowEffect) {
+  let effectOffsetX = effect.offset.x;
+  let effectOffsetY = effect.offset.y;
+  let specString = `Offset: ${effectOffsetX}, ${effectOffsetY}`;
+  return specString;
+}
+
+function getSpreadSpecStringFromEffect(effect: ShadowEffect) {
+  let spread = effect.spread;
+  let specString = `Spread: ${spread}`;
+  return specString;
+}
+
+function getBlurSpecStringFromEffect(effect: Effect) {
+  let radius = effect.radius;
+  let specString = `Blur: ${radius}`;
+  return specString;
+}
+
+function getShadowSpecStringFromEffect(effect: ShadowEffect) {
+  // Values
+  let effectColor = getSpecStringFromRgba(effect.color);
+  let effectOffset = getOffsetSpecStringFromEffect(effect);
+  let effectSpread = getSpreadSpecStringFromEffect(effect);
+  // Reducer
+  let specSeperator = " | ";
+  let specReducer = (ac, cv) => ac.concat(specSeperator, cv);
+  let specString = [effectColor, effectOffset, effectSpread].reduce(specReducer).concat(specSeperator);
+  return specString;
+}
+
+function getSpecStringFromEffectStyle(effectStyle: EffectStyle) {
+  // Logic to build spec string
+  let effectStyleSpec = "";
+
+  let isSingle = effectStyle.effects.length === 1;
+
+  // ignore multi-effect for now
+  if (!isSingle) {
+    effectStyleSpec = "Multiple Fills";
+    return effectStyleSpec;
+  }
+
+  let firstEffect = effectStyle.effects[0];
+  let firstEffectIsShadow = firstEffect.type === "DROP_SHADOW" || firstEffect.type === "INNER_SHADOW";
+
+  // Effect type
+  let effectTypeSpec = getEffectTypeSpecStringFromEffect(firstEffect);
+
+  // Shadow or Blur?
+  let shadowEffectSpec = "";
+  if ("color" in firstEffect && firstEffectIsShadow) {
+    shadowEffectSpec = getShadowSpecStringFromEffect(firstEffect);
+  }
+
+  // Blur Radius
+  let effectRadius = getBlurSpecStringFromEffect(firstEffect);
+
+  effectStyleSpec = `${effectTypeSpec}: ${shadowEffectSpec}${effectRadius}`;
+
+  return effectStyleSpec;
 }
 
 // Takes a paint style and returns a frame documenting that style
@@ -43,60 +109,9 @@ function buildSample(effectStyle: EffectStyle) {
 
   const effectStyleName = effectStyle.name;
   const effectStyleId = effectStyle.id;
-  let effectStyleSpec = "";
+  let effectStyleSpec = getSpecStringFromEffectStyle(effectStyle);
 
-  console.log("🎨 ", effectStyleName);
-  console.log(effectStyle);
-
-  // Logic to build spec string
-
-  // safety checking
-  let isSolid = true;
-  let isSingle = true;
-
-  // ignore multi-effect for now
-  if (effectStyle.effects.length > 1) {
-    isSingle = false;
-    effectStyleSpec = "Multiple Fills";
-    console.log("multi effect");
-  }
-
-  let firstEffect = effectStyle.effects[0];
-
-  if (isSingle) {
-    // Effect type
-    let effectType = firstEffect.type;
-    let effectTypeString = convertEffectTypeToSpecString(effectType);
-    effectStyleSpec += effectTypeString;
-    effectStyleSpec += ": ";
-
-    // Shadow or Blur?
-    if ("color" in firstEffect && (effectType === "DROP_SHADOW" || effectType === "INNER_SHADOW")) {
-      // Effect color
-      let effectColor = getSpecStringFromRgba(firstEffect.color);
-      effectStyleSpec += effectColor;
-      effectStyleSpec += " | ";
-      // Offset
-      let effectOffsetX = firstEffect.offset.x;
-      let effectOffsetY = firstEffect.offset.y;
-      effectStyleSpec += "Offset: ";
-      effectStyleSpec += effectOffsetX;
-      effectStyleSpec += ", ";
-      effectStyleSpec += effectOffsetY;
-      effectStyleSpec += " | ";
-      // Spread
-      let effectSpread = firstEffect.spread;
-      effectStyleSpec += "Spread: ";
-      effectStyleSpec += effectSpread;
-      effectStyleSpec += " | ";
-    } else {
-      console.log("blur effect");
-    }
-    // Blur Radius
-    let effectRadius = firstEffect.radius;
-    effectStyleSpec += "Blur: ";
-    effectStyleSpec += effectRadius;
-  }
+  console.log("🎨 ", effectStyleName, effectStyle);
 
   // put it here
   const sampleX = 400;
