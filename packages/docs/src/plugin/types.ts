@@ -29,3 +29,7 @@ export type DocBlockNodes =
   | "DocBlockComponent2"
   | "DocBlockTitle2"
   | "DocBlockSpec2";
+
+export type ShadowEffectType = "DROP_SHADOW" | "INNER_SHADOW";
+export type BlurEffectType = "LAYER_BLUR" | "BACKGROUND_BLUR";
+export type EffectType = ShadowEffectType | BlurEffectType;

@@ -1,4 +1,12 @@
-import { deriveRgbValue, isInt } from "./utils";
+import { deriveRgbValue, isInt, convertUnderscoresToSpace, toTitleCase } from "./utils";
+import { ShadowEffectType, BlurEffectType } from "./types";
+
+/********
+ *
+ *
+ * Paint Styles
+ *
+ */
 
 // get color string from a solid paint
 export const getColorStringFromSolidPaint = (paint: SolidPaint) => {
@@ -98,6 +106,13 @@ function getSpecStringFromPaintArray(paintArray: readonly Paint[]) {
   return specString;
 }
 
+/********
+ *
+ *
+ * Text Styles
+ *
+ */
+
 function getSpecStringFromLineHeight(lineHeightObject: LineHeight) {
   if (lineHeightObject.unit === "AUTO") {
     return "Auto";
@@ -126,6 +141,117 @@ export function getSpecStringFromTextStyle(textStyle: TextStyle) {
 
   return specString;
 }
+
+/********
+ *
+ *
+ * Effect Styles
+ *
+ */
+
+function getSpecStringFromRgba(color: RGBA) {
+  let rgbaString = "";
+  const r = deriveRgbValue(color.r);
+  const g = deriveRgbValue(color.g);
+  const b = deriveRgbValue(color.b);
+  const a = isInt(color.a) ? color.a : color.a.toFixed(2);
+  rgbaString = `[${r}, ${g}, ${b}, ${a}]`;
+  return rgbaString;
+}
+
+// // https://stackoverflow.com/questions/11810569/how-to-replace-underscores-with-spaces
+// function convertUnderscoresToSpace(str) {
+//   return str.replace(/_/g, " ");
+// }
+
+// // https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
+// function toTitleCase(str) {
+//   return str.replace(/\w\S*/g, function (txt) {
+//     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+//   });
+// }
+
+// type ShadowEffectType = "DROP_SHADOW" | "INNER_SHADOW";
+// type BlurEffectType = "LAYER_BLUR" | "BACKGROUND_BLUR";
+// type EffectType = ShadowEffectType | BlurEffectType;
+
+function getEffectTypeSpecStringFromEffect(effect: Effect) {
+  let effectType = effect.type;
+  let specString = effectType;
+  specString = convertUnderscoresToSpace(specString);
+  specString = toTitleCase(specString);
+  return specString;
+}
+
+function getOffsetSpecStringFromEffect(effect: ShadowEffect) {
+  let effectOffsetX = effect.offset.x;
+  let effectOffsetY = effect.offset.y;
+  let specString = `Offset: ${effectOffsetX}, ${effectOffsetY}`;
+  return specString;
+}
+
+function getSpreadSpecStringFromEffect(effect: ShadowEffect) {
+  let spread = effect.spread;
+  let specString = `Spread: ${spread}`;
+  return specString;
+}
+
+function getBlurSpecStringFromEffect(effect: Effect) {
+  let radius = effect.radius;
+  let specString = `Blur: ${radius}`;
+  return specString;
+}
+
+function getShadowSpecStringFromEffect(effect: ShadowEffect) {
+  // Values
+  let effectColor = getSpecStringFromRgba(effect.color);
+  let effectOffset = getOffsetSpecStringFromEffect(effect);
+  let effectSpread = getSpreadSpecStringFromEffect(effect);
+  // Reducer
+  let specSeperator = " | ";
+  let specReducer = (ac, cv) => ac.concat(specSeperator, cv);
+  let specString = [effectColor, effectOffset, effectSpread].reduce(specReducer).concat(specSeperator);
+  return specString;
+}
+
+export function getSpecStringFromEffectStyle(effectStyle: EffectStyle) {
+  // Logic to build spec string
+  let effectStyleSpec = "";
+
+  let isSingle = effectStyle.effects.length === 1;
+
+  // ignore multi-effect for now
+  if (!isSingle) {
+    effectStyleSpec = "Multiple Fills";
+    return effectStyleSpec;
+  }
+
+  let firstEffect = effectStyle.effects[0];
+  let firstEffectIsShadow = firstEffect.type === "DROP_SHADOW" || firstEffect.type === "INNER_SHADOW";
+
+  // Effect type
+  let effectTypeSpec = getEffectTypeSpecStringFromEffect(firstEffect);
+
+  // Shadow or Blur?
+  let shadowEffectSpec = "";
+  if ("color" in firstEffect && firstEffectIsShadow) {
+    shadowEffectSpec = getShadowSpecStringFromEffect(firstEffect);
+  }
+
+  // Blur Radius
+  let effectRadius = getBlurSpecStringFromEffect(firstEffect);
+
+  effectStyleSpec = `${effectTypeSpec}: ${shadowEffectSpec}${effectRadius}`;
+
+  return effectStyleSpec;
+}
+
+/********
+ *
+ *
+ * All
+ *
+ */
 
 export function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
   let specString = "";
