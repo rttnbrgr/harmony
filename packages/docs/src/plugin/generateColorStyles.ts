@@ -8,7 +8,6 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 
   // Get styles
   const localPaintStyles = figma.getLocalPaintStyles();
-
   // Setup styles frame
   const paintStylesFrame = boostrapStyleDocFrame("ColorStylesFrame");
 

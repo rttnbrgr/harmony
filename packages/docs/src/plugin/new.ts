@@ -34,7 +34,7 @@ export function getComponentStyleSwatch() {
   const componentExists = storedFrameExists(DOC_BLOCK_ROOT);
   // if it exists
   if (componentExists) {
-    console.log("👀👀👀👀 ComponentStyleSwatch already exists");
+    // console.log("👀👀👀👀 ComponentStyleSwatch already exists");
     component = getStoredFrame(DOC_BLOCK_ROOT);
     /**
      * Bug:
@@ -51,12 +51,12 @@ export function getComponentStyleSwatch() {
      *
      */
     let isRemoved = component.removed;
-    console.log("removed? ", isRemoved);
+    // console.log("removed? ", isRemoved);
     // the remove function doesnt work, so we need to try cloning and relinking this
     // return component;
 
     // Lets manually remove and rebuild teh component
-    console.log("let's remove teh component?");
+    // console.log("let's remove teh component?");
   }
   // boostrap it
   // console.log("🙅‍♀️🙅‍♀️🙅‍♀️ doesnt exist. gotta create it");
@@ -78,7 +78,7 @@ function setupTextGroupFrame() {
 }
 
 export function buildComponentStyleSwatch() {
-  console.log("😎 buildComponentStyleSwatch");
+  // console.log("😎 buildComponentStyleSwatch");
 
   /** Build the component itself */
 
@@ -129,13 +129,12 @@ export function buildComponentStyleSwatch() {
 
   // Temp fix: Get the edge of the master frame
   const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
-  console.log("mainFrame", mainFrame, mainFrame.x, mainFrame.y);
   sampleComponent.x = mainFrame.x;
   sampleComponent.y = mainFrame.y - 100 - sampleComponent.height;
 }
 
 export function buildComponentStyleText() {
-  console.log("👋 buildComponentStyleText");
+  // console.log("👋 buildComponentStyleText");
 
   /** Build the component itself */
 

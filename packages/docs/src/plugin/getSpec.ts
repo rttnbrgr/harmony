@@ -20,7 +20,6 @@ export const getColorStringFromSolidPaint = (paint: SolidPaint) => {
 // Get opacity from a solid paint
 export function getOpacityStringFromSolidPaint(paint: SolidPaint) {
   const combinator = " @ ";
-  // return paint.opacity === 1 ? "" : `${combinator}${paint.opacity * 100}%`;
   return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
 }
 
@@ -49,7 +48,6 @@ export function getSpecStringFromColorStop(colorStop: ColorStop): string {
   const a = colorStop.color.a;
   // get stop
   const position = isInt(colorStop.position) ? colorStop.position : colorStop.position.toFixed(2);
-  // rgbaString = `RGBA [${r}, ${g}, ${b}, ${a}] @ ${position}`;
   rgbaString = `[${r}, ${g}, ${b}, ${a}] @ ${position}`;
   return rgbaString;
 }
@@ -58,7 +56,6 @@ export const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
 
 export function getSpecStringFromGradiantPaint(paint: GradientPaint) {
   const gradiantStopsString = paint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
-  // console.log("gradiantStopsString", gradiantStopsString);
   return `RGBA: ${gradiantStopsString}`;
 }
 
@@ -159,22 +156,6 @@ function getSpecStringFromRgba(color: RGBA) {
   return rgbaString;
 }
 
-// // https://stackoverflow.com/questions/11810569/how-to-replace-underscores-with-spaces
-// function convertUnderscoresToSpace(str) {
-//   return str.replace(/_/g, " ");
-// }
-
-// // https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
-// function toTitleCase(str) {
-//   return str.replace(/\w\S*/g, function (txt) {
-//     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-//   });
-// }
-
-// type ShadowEffectType = "DROP_SHADOW" | "INNER_SHADOW";
-// type BlurEffectType = "LAYER_BLUR" | "BACKGROUND_BLUR";
-// type EffectType = ShadowEffectType | BlurEffectType;
-
 function getEffectTypeSpecStringFromEffect(effect: Effect) {
   let effectType = effect.type;
   let specString = effectType;
@@ -263,7 +244,6 @@ export function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
     specString = getSpecStringFromEffectStyle(style);
     return specString;
   } else {
-    console.log("foo", style.paints);
     specString = getSpecStringFromPaintArray(style.paints);
     return specString;
   }

@@ -12,8 +12,6 @@ import { getStoredFrame } from "./frameHelpers";
 const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
 
 if (figma.command === "CONFIG") {
-  console.log("CONFIG");
-
   // This shows the HTML page in "ui.html".
   figma.showUI(__html__);
   figma.ui.resize(400, 300);
@@ -79,7 +77,6 @@ if (figma.command === "BUILD_TEXT_STYLES") {
 if (figma.command === "BUILD_EFFECT_STYLES") {
   const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
   Promise.all([effectStylePromise]).then((v) => {
-    console.log("promise.all", v);
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
     figma.closePlugin();
   });

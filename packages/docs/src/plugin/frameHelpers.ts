@@ -10,11 +10,6 @@ import { MAIN_FRAME_KEY, FigmaDocsFrame, DocBlockNodes } from "./types";
 export function storedFrameExists(frameName: FigmaDocsFrame | DocBlockNodes) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
-  console.log("🕵️‍♀️  ~~~~~~~~~~~~~~~~ storedFrameExists");
-  console.log("frameId", frameId);
-  console.log("frame", frame);
-  console.log("?", !!frameId && !!frame);
-  console.log("/storedFrameExists ~~~~~~~~~~~~~~~~ 🕵️‍♀️");
   return !!frameId && !!frame;
 }
 
@@ -31,7 +26,6 @@ export function storedFrameExists(frameName: FigmaDocsFrame | DocBlockNodes) {
  * @returns {BaseNode} - The requested frame
  */
 export function getStoredFrame(frameName: FigmaDocsFrame | DocBlockNodes) {
-  console.log("👀  ~~~~~~~~~~~~~~~~ getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 

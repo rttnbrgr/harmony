@@ -75,10 +75,6 @@ function getInstanceNode(
     node = instanceComponent.findChild((node) => node.id.endsWith(pluginDataId));
   }
 
-  //
-  console.log("pluginDataId", pluginDataId);
-  console.log("node", node);
-
   return node;
 }
 
@@ -121,10 +117,6 @@ export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
 
   // Get master component node
   const DocBlockComponentMaster = getStoredNode(DOC_BLOCK_2_ROOT) as ComponentNode;
-
-  if (!DocBlockComponentMaster) {
-    console.log("there is no doc block component master");
-  }
 
   // Create instance
   const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
