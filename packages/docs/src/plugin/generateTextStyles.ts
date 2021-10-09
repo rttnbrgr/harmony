@@ -26,4 +26,4 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   mainFrame.insertChild(0, textStylesFrame);
 }
 
-export { generateLocalTextStylesDoc };
+export default generateLocalTextStylesDoc;

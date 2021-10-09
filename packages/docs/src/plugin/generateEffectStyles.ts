@@ -25,4 +25,4 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   mainFrame.appendChild(effectStylesMasterFrame);
 }
 
-export { generateLocalEffectStylesDoc };
+export default generateLocalEffectStylesDoc;

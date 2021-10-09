@@ -30,4 +30,4 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   mainFrame.insertChild(insertPosition, paintStylesFrame);
 }
 
-export { generateLocalPaintStylesDoc };
+export default generateLocalPaintStylesDoc;
