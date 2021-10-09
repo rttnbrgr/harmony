@@ -169,74 +169,42 @@ function setupComponentSwatch(componentRef, configObject) {
   componentRef.appendChild(SwatchRect);
 }
 
+function spoofComponentPlacement(componentRef, isSwatch = true) {
+  // resize
+  componentRef.resizeWithoutConstraints(componentRef.width, componentRef.height);
+  // Temp fix: Get the edge of the master frame
+  const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
+  componentRef.x = isSwatch ? mainFrame.x : mainFrame.x + 200;
+  componentRef.y = mainFrame.y - 200 - componentRef.height;
+}
+
 export function buildComponentStyleSwatch() {
   // console.log("😎 buildComponentStyleSwatch");
 
-  /** Build the component itself */
+  // Build the component itself
   const sampleComponent: ComponentNode = setupComponentBegin(docBlockSwatchConfig);
 
   // Build the swatch
   setupComponentSwatch(sampleComponent, docBlockSwatchConfig);
 
-  // Setup the Text parts
+  // Build the text parts
   setupComponentTextPieces(sampleComponent, docBlockSwatchConfig);
 
-  // resize
-  sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
-
-  // Temp fix: Get the edge of the master frame
-  const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
-  sampleComponent.x = mainFrame.x;
-  sampleComponent.y = mainFrame.y - 100 - sampleComponent.height;
+  // Hack: placement
+  spoofComponentPlacement(sampleComponent);
 }
 
 export function buildComponentStyleText() {
   // console.log("👋 buildComponentStyleText");
 
-  /** Build the component itself */
+  // Build the component itself
+  const sampleComponent: ComponentNode = setupComponentBegin(docBlockTextConfig);
 
-  // Create it
-  const sampleComponent: ComponentNode = figma.createComponent();
+  // Build the text parts
+  setupComponentTextPieces(sampleComponent, docBlockTextConfig);
 
-  // Give it a name
-  sampleComponent.name = "Doc Block";
-
-  // Save it
-  figma.root.setPluginData(DOC_BLOCK_2_ROOT, sampleComponent.id);
-
-  /** Build the pieces */
-
-  // Build title
-  const TitleText = addText("Style Title");
-  sampleComponent.setPluginData(DOC_BLOCK_2_TITLE, TitleText.id);
-
-  // Build spec
-  const SpecText = addText("Style Spec");
-  // need to add autolayout
-  SpecText.y = 14;
-  sampleComponent.setPluginData(DOC_BLOCK_2_SPEC, SpecText.id);
-
-  // Create the text frame group
-  const textGroup = setupTextGroupFrame();
-  // Add children
-  textGroup.appendChild(TitleText);
-  textGroup.appendChild(SpecText);
-
-  // Create the text group
-  // const textGroup = figma.group([TitleText, SpecText], figma.currentPage);
-
-  /** Add the pieces to the component */
-
-  // Add component children
-  sampleComponent.appendChild(textGroup);
-
-  // Component Config Opinions
-  // sampleComponent.x = DocBlockConfig.x;
-  sampleComponent.layoutMode = DocBlockConfig.layoutMode;
-  sampleComponent.itemSpacing = DocBlockConfig.itemSpacing;
-  sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
-  sampleComponent.counterAxisSizingMode = DocBlockConfig.counterAxisSizingMode;
-  sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
+  // Hack: placement
+  spoofComponentPlacement(sampleComponent, false);
 }
 
 /**
