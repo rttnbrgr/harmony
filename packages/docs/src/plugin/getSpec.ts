@@ -260,9 +260,7 @@ export function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
     specString = getSpecStringFromTextStyle(style);
     return specString;
   } else if (style.type === "EFFECT") {
-    // currently unsupported
-    console.log("foo", style);
-    specString = "effect style";
+    specString = getSpecStringFromEffectStyle(style);
     return specString;
   } else {
     console.log("foo", style.paints);
