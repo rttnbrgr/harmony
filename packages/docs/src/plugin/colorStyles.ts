@@ -31,9 +31,3 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
 }
 
 export { generateLocalPaintStylesDoc };
-
-// Multi fill
-// Additional metadata (gradiant type)
-// different color modes
-// Better visual
-// more info on image fill
