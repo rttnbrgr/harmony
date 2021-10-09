@@ -1,3 +1,4 @@
+import { defaultFills } from "./constants";
 import { getSpecString } from "./getSpec";
 import { addText } from "./utils";
 import {
@@ -48,17 +49,6 @@ function updateInstanceSpec(masterComponent: ComponentNode, instanceComponent: I
 /**
  * for effect
  */
-
-const defaultFills: Array<SolidPaint> = [
-  {
-    type: "SOLID",
-    color: {
-      r: 1,
-      g: 1,
-      b: 1,
-    },
-  },
-];
 
 // duplicates another helper
 export function getStoredNode(frameName: FigmaDocsFrame | DocBlockNodes) {
