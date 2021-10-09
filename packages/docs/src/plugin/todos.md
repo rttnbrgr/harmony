@@ -12,29 +12,39 @@
   ✅ Clean in text styles
   ✅Clean in color styles
 
-- Remove old effect styles
+- Remove old effect styles ✅
   Remove non-component version of this
+
+- add effect version of component build ✅
 
 - Resolve bootstrapping the doc style components
 
-## ColorStyle/PaintStyle
+- refactor `buildComponentStyleX` duplicataion
 
-- Multi fill
-- Additional metadata (gradiant type)
-- different color modes
-- Better visual
-- more info on image fill
+- refactor 'addHeaderToFrame' into bootstrap func
 
 ## Via New.ts
 
 _SomePoint:_
-refactor 'addHeaderToFrame' into bootstrap func
-update how we check for existence of textStylesframe
+update how we check for existence of textStylesframe ✅
 
 _Component_
-fix text group => frame autolayout
+fix text group => frame autolayout ✅
 
 _Paint/Text/Effect_
-add effect version
-clean textStyles duplication/unneeded
-clean effectStyles duplication/unneeded
+
+clean textStyles duplication/unneeded ✅
+clean effectStyles duplication/unneeded ✅
+
+## Future Scoped
+
+_DocBlock Enhancments_
+
+- Better visual
+
+_Spec enhancments_
+
+- Multi fill
+- Additional metadata (gradiant type)
+- different color modes
+- more info on image fill
