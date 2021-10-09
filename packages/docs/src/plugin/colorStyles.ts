@@ -9,15 +9,16 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   // Get styles
   const localPaintStyles = figma.getLocalPaintStyles();
 
-  // SETUP MASTER ARTBOARD
+  // Setup styles frame
   const paintStylesFrame = boostrapStyleDocFrame("ColorStylesFrame");
 
   // Add header => move to bootstrap
   addHeaderToFrame("Color Styles", paintStylesFrame);
 
   // Testing New --------------------------------------------------------------------------------------------
-  // buildComponentStyleSwatch();
+  // this boostraps the component swatch. this needs work
   getComponentStyleSwatch();
+  // this builds the style frame
   buildStyleFramesNew<PaintStyle>(localPaintStyles, paintStylesFrame, createColorStyleDocBlockInstance);
 
   // Get insert position
