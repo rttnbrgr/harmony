@@ -12,51 +12,7 @@ import {
   FigmaDocsFrame,
   DocBlockNodes,
 } from "./types";
-
-function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {
-  // Lookup the ID
-  const DocBlockSwatch = masterComponent.getPluginData(DOC_BLOCK_SWATCH);
-
-  // Find swatch on the instance
-  let swatch = instanceComponent.findChild((node) => node.id.endsWith(DocBlockSwatch)) as RectangleNode;
-
-  // Apply swatch
-  swatch.fillStyleId = styleId;
-}
-
-function updateInstanceTitle(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleName: string) {
-  // Lookup the ID
-  const DocBlockTitle = masterComponent.getPluginData(DOC_BLOCK_TITLE);
-
-  // Find title on the instance
-  let title = instanceComponent.findOne((node) => node.id.endsWith(DocBlockTitle)) as TextNode;
-
-  // Apply name
-  title.characters = styleName;
-}
-
-function updateInstanceSpec(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleSpec: string) {
-  // Lookup the ID
-  const DocBlockSpec = masterComponent.getPluginData(DOC_BLOCK_SPEC);
-
-  // Find spec on the instance
-  let spec = instanceComponent.findOne((node) => node.id.endsWith(DocBlockSpec)) as TextNode;
-
-  // Apply spec
-  spec.characters = styleSpec;
-}
-
-/**
- * for effect
- */
-
-// duplicates another helper
-export function getStoredNode(frameName: FigmaDocsFrame | DocBlockNodes) {
-  const frameId = figma.root.getPluginData(frameName);
-  const frame = figma.getNodeById(frameId);
-
-  return frame;
-}
+import { getStoredNode } from "./frameHelpers";
 
 // function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {}
 function getInstanceNode(

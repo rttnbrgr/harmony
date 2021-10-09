@@ -51,6 +51,16 @@ export function getStoredFrame(frameName: FigmaDocsFrame | DocBlockNodes) {
   return frame;
 }
 
+// duplicates getStoredFrame
+// but
+// doesnt try to create a frame if it doesnt exist
+export function getStoredNode(frameName: FigmaDocsFrame | DocBlockNodes) {
+  const frameId = figma.root.getPluginData(frameName);
+  const frame = figma.getNodeById(frameId);
+
+  return frame;
+}
+
 export function getCurrentPageEdgeRight(excludeFrame: FrameNode = null) {
   let x = null;
   let y = null;
