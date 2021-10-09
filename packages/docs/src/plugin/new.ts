@@ -63,20 +63,6 @@ export function getComponentStyleSwatch() {
   component = buildComponentStyleSwatch();
 }
 
-function setupTextGroupFrame() {
-  const textGroupFrame = figma.createFrame();
-  // Setup autolayout
-  textGroupFrame.layoutMode = "VERTICAL";
-  textGroupFrame.counterAxisSizingMode = "AUTO";
-  textGroupFrame.itemSpacing = 0;
-  // Remove default bg
-  const newFills = simpleClone(textGroupFrame.fills);
-  newFills[0].visible = false;
-  textGroupFrame.fills = newFills;
-  // Return
-  return textGroupFrame;
-}
-
 const docBlockSwatchConfig = {
   name: "Doc Block - Swatch",
   parts: {
@@ -127,6 +113,42 @@ function setupComponentStyles(componentRef, configStyleObject) {
   });
 }
 
+function setupTextGroupFrame() {
+  const textGroupFrame = figma.createFrame();
+  // Setup autolayout
+  textGroupFrame.layoutMode = "VERTICAL";
+  textGroupFrame.counterAxisSizingMode = "AUTO";
+  textGroupFrame.itemSpacing = 0;
+  // Remove default bg
+  const newFills = simpleClone(textGroupFrame.fills);
+  newFills[0].visible = false;
+  textGroupFrame.fills = newFills;
+  // Return
+  return textGroupFrame;
+}
+
+function setupComponentTextPieces(componentRef, configObject) {
+  const { parts } = configObject;
+
+  // Build title
+  const TitleText = addText("Style Title");
+  componentRef.setPluginData(parts.title, TitleText.id);
+
+  // Build spec
+  const SpecText = addText("Style Spec");
+  componentRef.setPluginData(parts.spec, SpecText.id);
+
+  // Create the text frame group
+  const textGroup = setupTextGroupFrame();
+
+  // Add textGroup children
+  textGroup.appendChild(TitleText);
+  textGroup.appendChild(SpecText);
+
+  // Add component children
+  componentRef.appendChild(textGroup);
+}
+
 export function buildComponentStyleSwatch() {
   // console.log("😎 buildComponentStyleSwatch");
 
@@ -139,26 +161,11 @@ export function buildComponentStyleSwatch() {
   colorStyleRect.cornerRadius = DocBlockSwatchConfig.cornerRadius;
   sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
 
-  // Build title
-  const TitleText = addText("Style Title");
-  sampleComponent.setPluginData(DOC_BLOCK_TITLE, TitleText.id);
-
-  // Build spec
-  const SpecText = addText("Style Spec");
-  sampleComponent.setPluginData(DOC_BLOCK_SPEC, SpecText.id);
-
-  // Create the text frame group
-  const textGroup = setupTextGroupFrame();
-
-  // Add children
-  textGroup.appendChild(TitleText);
-  textGroup.appendChild(SpecText);
-
-  /** Add the pieces to the component */
-
   // Add component children
   sampleComponent.appendChild(colorStyleRect);
-  sampleComponent.appendChild(textGroup);
+
+  /** Setup the Text parts */
+  setupComponentTextPieces(sampleComponent, docBlockSwatchConfig);
 
   // resize
   sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
