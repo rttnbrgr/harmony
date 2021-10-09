@@ -1,5 +1,5 @@
 import { addHeaderToFrame, storedFrameExists } from "./frameHelpers";
-import { buildStyleFramesNew, getComponentStyleSwatch } from "./new";
+import { buildStyleFramesNew, getComponentStyleSwatch } from "./docBlockBuild";
 import { createColorStyleDocBlockInstance } from "./docBlockInstance";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 
