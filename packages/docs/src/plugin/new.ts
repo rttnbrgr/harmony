@@ -15,8 +15,8 @@ import { addText, simpleClone } from "./utils";
 const spacer = 8;
 
 const DocBlockConfig = {
-  x: figma.viewport.center.x,
-  y: figma.viewport.center.y,
+  // x: figma.viewport.center.x,
+  // y: figma.viewport.center.y,
   layoutMode: "HORIZONTAL" as "NONE" | "HORIZONTAL" | "VERTICAL",
   itemSpacing: spacer,
   counterAxisAlignItems: "CENTER" as "MIN" | "MAX" | "CENTER",
@@ -77,21 +77,61 @@ function setupTextGroupFrame() {
   return textGroupFrame;
 }
 
+const docBlockSwatchConfig = {
+  name: "Doc Block - Swatch",
+  parts: {
+    root: DOC_BLOCK_ROOT,
+    swatch: DOC_BLOCK_SWATCH,
+    title: DOC_BLOCK_TITLE,
+    spec: DOC_BLOCK_SPEC,
+  },
+  styles: {
+    root: DocBlockConfig,
+  },
+};
+
+const docBlockTextConfig = {
+  name: "Doc Block - Text",
+  parts: {
+    root: DOC_BLOCK_2_ROOT,
+    title: DOC_BLOCK_2_TITLE,
+    spec: DOC_BLOCK_2_SPEC,
+  },
+  styles: {
+    root: DocBlockConfig,
+  },
+};
+
+function setupComponentBegin(configObject) {
+  const { name, parts } = configObject;
+
+  // Create it
+  const masterComponent: ComponentNode = figma.createComponent();
+
+  // Give it a name
+  masterComponent.name = name;
+
+  // Save it
+  figma.root.setPluginData(parts.root, masterComponent.id);
+
+  // Setup component styles
+  setupComponentStyles(masterComponent, configObject.styles.root);
+
+  // Return the component
+  return masterComponent;
+}
+
+function setupComponentStyles(componentRef, configStyleObject) {
+  Object.keys(configStyleObject).forEach((property) => {
+    componentRef[property] = configStyleObject[property];
+  });
+}
+
 export function buildComponentStyleSwatch() {
   // console.log("😎 buildComponentStyleSwatch");
 
   /** Build the component itself */
-
-  // Create it
-  const sampleComponent: ComponentNode = figma.createComponent();
-
-  // Give it a name
-  sampleComponent.name = "Doc Block";
-
-  // Save it
-  figma.root.setPluginData(DOC_BLOCK_ROOT, sampleComponent.id);
-
-  /** Build the pieces */
+  const sampleComponent: ComponentNode = setupComponentBegin(docBlockSwatchConfig);
 
   // Build the swatch
   const colorStyleRect = figma.createRectangle();
@@ -120,11 +160,7 @@ export function buildComponentStyleSwatch() {
   sampleComponent.appendChild(colorStyleRect);
   sampleComponent.appendChild(textGroup);
 
-  // Component Config Opinions
-  sampleComponent.layoutMode = DocBlockConfig.layoutMode;
-  sampleComponent.itemSpacing = DocBlockConfig.itemSpacing;
-  sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
-  sampleComponent.counterAxisSizingMode = DocBlockConfig.counterAxisSizingMode;
+  // resize
   sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
 
   // Temp fix: Get the edge of the master frame
@@ -174,7 +210,7 @@ export function buildComponentStyleText() {
   sampleComponent.appendChild(textGroup);
 
   // Component Config Opinions
-  sampleComponent.x = DocBlockConfig.x;
+  // sampleComponent.x = DocBlockConfig.x;
   sampleComponent.layoutMode = DocBlockConfig.layoutMode;
   sampleComponent.itemSpacing = DocBlockConfig.itemSpacing;
   sampleComponent.counterAxisAlignItems = DocBlockConfig.counterAxisAlignItems;
