@@ -1,5 +1,4 @@
-import { addText } from "./utils";
-import { addHeaderToFrame, buildStyleFrames, getStoredFrame } from "./frameHelpers";
+import { addHeaderToFrame } from "./frameHelpers";
 import { buildComponentStyleText, buildStyleFramesNew } from "./new";
 import { createTextStyleDocBlockInstance } from "./docBlockInstance";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
