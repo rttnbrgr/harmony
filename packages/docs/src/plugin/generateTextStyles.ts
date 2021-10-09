@@ -1,5 +1,5 @@
 import { addHeaderToFrame } from "./frameHelpers";
-import { buildComponentStyleText, buildStyleFramesNew } from "./docBlockBuild";
+import { buildStyleFramesNew } from "./docBlockBuild";
 import { createTextStyleDocBlockInstance } from "./docBlockInstance";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 
@@ -14,10 +14,6 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
 
   // Add header
   addHeaderToFrame("Text Styles", textStylesFrame);
-
-  // Testing New ----------------
-  // Build/source the component
-  buildComponentStyleText();
 
   // Build the style frames and append them to the master artboard
   buildStyleFramesNew<TextStyle>(localTextStyles, textStylesFrame, createTextStyleDocBlockInstance);

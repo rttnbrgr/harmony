@@ -13,6 +13,7 @@ import {
   DocBlockNodes,
 } from "./types";
 import { getStoredNode } from "./frameHelpers";
+import { ensureComponentExists } from "./docBlockBuild";
 
 // function updateInstanceSwatch(masterComponent: ComponentNode, instanceComponent: InstanceNode, styleId: string) {}
 function getInstanceNode(
@@ -45,7 +46,7 @@ export function createColorStyleDocBlockInstance(paintStyle: PaintStyle) {
   let paintStyleSpec = getSpecString(paintStyle);
 
   // Get master node
-  const DocBlockComponentMaster = getStoredNode(DOC_BLOCK_ROOT) as ComponentNode;
+  const DocBlockComponentMaster = ensureComponentExists(DOC_BLOCK_ROOT);
 
   // Create instance
   const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
@@ -72,7 +73,7 @@ export function createTextStyleDocBlockInstance(textStyle: TextStyle) {
   let textStyleSpec = getSpecString(textStyle);
 
   // Get master component node
-  const DocBlockComponentMaster = getStoredNode(DOC_BLOCK_2_ROOT) as ComponentNode;
+  const DocBlockComponentMaster = ensureComponentExists(DOC_BLOCK_2_ROOT);
 
   // Create instance
   const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
@@ -112,13 +113,7 @@ export function createEffectStyleDocBlockInstance(effectStyle: EffectStyle) {
   /**
    * Get the master component
    */
-
-  const DocBlockComponentMaster = getStoredNode(DOC_BLOCK_ROOT) as ComponentNode;
-
-  if (!DocBlockComponentMaster) {
-    // if theres isnt a master component, do we build one?
-    console.log("there is no doc block component master");
-  }
+  const DocBlockComponentMaster = ensureComponentExists(DOC_BLOCK_ROOT);
 
   /**
    * Create and update instance

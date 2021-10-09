@@ -15,9 +15,6 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   // Add header
   addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
 
-  // Testing New --------------------------------------------------------------------------------------------
-  // this boostraps the component swatch. this needs work
-  // getComponentStyleSwatch();
   // this builds the style frame
   buildStyleFramesNew<EffectStyle>(localEffectStyles, effectStylesMasterFrame, createEffectStyleDocBlockInstance);
 

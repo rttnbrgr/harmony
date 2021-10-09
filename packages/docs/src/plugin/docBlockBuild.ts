@@ -1,5 +1,5 @@
-import { MAIN_FRAME_KEY, DOC_BLOCK_ROOT, DOC_BLOCK_2_ROOT } from "./types";
-import { storedFrameExists, getStoredFrame } from "./frameHelpers";
+import { MAIN_FRAME_KEY, DOC_BLOCK_ROOT, DOC_BLOCK_2_ROOT, DocBlockNodes, DocBlockRootNodes } from "./types";
+import { storedFrameExists, getStoredFrame, getStoredNode } from "./frameHelpers";
 import {
   docBlockSwatchConfig,
   docBlockTextConfig,
@@ -8,14 +8,25 @@ import {
   setupComponentSwatch,
 } from "./docBlockSetup";
 
-export function getComponentStyleSwatch() {
-  let component;
-  // check if it exists
-  const componentExists = storedFrameExists(DOC_BLOCK_ROOT);
-  // if it exists
-  if (componentExists) {
+// check if the component exists
+// if it does, return it
+// if not, return the component or do nothing
+export function ensureComponentExists(nodeId: DocBlockRootNodes, foo: string = "put a string here"): ComponentNode {
+  /**
+   * Check if the component exists;
+   */
+  let docBlockComponent = getStoredNode(nodeId) as ComponentNode;
+  let docBlockExists = !!docBlockComponent;
+  console.log(foo, docBlockComponent);
+
+  // If so, return it
+  if (docBlockExists) {
+    console.log("returning here");
+    return docBlockComponent;
+
+    // if it exists, but its been removed
     // console.log("👀👀👀👀 ComponentStyleSwatch already exists");
-    component = getStoredFrame(DOC_BLOCK_ROOT);
+    // component = getStoredFrame(nodeId);
     /**
      * Bug:
      * If comopnent exists but its been removed,
@@ -30,7 +41,7 @@ export function getComponentStyleSwatch() {
      * - Delete old component
      *
      */
-    let isRemoved = component.removed;
+    // let isRemoved = component.removed;
     // console.log("removed? ", isRemoved);
     // the remove function doesnt work, so we need to try cloning and relinking this
     // return component;
@@ -38,9 +49,14 @@ export function getComponentStyleSwatch() {
     // Lets manually remove and rebuild teh component
     // console.log("let's remove teh component?");
   }
-  // boostrap it
+
+  console.log("made it past");
+
+  // Otherwise, boostrap it
+  const isSwatchComponent = nodeId === DOC_BLOCK_ROOT;
   // console.log("🙅‍♀️🙅‍♀️🙅‍♀️ doesnt exist. gotta create it");
-  component = buildComponentStyleSwatch();
+  docBlockComponent = isSwatchComponent ? buildComponentStyleSwatch() : buildComponentStyleText();
+  return docBlockComponent;
 }
 
 function spoofComponentPlacement(componentRef, isSwatch = true) {
@@ -66,6 +82,8 @@ export function buildComponentStyleSwatch() {
 
   // Hack: placement
   spoofComponentPlacement(sampleComponent);
+
+  return sampleComponent;
 }
 
 export function buildComponentStyleText() {
@@ -79,6 +97,8 @@ export function buildComponentStyleText() {
 
   // Hack: placement
   spoofComponentPlacement(sampleComponent, false);
+
+  return sampleComponent;
 }
 
 /**
