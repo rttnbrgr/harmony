@@ -183,6 +183,12 @@ export function buildComponentStyleText() {
   sampleComponent.resizeWithoutConstraints(sampleComponent.width, sampleComponent.height);
 }
 
+/**
+ *
+ * @param stylesArray Array of styles
+ * @param frame Frame to append to
+ * @param buildSample function to use to build style docs
+ */
 export function buildStyleFramesNew<StyleType>(
   stylesArray: Array<StyleType>,
   frame: FrameNode,
