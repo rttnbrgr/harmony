@@ -115,6 +115,7 @@ function setupComponentStyles(componentRef, configStyleObject) {
 
 function setupTextGroupFrame() {
   const textGroupFrame = figma.createFrame();
+  /* S T Y L E S */
   // Setup autolayout
   textGroupFrame.layoutMode = "VERTICAL";
   textGroupFrame.counterAxisSizingMode = "AUTO";
@@ -149,6 +150,25 @@ function setupComponentTextPieces(componentRef, configObject) {
   componentRef.appendChild(textGroup);
 }
 
+function setupComponentSwatch(componentRef, configObject) {
+  const { parts } = configObject;
+
+  // Build the swatch
+  const SwatchRect = figma.createRectangle();
+
+  /* S T Y L E S */
+  const swatchStyleConfig = DocBlockSwatchConfig; // hardcoded
+  const { size: swatchSize, cornerRadius: swatchCornerRadius } = swatchStyleConfig;
+  SwatchRect.resize(swatchSize, swatchSize);
+  SwatchRect.cornerRadius = swatchCornerRadius;
+
+  // Set ref
+  componentRef.setPluginData(parts.swatch, SwatchRect.id);
+
+  // Add component children
+  componentRef.appendChild(SwatchRect);
+}
+
 export function buildComponentStyleSwatch() {
   // console.log("😎 buildComponentStyleSwatch");
 
@@ -156,15 +176,9 @@ export function buildComponentStyleSwatch() {
   const sampleComponent: ComponentNode = setupComponentBegin(docBlockSwatchConfig);
 
   // Build the swatch
-  const colorStyleRect = figma.createRectangle();
-  colorStyleRect.resize(DocBlockSwatchConfig.size, DocBlockSwatchConfig.size);
-  colorStyleRect.cornerRadius = DocBlockSwatchConfig.cornerRadius;
-  sampleComponent.setPluginData(DOC_BLOCK_SWATCH, colorStyleRect.id);
+  setupComponentSwatch(sampleComponent, docBlockSwatchConfig);
 
-  // Add component children
-  sampleComponent.appendChild(colorStyleRect);
-
-  /** Setup the Text parts */
+  // Setup the Text parts
   setupComponentTextPieces(sampleComponent, docBlockSwatchConfig);
 
   // resize
