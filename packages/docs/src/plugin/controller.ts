@@ -1,7 +1,8 @@
-import { generateLocalPaintStylesDoc } from "./colorStyles";
-import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { getStoredFrame, positionMainFrame, MAIN_FRAME_KEY } from "./helpers";
-import { generateLocalTextStylesDoc } from "./textStyles";
+import { MAIN_FRAME_KEY } from "./types";
+import generateLocalPaintStylesDoc from "./generateColorStyles";
+import generateLocalEffectStylesDoc from "./generateEffectStyles";
+import generateLocalTextStylesDoc from "./generateTextStyles";
+import { getStoredFrame } from "./frameHelpers";
 
 // This file holds the main code for the plugins. It has access to the *document*.
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
@@ -11,8 +12,6 @@ import { generateLocalTextStylesDoc } from "./textStyles";
 const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
 
 if (figma.command === "CONFIG") {
-  console.log("CONFIG");
-
   // This shows the HTML page in "ui.html".
   figma.showUI(__html__);
   figma.ui.resize(400, 300);
@@ -31,17 +30,14 @@ if (figma.command === "CONFIG") {
 
       switch (element) {
         case "CREATE_COLOR_STYLES":
-          console.log("create color styles");
           generateLocalPaintStylesDoc(mainFrame);
           break;
 
         case "CREATE_EFFECT_STYLES":
-          console.log("create effect styles");
           generateLocalEffectStylesDoc(mainFrame);
           break;
 
         case "CREATE_TEXT_STYLES":
-          console.log("create text styles");
           generateLocalTextStylesDoc(mainFrame);
           break;
 
@@ -50,8 +46,6 @@ if (figma.command === "CONFIG") {
       }
     }
 
-    positionMainFrame(mainFrame);
-
     // Make sure to close the plugin when you're done. Otherwise the plugin will
     // keep running, which shows the cancel button at the bottom of the screen.
     figma.closePlugin();
@@ -59,7 +53,6 @@ if (figma.command === "CONFIG") {
 }
 
 if (figma.command === "BUILD_PAINT_STYLES") {
-  console.log("create color styles");
   const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   /*
    * Commands should close the plugin
@@ -74,7 +67,6 @@ if (figma.command === "BUILD_PAINT_STYLES") {
 }
 
 if (figma.command === "BUILD_TEXT_STYLES") {
-  console.log("create text styles");
   const textStylePromise = generateLocalTextStylesDoc(mainFrame);
   Promise.all([textStylePromise]).then((v) => {
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
@@ -83,17 +75,14 @@ if (figma.command === "BUILD_TEXT_STYLES") {
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
-  console.log("create effect styles");
   const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
   Promise.all([effectStylePromise]).then((v) => {
-    console.log("promise.all", v);
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
     figma.closePlugin();
   });
 }
 
 if (figma.command === "BUILD_ALL_STYLES") {
-  console.log("create ALL styles");
   const textStylePromise = generateLocalTextStylesDoc(mainFrame);
   const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);

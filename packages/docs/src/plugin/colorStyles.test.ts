@@ -1,4 +1,5 @@
-import { deriveRgbValue, getSpecStringFromColorStop, isInt } from "./colorStyles";
+import { deriveRgbValue, isInt } from "./utils";
+import { getSpecStringFromColorStop } from "./getSpec";
 
 describe("deriveRgbValue", () => {
   test("it should return rounded values", () => {

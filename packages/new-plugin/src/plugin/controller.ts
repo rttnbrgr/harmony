@@ -1,7 +1,6 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
 import { applyMainFrameStyles, getStoredFrame, positionMainFrame } from "./helpers";
-import { testerFunc } from "./tester";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
 /*
@@ -60,10 +59,6 @@ figma.ui.onmessage = (msg) => {
       case "CREATE_TEXT_STYLES":
         console.log("create text styles");
         generateLocalTextStylesDoc(mainFrame);
-        break;
-
-      case "TESTER":
-        testerFunc();
         break;
 
       default:
