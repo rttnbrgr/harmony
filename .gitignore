@@ -5,3 +5,7 @@ coverage/
 
 # Mac OS
 .DS_Store
+
+# vs code
+.history
+.vscode
