@@ -4,7 +4,7 @@ if (figma.command === "GENERATE_LAYER_STYLES") {
   console.log("generate layer styles");
 
   generateLayerStyles();
-  //   figma.closePlugin();
+  figma.closePlugin();
 }
 
 // Global logs
