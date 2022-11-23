@@ -3,7 +3,7 @@ import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFra
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-function buildSample(textStyle: TextStyle) {
+async function buildSample(textStyle: TextStyle) {
   if (!textStyle) {
     return;
   }
@@ -48,14 +48,14 @@ function buildSample(textStyle: TextStyle) {
   const textX = sampleX + rectSize + spacer;
 
   // Build title
-  const textStyleTitleText = addText(textStyleName, {
+  const textStyleTitleText = await addText(textStyleName, {
     x: textX,
     y: sampleY,
   });
   textStyleTitleText.textStyleId = textStyleId;
 
   // Build spec
-  const textStyleSpecText = addText(textStyleSpec, {
+  const textStyleSpecText = await addText(textStyleSpec, {
     x: textX,
     y: sampleY + 14,
   });
@@ -90,10 +90,10 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   textStylesMasterFrame.name = "Text Styles";
 
   // Add header
-  addHeaderToFrame("Text Styles", textStylesMasterFrame);
+  await addHeaderToFrame("Text Styles", textStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildSample);
+  await buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildSample);
   //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
 
   // Add style frame to main frame
