@@ -57,8 +57,9 @@ type textOptions = {
   y: number;
 };
 
-function addText(string: string = "Your new text", options: textOptions): TextNode {
+async function addText(string: string = "Your new text", options: textOptions): Promise<TextNode> {
   const newText = figma.createText();
+  await figma.loadFontAsync(newText.fontName as FontName);
   newText.characters = string;
   if (options.x) {
     newText.x = options.x;
@@ -72,7 +73,7 @@ function addText(string: string = "Your new text", options: textOptions): TextNo
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-function buildSample(paintStyle: PaintStyle) {
+async function buildSample(paintStyle: PaintStyle) {
   if (!paintStyle) {
     return;
   }
@@ -149,12 +150,12 @@ function buildSample(paintStyle: PaintStyle) {
   figma.currentPage.appendChild(colorStyleRect);
 
   // Build title
-  const colorStyleTitleText = addText(paintStyleName, {
+  const colorStyleTitleText = await addText(paintStyleName, {
     x: textX,
     y: sampleY,
   });
   // Build spec
-  const colorStyleSpecText = addText(paintStyleSpec, {
+  const colorStyleSpecText = await addText(paintStyleSpec, {
     x: textX,
     y: sampleY + 14,
   });
@@ -197,10 +198,10 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
 
   // Add header
-  addHeaderToFrame("Color Styles", paintStylesMasterFrame);
+  await addHeaderToFrame("Color Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+  await buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
 
   // Check if textStyles frame exists
   // This feels brittle
