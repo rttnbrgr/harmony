@@ -31,17 +31,14 @@ if (figma.command === "CONFIG") {
 
       switch (element) {
         case "CREATE_COLOR_STYLES":
-          console.log("create color styles");
           generateLocalPaintStylesDoc(mainFrame);
           break;
 
         case "CREATE_EFFECT_STYLES":
-          console.log("create effect styles");
           generateLocalEffectStylesDoc(mainFrame);
           break;
 
         case "CREATE_TEXT_STYLES":
-          console.log("create text styles");
           generateLocalTextStylesDoc(mainFrame);
           break;
 
@@ -59,7 +56,6 @@ if (figma.command === "CONFIG") {
 }
 
 if (figma.command === "BUILD_PAINT_STYLES") {
-  console.log("create color styles");
   const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   /*
    * Commands should close the plugin
@@ -74,7 +70,6 @@ if (figma.command === "BUILD_PAINT_STYLES") {
 }
 
 if (figma.command === "BUILD_TEXT_STYLES") {
-  console.log("create text styles");
   const textStylePromise = generateLocalTextStylesDoc(mainFrame);
   Promise.all([textStylePromise]).then((v) => {
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
@@ -83,7 +78,6 @@ if (figma.command === "BUILD_TEXT_STYLES") {
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
-  console.log("create effect styles");
   const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
   Promise.all([effectStylePromise]).then((v) => {
     console.log("promise.all", v);
@@ -93,7 +87,6 @@ if (figma.command === "BUILD_EFFECT_STYLES") {
 }
 
 if (figma.command === "BUILD_ALL_STYLES") {
-  console.log("create ALL styles");
   const textStylePromise = generateLocalTextStylesDoc(mainFrame);
   const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
