@@ -87,20 +87,21 @@ export function positionMainFrame(mainFrame: FrameNode) {
   mainFrame.y = y + verticalOffset;
 }
 
-export function addHeaderToFrame(headerText: string, frame: FrameNode) {
+export async function addHeaderToFrame(headerText: string, frame: FrameNode) {
   const textStylesHeader = figma.createText();
+  await figma.loadFontAsync(textStylesHeader.fontName as FontName);
   textStylesHeader.characters = headerText;
   frame.appendChild(textStylesHeader);
 }
 
-export function buildStyleFrames<StyleType>(
+export async function buildStyleFrames<StyleType>(
   stylesArray: Array<StyleType>,
   frame: FrameNode,
-  buildSample: (styleType: StyleType) => FrameNode,
+  buildSample: (styleType: StyleType) => Promise<FrameNode>,
   offsets: { x: number; y: number } = { x: null, y: null }
 ) {
-  stylesArray.forEach((styleType, i) => {
-    const styleFrameItem = buildSample(styleType);
+  const promiseArray = stylesArray.map(async (styleType, i) => {
+    const styleFrameItem = await buildSample(styleType);
     if (offsets.x) {
       styleFrameItem.x = i * offsets.x;
     }
@@ -110,5 +111,10 @@ export function buildStyleFrames<StyleType>(
 
     // add to StyleFrame
     frame.appendChild(styleFrameItem);
+  });
+
+  // Need to resolve all promises to expost to outer scope?
+  return Promise.all([...promiseArray]).then((value) => {
+    return true;
   });
 }
