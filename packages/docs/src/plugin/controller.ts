@@ -1,6 +1,7 @@
+import { MAIN_FRAME_KEY } from "./types";
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { getStoredFrame, positionMainFrame, MAIN_FRAME_KEY } from "./helpers";
+import { getStoredFrame, positionMainFrame } from "./helpers";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
 // This file holds the main code for the plugins. It has access to the *document*.

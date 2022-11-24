@@ -1,8 +1,8 @@
-import { FrameName } from "./types";
+import { FigmaDocsFrame } from "./types";
 
 export const MAIN_FRAME_KEY = "MainFrame";
 
-export function getStoredFrame(frameName: FrameName) {
+export function getStoredFrame(frameName: FigmaDocsFrame) {
   console.log("getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
@@ -41,7 +41,7 @@ export function applyMainFrameStyles(mainFrame: FrameNode) {
   mainFrame.paddingLeft = 32;
 }
 
-export function applyStyleFrameStyles(frameName: FrameName) {
+export function applyStyleFrameStyles(frameName: FigmaDocsFrame) {
   const frame = getStoredFrame(frameName) as FrameNode;
   // remove previous children
   frame.children.map((child) => child.remove());
