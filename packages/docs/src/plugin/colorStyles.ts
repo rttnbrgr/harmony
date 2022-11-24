@@ -160,32 +160,35 @@ async function buildSample(paintStyle: PaintStyle) {
     y: sampleY + 14,
   });
 
-  // Group text nodes
-  const textGroup = figma.group([colorStyleTitleText, colorStyleSpecText], figma.currentPage);
-
-  // Selection testing
-  // const newNodes: SceneNode[] = [textGroup, colorStyleRect];
-  // newNodes.push(textGroup);
-  // newNodes.push(colorStyleRect);
-  // figma.currentPage.selection = newNodes;
-  // console.log("selection", figma.currentPage.selection);
-  // console.log("figma", figma);
-
   // Create the frame, append text + rect, position it
   const sampleFrame = figma.createFrame();
   sampleFrame.appendChild(colorStyleRect);
-  sampleFrame.appendChild(textGroup);
   sampleFrame.layoutMode = "HORIZONTAL";
   sampleFrame.itemSpacing = 8;
   sampleFrame.counterAxisAlignItems = "CENTER";
   sampleFrame.x = sampleX;
-  let getSampleFrameWidth = () => sampleFrame.width;
-  let sampleFrameWidth = getSampleFrameWidth();
 
-  sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  // console.log("sampleFrame", sampleFrame);
+  // Pretty sure this is not necessary; build style frames handles it?
+  return Promise.all([colorStyleTitleText, colorStyleSpecText]).then((value) => {
+    console.log("colorStyleTitleText promise", value);
+    console.log("sampleFrame", sampleFrame);
 
-  return sampleFrame;
+    // Group text nodes
+    const textGroup = figma.group([...value], figma.currentPage);
+    console.log("textGroup", textGroup);
+
+    // Sample frame updates, that depend on promises; Append text group
+    sampleFrame.appendChild(textGroup);
+
+    // Sample frame size stuff
+    let getSampleFrameWidth = () => sampleFrame.width;
+    let sampleFrameWidth = getSampleFrameWidth();
+
+    // Resize
+    sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
+
+    return sampleFrame;
+  });
 }
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
