@@ -1,5 +1,5 @@
-import { addText } from "./colorStyles";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
+import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {

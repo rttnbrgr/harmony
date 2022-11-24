@@ -1,12 +1,5 @@
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
-
-// Take value between 0 - 1 and get an rgb
-const deriveRgbValue = (val: number) => Math.round(val * 255);
-
-//
-export function isInt(n: number) {
-  return n % 1 === 0;
-}
+import { deriveRgbValue, isInt, addText } from "./utils";
 
 // get a string from a given paint color
 const getRgbStringFromLocalStyle = (style) => {
@@ -50,25 +43,6 @@ function buildPaintStyleSpecString(style: PaintStyle): string {
 // Get opacity spec string
 function getOpacitySpecStringFromSolidPaint(paint: SolidPaint) {
   return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
-}
-
-type textOptions = {
-  x: number;
-  y: number;
-};
-
-async function addText(string: string = "Your new text", options: textOptions): Promise<TextNode> {
-  const newText = figma.createText();
-  await figma.loadFontAsync(newText.fontName as FontName);
-  newText.characters = string;
-  if (options.x) {
-    newText.x = options.x;
-  }
-  if (options.y) {
-    newText.y = options.y;
-  }
-  figma.currentPage.appendChild(newText);
-  return newText;
 }
 
 // Takes a paint style and returns a frame documenting that style
@@ -224,14 +198,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   mainFrame.insertChild(insertPosition, paintStylesMasterFrame);
 }
 
-export {
-  deriveRgbValue,
-  getRgbStringFromLocalStyle,
-  buildPaintStyleSpecString,
-  buildSample,
-  generateLocalPaintStylesDoc,
-  addText,
-};
+export { getRgbStringFromLocalStyle, buildPaintStyleSpecString, buildSample, generateLocalPaintStylesDoc };
 
 // Multi fill
 // opacity on solid paint fill

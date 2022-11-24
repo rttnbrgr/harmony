@@ -1,4 +1,4 @@
-import { addText, deriveRgbValue, isInt } from "./colorStyles";
+import { deriveRgbValue, isInt, convertUnderscoresToSpace, toTitleCase, addText } from "./utils";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {
@@ -9,18 +9,6 @@ function getSpecStringFromRgba(color: RGBA) {
   const a = isInt(color.a) ? color.a : color.a.toFixed(2);
   rgbaString = `[${r}, ${g}, ${b}, ${a}]`;
   return rgbaString;
-}
-
-// https://stackoverflow.com/questions/11810569/how-to-replace-underscores-with-spaces
-function convertUnderscoresToSpace(str) {
-  return str.replace(/_/g, " ");
-}
-
-// https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
 }
 
 function convertEffectTypeToSpecString(str) {
