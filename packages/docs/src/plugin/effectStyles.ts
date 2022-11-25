@@ -1,5 +1,4 @@
 import { deriveRgbValue, isInt, convertUnderscoresToSpace, toTitleCase, addText } from "./utils";
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames, getStoredFrame } from "./helpers";
 
 function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
@@ -23,7 +22,7 @@ function convertEffectTypeToSpecString(str) {
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-async function buildSample(effectStyle: EffectStyle) {
+export async function buildSample(effectStyle: EffectStyle) {
   if (!effectStyle) {
     return;
   }
@@ -143,27 +142,3 @@ async function buildSample(effectStyle: EffectStyle) {
 
   return sampleFrame;
 }
-
-async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
-  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-
-  // Get effect styles
-  const localEffectStyles = figma.getLocalEffectStyles();
-  console.log("localEffectStyles", localEffectStyles);
-
-  // SETUP MASTER ARTBOARD
-  const effectStylesMasterFrame = applyStyleFrameStyles("EffectStylesFrame");
-
-  // Add header
-  await addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
-
-  console.log("before buildEffectStyleFrames");
-
-  // Build the style frames and append them to the master artboard
-  await buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
-
-  // Add style frame to main frame
-  mainFrame.appendChild(effectStylesMasterFrame);
-}
-
-export { generateLocalEffectStylesDoc };

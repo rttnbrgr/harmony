@@ -1,8 +1,8 @@
 import { MAIN_FRAME_KEY } from "./types";
-import { generateLocalPaintStylesDoc } from "./colorStyles";
-import { generateLocalEffectStylesDoc } from "./effectStyles";
+import generateLocalPaintStylesDoc from "./generateColorStyles";
+import generateLocalEffectStylesDoc from "./generateEffectStyles";
 import { getStoredFrame, positionMainFrame } from "./helpers";
-import { generateLocalTextStylesDoc } from "./textStyles";
+import generateLocalTextStylesDoc from "./generateTextStyles";
 
 // This file holds the main code for the plugins. It has access to the *document*.
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
