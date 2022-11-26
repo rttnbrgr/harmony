@@ -5,21 +5,17 @@ import { boostrapStyleDocFrame } from "./styleDocFrame";
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
 
-  // Get effect styles
+  // Get styles
   const localTextStyles = figma.getLocalTextStyles();
-  console.log("localEffectStyles", localTextStyles);
 
-  // SETUP MASTER ARTBOARD
+  // Setup frame
   const textStylesMasterFrame = boostrapStyleDocFrame("TextStylesFrame");
-  // Add name; for use in checking for this frames existence
-  textStylesMasterFrame.name = "Text Styles";
 
   // Add header
   await addHeaderToFrame("Text Styles", textStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
   await buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildTextStyleBlock);
-  //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
 
   // Add style frame to main frame
   // Always the first child

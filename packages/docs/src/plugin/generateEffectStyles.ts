@@ -7,15 +7,12 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
 
   // Get effect styles
   const localEffectStyles = figma.getLocalEffectStyles();
-  console.log("localEffectStyles", localEffectStyles);
 
-  // SETUP MASTER ARTBOARD
+  // Setup frame
   const effectStylesMasterFrame = boostrapStyleDocFrame("EffectStylesFrame");
 
   // Add header
   await addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
-
-  console.log("before buildEffectStyleFrames");
 
   // Build the style frames and append them to the master artboard
   await buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildEffectStyleBlock, {

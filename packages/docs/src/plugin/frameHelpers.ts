@@ -1,5 +1,16 @@
 import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
 
+/**
+ * Check if a figma frame exists
+ * @param {FigmaDocsFrame} frameName
+ * @returns {boolean}
+ */
+export function storedFrameExists(frameName: FigmaDocsFrame) {
+  const frameId = figma.root.getPluginData(frameName);
+  const frame = figma.getNodeById(frameId);
+  return !!frameId && !!frame;
+}
+
 export function getStoredFrame(frameName: FigmaDocsFrame) {
   console.log("getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
