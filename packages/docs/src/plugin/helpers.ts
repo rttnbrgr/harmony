@@ -41,22 +41,6 @@ export function applyMainFrameStyles(mainFrame: FrameNode) {
   mainFrame.paddingLeft = 32;
 }
 
-export function applyStyleFrameStyles(frameName: FigmaDocsFrame) {
-  const frame = getStoredFrame(frameName) as FrameNode;
-  // remove previous children
-  frame.children.map((child) => child.remove());
-
-  // new styles
-  frame.layoutMode = "VERTICAL";
-  frame.counterAxisSizingMode = "AUTO";
-  frame.itemSpacing = 16;
-  frame.paddingTop = 32;
-  frame.paddingRight = 32;
-  frame.paddingBottom = 32;
-  frame.paddingLeft = 32;
-  return frame;
-}
-
 // This shouldnt run if the frame exists
 // Position the frame to the farthest right and top point
 export function positionMainFrame(mainFrame: FrameNode) {

@@ -1,5 +1,6 @@
 import { buildColorStyleBlock } from "./buildColorStyleBlock";
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames } from "./helpers";
+import { addHeaderToFrame, buildStyleFrames } from "./helpers";
+import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
@@ -8,7 +9,7 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const localPaintStyles = figma.getLocalPaintStyles();
 
   // SETUP MASTER ARTBOARD
-  const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
+  const paintStylesMasterFrame = boostrapStyleDocFrame("ColorStylesFrame");
 
   // Add header
   await addHeaderToFrame("Color Styles", paintStylesMasterFrame);

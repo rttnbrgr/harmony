@@ -1,5 +1,6 @@
 import { buildEffectStyleBlock } from "./buildEffectStyleBlock";
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames } from "./helpers";
+import { addHeaderToFrame, buildStyleFrames } from "./helpers";
+import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
@@ -9,7 +10,7 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   console.log("localEffectStyles", localEffectStyles);
 
   // SETUP MASTER ARTBOARD
-  const effectStylesMasterFrame = applyStyleFrameStyles("EffectStylesFrame");
+  const effectStylesMasterFrame = boostrapStyleDocFrame("EffectStylesFrame");
 
   // Add header
   await addHeaderToFrame("Effect Styles", effectStylesMasterFrame);

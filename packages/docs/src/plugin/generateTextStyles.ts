@@ -1,5 +1,6 @@
 import { buildTextStyleBlock } from "./buildTextStyleBlock";
-import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames } from "./helpers";
+import { addHeaderToFrame, buildStyleFrames } from "./helpers";
+import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
@@ -9,7 +10,7 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   console.log("localEffectStyles", localTextStyles);
 
   // SETUP MASTER ARTBOARD
-  const textStylesMasterFrame = applyStyleFrameStyles("TextStylesFrame");
+  const textStylesMasterFrame = boostrapStyleDocFrame("TextStylesFrame");
   // Add name; for use in checking for this frames existence
   textStylesMasterFrame.name = "Text Styles";
 
