@@ -1,4 +1,4 @@
-import { buildSample } from "./effectStyles";
+import { buildEffectStyleBlock } from "./buildEffectStyleBlock";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames } from "./helpers";
 
 async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
@@ -17,7 +17,10 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   console.log("before buildEffectStyleFrames");
 
   // Build the style frames and append them to the master artboard
-  await buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+  await buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildEffectStyleBlock, {
+    x: 64 + 16,
+    y: null,
+  });
 
   // Add style frame to main frame
   mainFrame.appendChild(effectStylesMasterFrame);

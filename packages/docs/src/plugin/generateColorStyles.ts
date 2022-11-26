@@ -1,4 +1,4 @@
-import { buildSample } from "./colorStyles";
+import { buildColorStyleBlock } from "./buildColorStyleBlock";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames } from "./helpers";
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
@@ -14,7 +14,10 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   await addHeaderToFrame("Color Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  await buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+  await buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildColorStyleBlock, {
+    x: 64 + 16,
+    y: null,
+  });
 
   // Check if textStyles frame exists
   // This feels brittle

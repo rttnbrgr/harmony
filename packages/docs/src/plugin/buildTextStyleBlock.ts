@@ -2,7 +2,7 @@ import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-export async function buildSample(textStyle: TextStyle) {
+export async function buildTextStyleBlock(textStyle: TextStyle) {
   if (!textStyle) {
     return;
   }

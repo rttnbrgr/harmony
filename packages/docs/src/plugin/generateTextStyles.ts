@@ -1,4 +1,4 @@
-import { buildSample } from "./textStyles";
+import { buildTextStyleBlock } from "./buildTextStyleBlock";
 import { addHeaderToFrame, applyStyleFrameStyles, buildStyleFrames } from "./helpers";
 
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
@@ -17,7 +17,7 @@ async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
   await addHeaderToFrame("Text Styles", textStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  await buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildSample);
+  await buildStyleFrames<TextStyle>(localTextStyles, textStylesMasterFrame, buildTextStyleBlock);
   //   buildTextStyleFrames(localTextStyles, textStylesMasterFrame);
 
   // Add style frame to main frame
