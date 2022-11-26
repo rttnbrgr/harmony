@@ -1,4 +1,4 @@
-import { buildPaintStyleSpecString } from "./colorStyles";
+import { buildPaintStyleSpecString } from "./getSpec";
 
 // Print a string
 function buildText(str = "Build Text String", y = 0) {

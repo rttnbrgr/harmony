@@ -1,7 +1,14 @@
-import { deriveRgbValue, isInt, addText } from "./utils";
+import { deriveRgbValue, isInt, convertUnderscoresToSpace, toTitleCase } from "./utils";
+
+/********
+ *
+ *
+ * Paint Styles
+ *
+ */
 
 // get a string from a given paint color
-const getRgbStringFromLocalStyle = (style) => {
+export const getRgbStringFromLocalStyle = (style) => {
   // limit to single fill
   const rgbObject = style.paints[0].color;
   const r = deriveRgbValue(rgbObject.r);
@@ -30,7 +37,7 @@ export function getSpecStringFromColorStop(colorStop: ColorStop): string {
 export const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
 
 // take a style, return a specString
-function buildPaintStyleSpecString(style: PaintStyle): string {
+export function buildPaintStyleSpecString(style: PaintStyle): string {
   let specString;
   specString = style.name;
   specString += " - ";
@@ -44,11 +51,29 @@ export function getOpacitySpecStringFromSolidPaint(paint: SolidPaint) {
   return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
 }
 
-export { getRgbStringFromLocalStyle, buildPaintStyleSpecString };
+/********
+ *
+ *
+ * Effect Styles
+ *
+ */
 
-// Multi fill
-// opacity on solid paint fill
-// Additional metadata (gradiant type)
-// different color modes
-// Better visual
-// more info on image fill
+export function getSpecStringFromRgba(color: RGBA) {
+  let rgbaString = "";
+  const r = deriveRgbValue(color.r);
+  const g = deriveRgbValue(color.g);
+  const b = deriveRgbValue(color.b);
+  const a = isInt(color.a) ? color.a : color.a.toFixed(2);
+  rgbaString = `[${r}, ${g}, ${b}, ${a}]`;
+  return rgbaString;
+}
+
+export function convertEffectTypeToSpecString(str) {
+  let specString = str;
+  console.log("convertEffectTypeToSpecString", specString);
+  specString = convertUnderscoresToSpace(specString);
+  console.log(specString);
+  specString = toTitleCase(specString);
+  console.log(specString);
+  return specString;
+}

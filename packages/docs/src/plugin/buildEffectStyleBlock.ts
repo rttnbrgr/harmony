@@ -1,4 +1,4 @@
-import { convertEffectTypeToSpecString, getSpecStringFromRgba } from "./effectStyles";
+import { convertEffectTypeToSpecString, getSpecStringFromRgba } from "./getSpec";
 import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style

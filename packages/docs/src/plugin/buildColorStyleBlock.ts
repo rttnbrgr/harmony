@@ -3,7 +3,7 @@ import {
   getRgbStringFromLocalStyle,
   getSpecStringFromColorStop,
   gradiantReducer,
-} from "./colorStyles";
+} from "./getSpec";
 import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style
