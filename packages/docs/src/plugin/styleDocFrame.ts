@@ -1,5 +1,5 @@
 import { FigmaDocsFrame } from "./types";
-import { getStoredFrame } from "./helpers";
+import { getStoredFrame } from "./frameHelpers";
 
 /**
  * Apply initial layout/styles for the style doc frame

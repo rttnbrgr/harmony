@@ -1,5 +1,5 @@
 import { buildColorStyleBlock } from "./buildColorStyleBlock";
-import { addHeaderToFrame, buildStyleFrames } from "./helpers";
+import { addHeaderToFrame, buildStyleFrames } from "./frameHelpers";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {

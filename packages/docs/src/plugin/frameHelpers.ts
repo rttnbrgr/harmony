@@ -1,6 +1,4 @@
-import { FigmaDocsFrame } from "./types";
-
-export const MAIN_FRAME_KEY = "MainFrame";
+import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
 
 export function getStoredFrame(frameName: FigmaDocsFrame) {
   console.log("getStoredFrame");

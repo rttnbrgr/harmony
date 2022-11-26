@@ -1,5 +1,5 @@
 import { buildEffectStyleBlock } from "./buildEffectStyleBlock";
-import { addHeaderToFrame, buildStyleFrames } from "./helpers";
+import { addHeaderToFrame, buildStyleFrames } from "./frameHelpers";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
