@@ -1,72 +1,12 @@
-import {
-  getOpacitySpecStringFromSolidPaint,
-  getRgbStringFromLocalStyle,
-  getSpecStringFromColorStop,
-  gradiantReducer,
-} from "./getSpec";
+import { getSpecString } from "./getSpec";
 import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 export async function buildColorStyleBlock(paintStyle: PaintStyle) {
-  if (!paintStyle) {
-    return;
-  }
-  const paintStyleName = paintStyle.name;
-  const paintStyleId = paintStyle.id;
-  let paintStyleSpec = "";
-
-  console.log("🎨 ", paintStyleName);
-  console.log(paintStyle);
-
-  /*
-   * Logic to build spec string
-   */
-
-  // safety checking
-  let isSolid = true;
-  let isSingleFill = true;
-  if (paintStyle.paints.length > 1) {
-    isSingleFill = false;
-    paintStyleSpec = "Multiple Fills";
-  }
-
-  let firstPaint = paintStyle.paints[0];
-
-  if (isSingleFill && firstPaint.type !== "SOLID") {
-    isSolid = false;
-
-    // For image filles?
-    if (firstPaint.type === "IMAGE") {
-      paintStyleSpec = `Image fill`;
-    }
-
-    // For Gradient fills
-    // "GRADIENT_LINEAR" | "GRADIENT_RADIAL" | "GRADIENT_ANGULAR" | "GRADIENT_DIAMOND"
-    if (firstPaint.type !== "IMAGE") {
-      // let thisPaintStyle = paintStyle.paints[0];
-      console.log("firstPaint", firstPaint);
-      // thisPaintStyle.gradientStops.reduce()
-      const gradiantStopsString = firstPaint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
-      console.log("gradiantStopsString", gradiantStopsString);
-
-      paintStyleSpec = `RGBA: ${gradiantStopsString}`;
-    }
-  }
-  if (isSingleFill && isSolid && "color" in firstPaint) {
-    // get color portion of spec
-    let specStringTest = getRgbStringFromLocalStyle(paintStyle);
-    // get opacity portion of spec
-    let opacitySpecString = getOpacitySpecStringFromSolidPaint(firstPaint);
-    // Stitch teh spec string together
-    if (opacitySpecString) {
-      specStringTest += " @ ";
-      specStringTest += opacitySpecString;
-    }
-
-    console.log("specStringTest", specStringTest);
-    paintStyleSpec = specStringTest;
-  }
+  // Destruct + generate the spec string
+  const { name: paintStyleName, id: paintStyleId, paints } = paintStyle;
+  let paintStyleSpec = getSpecString(paintStyle);
 
   // put it here
   const sampleX = 400;
