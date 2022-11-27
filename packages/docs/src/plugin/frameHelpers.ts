@@ -12,12 +12,10 @@ export function storedFrameExists(frameName: FigmaDocsFrame) {
 }
 
 export function getStoredFrame(frameName: FigmaDocsFrame) {
-  console.log("getStoredFrame");
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
 
   if (!frameId || !frame) {
-    console.log("no frame", frameId, frame);
     const newFrame = figma.createFrame();
     figma.root.setPluginData(frameName, newFrame.id);
 
@@ -39,8 +37,6 @@ export function getStoredFrame(frameName: FigmaDocsFrame) {
 }
 
 export function applyMainFrameStyles(mainFrame: FrameNode) {
-  console.log("applyMainFrameStyles");
-  console.log("mainFrame", mainFrame);
   mainFrame.layoutMode = "HORIZONTAL";
   mainFrame.counterAxisSizingMode = "AUTO";
   mainFrame.itemSpacing = 16;

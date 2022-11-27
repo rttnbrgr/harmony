@@ -45,12 +45,8 @@ export async function buildColorStyleBlock(paintStyle: PaintStyle) {
 
   // Pretty sure this is not necessary; build style frames handles it?
   return Promise.all([colorStyleTitleText, colorStyleSpecText]).then((value) => {
-    console.log("colorStyleTitleText promise", value);
-    console.log("sampleFrame", sampleFrame);
-
     // Group text nodes
     const textGroup = figma.group([...value], figma.currentPage);
-    console.log("textGroup", textGroup);
 
     // Sample frame updates, that depend on promises; Append text group
     sampleFrame.appendChild(textGroup);
