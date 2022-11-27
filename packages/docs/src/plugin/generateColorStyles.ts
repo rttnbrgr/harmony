@@ -1,5 +1,6 @@
 import { buildColorStyleBlock } from "./buildColorStyleBlock";
-import { addHeaderToFrame, buildStyleFrames, storedFrameExists } from "./frameHelpers";
+import { buildStyleFrames } from "./buildStyleFrames";
+import { addHeaderToFrame, storedFrameExists } from "./frameHelpers";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 import { TEXT_STYLES_FRAME } from "./types";
 

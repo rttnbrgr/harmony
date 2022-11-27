@@ -2,8 +2,6 @@ import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
 
 /**
  * Check if a figma frame exists
- * @param {FigmaDocsFrame} frameName
- * @returns {boolean}
  */
 export function storedFrameExists(frameName: FigmaDocsFrame) {
   const frameId = figma.root.getPluginData(frameName);
@@ -81,29 +79,4 @@ export async function addHeaderToFrame(headerText: string, frame: FrameNode) {
   await figma.loadFontAsync(textStylesHeader.fontName as FontName);
   textStylesHeader.characters = headerText;
   frame.appendChild(textStylesHeader);
-}
-
-export async function buildStyleFrames<StyleType>(
-  stylesArray: Array<StyleType>,
-  frame: FrameNode,
-  buildSample: (styleType: StyleType) => Promise<FrameNode>,
-  offsets: { x: number; y: number } = { x: null, y: null }
-) {
-  const promiseArray = stylesArray.map(async (styleType, i) => {
-    const styleFrameItem = await buildSample(styleType);
-    if (offsets.x) {
-      styleFrameItem.x = i * offsets.x;
-    }
-    if (offsets.y) {
-      styleFrameItem.y = i * offsets.y;
-    }
-
-    // add to StyleFrame
-    frame.appendChild(styleFrameItem);
-  });
-
-  // Need to resolve all promises to expost to outer scope?
-  return Promise.all([...promiseArray]).then((value) => {
-    return true;
-  });
 }

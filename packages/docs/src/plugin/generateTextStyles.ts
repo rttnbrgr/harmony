@@ -1,5 +1,6 @@
 import { buildTextStyleBlock } from "./buildTextStyleBlock";
-import { addHeaderToFrame, buildStyleFrames } from "./frameHelpers";
+import { buildStyleFrames } from "./buildStyleFrames";
+import { addHeaderToFrame } from "./frameHelpers";
 import { boostrapStyleDocFrame } from "./styleDocFrame";
 
 async function generateLocalTextStylesDoc(mainFrame: FrameNode) {
