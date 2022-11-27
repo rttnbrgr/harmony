@@ -1,69 +1,12 @@
-import { convertEffectTypeToSpecString, getSpecStringFromRgba } from "./getSpec";
+import { getSpecString } from "./getSpec";
 import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 export async function buildEffectStyleBlock(effectStyle: EffectStyle) {
-  if (!effectStyle) {
-    return;
-  }
-
-  const effectStyleName = effectStyle.name;
-  const effectStyleId = effectStyle.id;
-  let effectStyleSpec = "";
-
-  console.log("🎨 ", effectStyleName);
-  console.log(effectStyle);
-
-  // Logic to build spec string
-
-  // safety checking
-  let isSolid = true;
-  let isSingle = true;
-
-  // ignore multi-effect for now
-  if (effectStyle.effects.length > 1) {
-    isSingle = false;
-    effectStyleSpec = "Multiple Fills";
-    console.log("multi effect");
-  }
-
-  let firstEffect = effectStyle.effects[0];
-
-  if (isSingle) {
-    // Effect type
-    let effectType = firstEffect.type;
-    let effectTypeString = convertEffectTypeToSpecString(effectType);
-    effectStyleSpec += effectTypeString;
-    effectStyleSpec += ": ";
-
-    // Shadow or Blur?
-    if ("color" in firstEffect && (effectType === "DROP_SHADOW" || effectType === "INNER_SHADOW")) {
-      // Effect color
-      let effectColor = getSpecStringFromRgba(firstEffect.color);
-      effectStyleSpec += effectColor;
-      effectStyleSpec += " | ";
-      // Offset
-      let effectOffsetX = firstEffect.offset.x;
-      let effectOffsetY = firstEffect.offset.y;
-      effectStyleSpec += "Offset: ";
-      effectStyleSpec += effectOffsetX;
-      effectStyleSpec += ", ";
-      effectStyleSpec += effectOffsetY;
-      effectStyleSpec += " | ";
-      // Spread
-      let effectSpread = firstEffect.spread;
-      effectStyleSpec += "Spread: ";
-      effectStyleSpec += effectSpread;
-      effectStyleSpec += " | ";
-    } else {
-      console.log("blur effect");
-    }
-    // Blur Radius
-    let effectRadius = firstEffect.radius;
-    effectStyleSpec += "Blur: ";
-    effectStyleSpec += effectRadius;
-  }
+  // Destruct + generate the spec string
+  const { name: effectStyleName, id: effectStyleId, effects } = effectStyle;
+  let effectStyleSpec = getSpecString(effectStyle);
 
   // put it here
   const sampleX = 400;

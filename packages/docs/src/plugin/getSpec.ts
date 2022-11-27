@@ -5,7 +5,7 @@ import { deriveRgbValue, isInt, convertUnderscoresToSpace, toTitleCase } from ".
  * ****************/
 
 // get color string from a solid paint
-export const getColorStringFromSolidPaint = (paint: SolidPaint) => {
+const getColorStringFromSolidPaint = (paint: SolidPaint) => {
   const rgbColor = paint.color;
   const r = deriveRgbValue(rgbColor.r);
   const g = deriveRgbValue(rgbColor.g);
@@ -14,12 +14,12 @@ export const getColorStringFromSolidPaint = (paint: SolidPaint) => {
 };
 
 // Get opacity from a solid paint
-export function getOpacityStringFromSolidPaint(paint: SolidPaint) {
+function getOpacityStringFromSolidPaint(paint: SolidPaint) {
   const combinator = " @ ";
   return paint.opacity === 1 ? "" : `${paint.opacity * 100}%`;
 }
 
-export function getSpecStringFromSolidPaint(paint: SolidPaint) {
+function getSpecStringFromSolidPaint(paint: SolidPaint) {
   // get color portion of spec
   let specStringTest = getColorStringFromSolidPaint(paint);
   // get opacity portion of spec
@@ -32,7 +32,7 @@ export function getSpecStringFromSolidPaint(paint: SolidPaint) {
   return specStringTest;
 }
 
-export function getSpecStringFromColorStop(colorStop: ColorStop): string {
+function getSpecStringFromColorStop(colorStop: ColorStop): string {
   if (!colorStop) {
     throw new Error("Missing colorStop value");
   }
@@ -48,18 +48,14 @@ export function getSpecStringFromColorStop(colorStop: ColorStop): string {
   return rgbaString;
 }
 
-export const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
+const gradiantReducer = (a, cv) => `${a} -> ${cv}`;
 
-export function getSpecStringFromGradiantPaint(paint: GradientPaint) {
+function getSpecStringFromGradiantPaint(paint: GradientPaint) {
   const gradiantStopsString = paint.gradientStops.map(getSpecStringFromColorStop).reduce(gradiantReducer);
   return `RGBA: ${gradiantStopsString}`;
 }
-/**
- *
- * @param paint
- * @returns string
- */
-export function getSpecStringFromPaint(paint: Paint) {
+
+function getSpecStringFromPaint(paint: Paint) {
   let specString;
 
   // Image Fills
@@ -112,7 +108,7 @@ function getSpecStringFromLineHeight(lineHeightObject: LineHeight) {
   return specString;
 }
 
-export function getSpecStringFromTextStyle(textStyle: TextStyle) {
+function getSpecStringFromTextStyle(textStyle: TextStyle) {
   let specString = "";
 
   // Get the pieces
@@ -131,14 +127,11 @@ export function getSpecStringFromTextStyle(textStyle: TextStyle) {
   return specString;
 }
 
-/********
- *
- *
+/* ****************
  * Effect Styles
- *
- */
+ * ****************/
 
-export function getSpecStringFromRgba(color: RGBA) {
+function getSpecStringFromRgba(color: RGBA) {
   let rgbaString = "";
   const r = deriveRgbValue(color.r);
   const g = deriveRgbValue(color.g);
@@ -148,33 +141,89 @@ export function getSpecStringFromRgba(color: RGBA) {
   return rgbaString;
 }
 
-export function convertEffectTypeToSpecString(str) {
-  let specString = str;
-  console.log("convertEffectTypeToSpecString", specString);
+function getEffectTypeSpecStringFromEffect(effect: Effect) {
+  let effectType = effect.type;
+  let specString = effectType;
   specString = convertUnderscoresToSpace(specString);
-  console.log(specString);
   specString = toTitleCase(specString);
-  console.log(specString);
   return specString;
 }
 
-/********
- *
- *
+function getOffsetSpecStringFromEffect(effect: ShadowEffect) {
+  let effectOffsetX = effect.offset.x;
+  let effectOffsetY = effect.offset.y;
+  let specString = `Offset: ${effectOffsetX}, ${effectOffsetY}`;
+  return specString;
+}
+
+function getSpreadSpecStringFromEffect(effect: ShadowEffect) {
+  let spread = effect.spread;
+  let specString = `Spread: ${spread}`;
+  return specString;
+}
+
+function getBlurSpecStringFromEffect(effect: Effect) {
+  let radius = effect.radius;
+  let specString = `Blur: ${radius}`;
+  return specString;
+}
+
+function getShadowSpecStringFromEffect(effect: ShadowEffect) {
+  // Values
+  let effectColor = getSpecStringFromRgba(effect.color);
+  let effectOffset = getOffsetSpecStringFromEffect(effect);
+  let effectSpread = getSpreadSpecStringFromEffect(effect);
+  // Reducer
+  let specSeperator = " | ";
+  let specReducer = (ac, cv) => ac.concat(specSeperator, cv);
+  let specString = [effectColor, effectOffset, effectSpread].reduce(specReducer).concat(specSeperator);
+  return specString;
+}
+
+function getSpecStringFromEffectStyle(effectStyle: EffectStyle) {
+  // Logic to build spec string
+  let effectStyleSpec = "";
+
+  let isSingle = effectStyle.effects.length === 1;
+
+  // ignore multi-effect for now
+  if (!isSingle) {
+    effectStyleSpec = "Multiple Fills";
+    return effectStyleSpec;
+  }
+
+  let firstEffect = effectStyle.effects[0];
+  let firstEffectIsShadow = firstEffect.type === "DROP_SHADOW" || firstEffect.type === "INNER_SHADOW";
+
+  // Effect type
+  let effectTypeSpec = getEffectTypeSpecStringFromEffect(firstEffect);
+
+  // Shadow or Blur?
+  let shadowEffectSpec = "";
+  if ("color" in firstEffect && firstEffectIsShadow) {
+    shadowEffectSpec = getShadowSpecStringFromEffect(firstEffect);
+  }
+
+  // Blur Radius
+  let effectRadius = getBlurSpecStringFromEffect(firstEffect);
+
+  effectStyleSpec = `${effectTypeSpec}: ${shadowEffectSpec}${effectRadius}`;
+
+  return effectStyleSpec;
+}
+
+/* ****************
  * All
- *
- */
+ * ****************/
 
 export function getSpecString(style: PaintStyle | TextStyle | EffectStyle) {
   let specString = "";
 
   if (style.type === "TEXT") {
-    console.log("TEXT");
     specString = getSpecStringFromTextStyle(style);
     return specString;
   } else if (style.type === "EFFECT") {
-    console.log("EFFECT");
-    // specString = getSpecStringFromEffectStyle(style);
+    specString = getSpecStringFromEffectStyle(style);
     return specString;
   } else {
     specString = getSpecStringFromPaintArray(style.paints);
