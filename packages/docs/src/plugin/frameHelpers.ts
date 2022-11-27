@@ -1,4 +1,4 @@
-import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
+import { MAIN_FRAME_KEY, FigmaDocsFrame, DocBlockNodes } from "./types";
 
 /** Check if a figma frame exists */
 export function storedFrameExists(frameName: FigmaDocsFrame) {
@@ -7,6 +7,15 @@ export function storedFrameExists(frameName: FigmaDocsFrame) {
   return !!frameId && !!frame;
 }
 
+/**
+ * Gets the requested frame.
+ * If the frame does not exist, it will be created and the provided name
+ * will be stored in the plugin data store.
+ *
+ * Since we are returning a frame we don't have any way to inject any bootstrap
+ * steps (things that should run only once once the frame is created). For this
+ * reason, we have some hardcoded boostrap steps here for the MAIN_FRAME
+ */
 export function getStoredFrame(frameName: FigmaDocsFrame) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
@@ -28,6 +37,15 @@ export function getStoredFrame(frameName: FigmaDocsFrame) {
 
     return newFrame;
   }
+
+  return frame;
+}
+
+/** Duplicates getStoredFrame, but doesnt
+ *  try to create a frame if it doesnt exist */
+export function getStoredNode(frameName: FigmaDocsFrame | DocBlockNodes) {
+  const frameId = figma.root.getPluginData(frameName);
+  const frame = figma.getNodeById(frameId);
 
   return frame;
 }

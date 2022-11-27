@@ -1,5 +1,7 @@
 import { getSpecString } from "./getSpec";
 import { addText } from "./utils";
+import { ensureComponentExists } from "./docBlockBuild";
+import { DOC_BLOCK_ROOT } from "./types";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
@@ -7,6 +9,26 @@ export async function buildColorStyleBlock(paintStyle: PaintStyle) {
   // Destruct + generate the spec string
   const { name: paintStyleName, id: paintStyleId, paints } = paintStyle;
   let paintStyleSpec = getSpecString(paintStyle);
+
+  // Get master node ; this should really only run once, not per block
+  const DocBlockComponentMaster = ensureComponentExists(DOC_BLOCK_ROOT);
+  console.log("🚤 component", DocBlockComponentMaster);
+
+  // Create instance
+  const DocBlockComponentInstance = DocBlockComponentMaster.createInstance();
+  DocBlockComponentInstance.y = 200;
+
+  console.log("🚤 instance", DocBlockComponentInstance);
+
+  /**
+   *
+   * 👆
+   * THE NEW
+   * ////////////
+   * THE OLD
+   * 👇
+   *
+   */
 
   // put it here
   const sampleX = 400;
