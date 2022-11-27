@@ -1,43 +1,12 @@
+import { getSpecString } from "./getSpec";
 import { addText } from "./utils";
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
 export async function buildTextStyleBlock(textStyle: TextStyle) {
-  if (!textStyle) {
-    return;
-  }
-
-  const textStyleName = textStyle.name;
-  const textStyleId = textStyle.id;
-  let textStyleSpec = "";
-
-  console.log("🎨 ", textStyleName);
-  console.log(textStyle);
-
-  // Logic to build spec string
-  textStyleSpec += "Roboto | Regular | 12 / Auto";
-
-  function getRangeLineHeightSpecString(lineHeightObject: LineHeight) {
-    if (lineHeightObject.unit === "AUTO") {
-      return "Auto";
-    }
-    const unitString = lineHeightObject.unit === "PERCENT" ? "%" : "px";
-    const valueString = lineHeightObject.value;
-    const specString = `${valueString}${unitString}`;
-    return specString;
-  }
-
-  let { family: textStyleFontFamily, style: textStyleFontWeight } = textStyle.fontName;
-  let textStyleFontSize = textStyle.fontSize;
-  let textStyleLineHeight = getRangeLineHeightSpecString(textStyle.lineHeight);
-
-  textStyleSpec = textStyleFontFamily;
-  textStyleSpec += " | ";
-  textStyleSpec += textStyleFontWeight;
-  textStyleSpec += " | ";
-  textStyleSpec += textStyleFontSize;
-  textStyleSpec += " / ";
-  textStyleSpec += textStyleLineHeight;
+  // Destruct + generate the spec string
+  const { name: textStyleName, id: textStyleId } = textStyle;
+  let textStyleSpec = getSpecString(textStyle);
 
   // put it here
   const sampleX = 400;
