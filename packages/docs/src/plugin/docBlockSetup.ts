@@ -90,15 +90,15 @@ function setupTextGroupFrame() {
   return textGroupFrame;
 }
 
-function setupComponentTextPieces(componentRef, configObject) {
+async function setupComponentTextPieces(componentRef, configObject) {
   const { parts } = configObject;
 
   // Build title
-  const TitleText = addText("Style Title");
+  const TitleText = await addText("Style Title");
   componentRef.setPluginData(parts.title, TitleText.id);
 
   // Build spec
-  const SpecText = addText("Style Spec");
+  const SpecText = await addText("Style Spec");
   componentRef.setPluginData(parts.spec, SpecText.id);
 
   // Create the text frame group

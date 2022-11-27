@@ -7,7 +7,7 @@ export function isInt(n: number) {
   return n % 1 === 0;
 }
 
-export async function addText(string: string = "Your new text", options: textOptions): Promise<TextNode> {
+export async function addText(string: string = "Your new text", options?: textOptions): Promise<TextNode> {
   const newText = figma.createText();
   await figma.loadFontAsync(newText.fontName as FontName);
   newText.characters = string;
