@@ -1,8 +1,6 @@
 import { MAIN_FRAME_KEY, FigmaDocsFrame } from "./types";
 
-/**
- * Check if a figma frame exists
- */
+/** Check if a figma frame exists */
 export function storedFrameExists(frameName: FigmaDocsFrame) {
   const frameId = figma.root.getPluginData(frameName);
   const frame = figma.getNodeById(frameId);
@@ -44,8 +42,10 @@ export function applyMainFrameStyles(mainFrame: FrameNode) {
   mainFrame.paddingLeft = 32;
 }
 
-// This shouldnt run if the frame exists
-// Position the frame to the farthest right and top point
+/**
+ * This shouldnt run if the frame exists
+ * Position the frame to the farthest right and top point
+ */
 export function positionMainFrame(mainFrame: FrameNode) {
   const horizontalOffset = 100;
   const verticalOffset = 0;
@@ -74,6 +74,10 @@ export function positionMainFrame(mainFrame: FrameNode) {
   mainFrame.y = y + verticalOffset;
 }
 
+/**
+ * Creates a text block with the provided string
+ * and appends it to the provided frame.
+ */
 export async function addHeaderToFrame(headerText: string, frame: FrameNode) {
   const textStylesHeader = figma.createText();
   await figma.loadFontAsync(textStylesHeader.fontName as FontName);
