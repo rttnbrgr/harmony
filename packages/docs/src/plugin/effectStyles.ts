@@ -35,7 +35,7 @@ function convertEffectTypeToSpecString(str) {
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-function buildSample(effectStyle: EffectStyle) {
+async function buildSample(effectStyle: EffectStyle) {
   if (!effectStyle) {
     return;
   }
@@ -126,12 +126,12 @@ function buildSample(effectStyle: EffectStyle) {
   figma.currentPage.appendChild(colorStyleRect);
 
   // Build title
-  const colorStyleTitleText = addText(effectStyleName, {
+  const colorStyleTitleText = await addText(effectStyleName, {
     x: textX,
     y: sampleY,
   });
   // Build spec
-  const colorStyleSpecText = addText(effectStyleSpec, {
+  const colorStyleSpecText = await addText(effectStyleSpec, {
     x: textX,
     y: sampleY + 14,
   });
@@ -167,12 +167,12 @@ async function generateLocalEffectStylesDoc(mainFrame: FrameNode) {
   const effectStylesMasterFrame = applyStyleFrameStyles("EffectStylesFrame");
 
   // Add header
-  addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
+  await addHeaderToFrame("Effect Styles", effectStylesMasterFrame);
 
   console.log("before buildEffectStyleFrames");
 
   // Build the style frames and append them to the master artboard
-  buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+  await buildStyleFrames<EffectStyle>(localEffectStyles, effectStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
 
   // Add style frame to main frame
   mainFrame.appendChild(effectStylesMasterFrame);
