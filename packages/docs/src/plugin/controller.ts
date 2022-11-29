@@ -101,6 +101,4 @@ if (figma.command === "BUILD_ALL_STYLES") {
     figma.viewport.scrollAndZoomIntoView([mainFrame]);
     figma.closePlugin();
   });
-  figma.viewport.scrollAndZoomIntoView([mainFrame]);
-  figma.closePlugin();
 }
