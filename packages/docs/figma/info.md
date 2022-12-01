@@ -28,3 +28,8 @@ This is an alpha (pre-stable) release. Please submit any issues as well as featu
 https://github.com/rttnbrgr/harmony
 
 ## Creator(s)
+
+## Version Notes
+
+0.0.1 - Initial alpha release
+0.0.2 - Updates to address async text loading issues
