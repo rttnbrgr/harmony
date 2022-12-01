@@ -1,6 +1,6 @@
 import { generateLocalPaintStylesDoc } from "./colorStyles";
 import { generateLocalEffectStylesDoc } from "./effectStyles";
-import { applyMainFrameStyles, getStoredFrame, positionMainFrame } from "./helpers";
+import { getStoredFrame, positionMainFrame, MAIN_FRAME_KEY } from "./helpers";
 import { generateLocalTextStylesDoc } from "./textStyles";
 
 // This file holds the main code for the plugins. It has access to the *document*.
@@ -8,8 +8,7 @@ import { generateLocalTextStylesDoc } from "./textStyles";
 // full browser environment (see documentation).
 
 // Setup the frame first
-const mainFrame = getStoredFrame("MainFrame") as FrameNode;
-applyMainFrameStyles(mainFrame);
+const mainFrame = getStoredFrame(MAIN_FRAME_KEY) as FrameNode;
 
 if (figma.command === "CONFIG") {
   console.log("CONFIG");
@@ -61,36 +60,45 @@ if (figma.command === "CONFIG") {
 
 if (figma.command === "BUILD_PAINT_STYLES") {
   console.log("create color styles");
-  generateLocalPaintStylesDoc(mainFrame);
+  const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
   /*
    * Commands should close the plugin
    * Leaving this commented out for debug purposes
    *
    * figma.closePlugin();
    **/
-  figma.closePlugin();
+  Promise.all([paintStylePromise]).then((v) => {
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
 
 if (figma.command === "BUILD_TEXT_STYLES") {
   console.log("create text styles");
-  generateLocalTextStylesDoc(mainFrame);
-  figma.closePlugin();
+  const textStylePromise = generateLocalTextStylesDoc(mainFrame);
+  Promise.all([textStylePromise]).then((v) => {
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
 
 if (figma.command === "BUILD_EFFECT_STYLES") {
   console.log("create effect styles");
-  generateLocalEffectStylesDoc(mainFrame);
-  figma.closePlugin();
+  const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
+  Promise.all([effectStylePromise]).then((v) => {
+    console.log("promise.all", v);
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
 
 if (figma.command === "BUILD_ALL_STYLES") {
   console.log("create ALL styles");
-  generateLocalTextStylesDoc(mainFrame);
-  generateLocalPaintStylesDoc(mainFrame);
-  generateLocalEffectStylesDoc(mainFrame);
-  figma.closePlugin();
+  const textStylePromise = generateLocalTextStylesDoc(mainFrame);
+  const paintStylePromise = generateLocalPaintStylesDoc(mainFrame);
+  const effectStylePromise = generateLocalEffectStylesDoc(mainFrame);
+  Promise.all([paintStylePromise, textStylePromise, effectStylePromise]).then((v) => {
+    figma.viewport.scrollAndZoomIntoView([mainFrame]);
+    figma.closePlugin();
+  });
 }
-
-// Global logs
-// console.log("console", console);
-// console.log("figma", figma);

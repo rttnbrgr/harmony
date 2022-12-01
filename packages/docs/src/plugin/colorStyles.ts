@@ -57,8 +57,9 @@ type textOptions = {
   y: number;
 };
 
-function addText(string: string = "Your new text", options: textOptions): TextNode {
+async function addText(string: string = "Your new text", options: textOptions): Promise<TextNode> {
   const newText = figma.createText();
+  await figma.loadFontAsync(newText.fontName as FontName);
   newText.characters = string;
   if (options.x) {
     newText.x = options.x;
@@ -72,7 +73,7 @@ function addText(string: string = "Your new text", options: textOptions): TextNo
 
 // Takes a paint style and returns a frame documenting that style
 // function buildSample(paintStyle: PaintStyle = samplePaintStyle) {
-function buildSample(paintStyle: PaintStyle) {
+async function buildSample(paintStyle: PaintStyle) {
   if (!paintStyle) {
     return;
   }
@@ -149,42 +150,45 @@ function buildSample(paintStyle: PaintStyle) {
   figma.currentPage.appendChild(colorStyleRect);
 
   // Build title
-  const colorStyleTitleText = addText(paintStyleName, {
+  const colorStyleTitleText = await addText(paintStyleName, {
     x: textX,
     y: sampleY,
   });
   // Build spec
-  const colorStyleSpecText = addText(paintStyleSpec, {
+  const colorStyleSpecText = await addText(paintStyleSpec, {
     x: textX,
     y: sampleY + 14,
   });
 
-  // Group text nodes
-  const textGroup = figma.group([colorStyleTitleText, colorStyleSpecText], figma.currentPage);
-
-  // Selection testing
-  // const newNodes: SceneNode[] = [textGroup, colorStyleRect];
-  // newNodes.push(textGroup);
-  // newNodes.push(colorStyleRect);
-  // figma.currentPage.selection = newNodes;
-  // console.log("selection", figma.currentPage.selection);
-  // console.log("figma", figma);
-
   // Create the frame, append text + rect, position it
   const sampleFrame = figma.createFrame();
   sampleFrame.appendChild(colorStyleRect);
-  sampleFrame.appendChild(textGroup);
   sampleFrame.layoutMode = "HORIZONTAL";
   sampleFrame.itemSpacing = 8;
   sampleFrame.counterAxisAlignItems = "CENTER";
   sampleFrame.x = sampleX;
-  let getSampleFrameWidth = () => sampleFrame.width;
-  let sampleFrameWidth = getSampleFrameWidth();
 
-  sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
-  // console.log("sampleFrame", sampleFrame);
+  // Pretty sure this is not necessary; build style frames handles it?
+  return Promise.all([colorStyleTitleText, colorStyleSpecText]).then((value) => {
+    console.log("colorStyleTitleText promise", value);
+    console.log("sampleFrame", sampleFrame);
 
-  return sampleFrame;
+    // Group text nodes
+    const textGroup = figma.group([...value], figma.currentPage);
+    console.log("textGroup", textGroup);
+
+    // Sample frame updates, that depend on promises; Append text group
+    sampleFrame.appendChild(textGroup);
+
+    // Sample frame size stuff
+    let getSampleFrameWidth = () => sampleFrame.width;
+    let sampleFrameWidth = getSampleFrameWidth();
+
+    // Resize
+    sampleFrame.resizeWithoutConstraints(sampleFrameWidth, rectSize);
+
+    return sampleFrame;
+  });
 }
 
 async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
@@ -197,13 +201,27 @@ async function generateLocalPaintStylesDoc(mainFrame: FrameNode) {
   const paintStylesMasterFrame = applyStyleFrameStyles("ColorStylesFrame");
 
   // Add header
-  addHeaderToFrame("Color Styles", paintStylesMasterFrame);
+  await addHeaderToFrame("Color Styles", paintStylesMasterFrame);
 
   // Build the style frames and append them to the master artboard
-  buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+  await buildStyleFrames<PaintStyle>(localPaintStyles, paintStylesMasterFrame, buildSample, { x: 64 + 16, y: null });
+
+  // Check if textStyles frame exists
+  // This feels brittle
+  const textStylesFrameExists = mainFrame.findChildren((x) => {
+    console.log("child", x);
+    console.log("child name", x.name);
+    return x.name === "Text Styles";
+  }).length;
+  console.log("textStylesFrameExists", textStylesFrameExists);
+
+  // Based on this, set insert position
+  const insertPosition = textStylesFrameExists ? 1 : 0;
+  console.log("insertPosition", insertPosition);
 
   // Add style frame to main frame
-  mainFrame.appendChild(paintStylesMasterFrame);
+  // Either at the beginning or after the text styles
+  mainFrame.insertChild(insertPosition, paintStylesMasterFrame);
 }
 
 export {
