@@ -1,7 +1,7 @@
 {
     "name": "@harmony/docs",
-    "version": "0.0.1",
-    "description": "Your Figma plugin",
+    "version": "0.0.2",
+    "description": "Figma plugin to autogenerate style docs",
     "main": "code.js",
     "scripts": {
         "build": "webpack --mode=production",
